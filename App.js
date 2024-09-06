@@ -18,6 +18,7 @@ import EditProfile from './src/pages/EditProfile';
 import Donation from './src/pages/Donation';
 import ImageUpload from './src/pages/ImageUpload';
 import PrescriptionUpload from './src/pages/PrescriptionUpload';
+import ResetPassword from './src/pages/ResetPassword';
 import { getData } from './src/helper';
 const Stack = createNativeStackNavigator();
 
@@ -39,8 +40,8 @@ function App() {
           return <Header title={title} />;  // Pass the title to Header component
         }
       })}>
-        {!token ?
-          <>
+        {/* {!token ?
+          <> */}
             <Stack.Screen
               name="Welcome"
               component={Welcome}
@@ -61,9 +62,14 @@ function App() {
               component={ForgotPassword}
               options={{ headerShown: false }}
             />
-          </>
-          :
-          <>
+            <Stack.Screen
+              name="ResetPassword"
+              component={ResetPassword}
+              options={{ headerShown: false }}
+            />
+          {/* </>
+          // :
+          // <> */}
             <Stack.Screen
               name="Home"
               component={Home}
@@ -119,8 +125,8 @@ function App() {
               component={PrescriptionUpload}
               options={{ headerShown: true, title: 'Onward - Prescription Upload' }}
             />
-          </>
-        }
+        {/* //   </>
+        // } */}
       </Stack.Navigator>
       {/* <Footer /> */}
     </NavigationContainer>

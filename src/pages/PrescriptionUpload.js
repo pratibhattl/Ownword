@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList,Dimensions,Image, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, FlatList, Dimensions, Image, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native'
 import Footer from '../components/Footer'
-import DocumentPicker from 'react-native-document-picker';
-
+import * as DocumentPicker from 'react-native-document-picker';
+import { Platform } from 'react-native';
+import { getPrescriptionApi, prescriptionUploadApi } from '../apiService/UploadFile';
+import { getData } from '../helper';
+import LoadingScreen from '../components/LoadingScreen';
 
 const data = [
     { id: '1', source: require('../assets/Rectangle2.png'), title: 'Image 1' },
@@ -14,58 +17,29 @@ const data = [
 ];
 
 export default function PrescriptionUpload() {
-    const [fileResponse, setFileResponse] = useState({});
+    const [token, setToken] = useState(null)
+    const [imageList, setImageList] = useState([])
+    const [isLoading, setIsLoading] = React.useState(false);
 
-    // const handleFilePicker = async () => {
-    //     try {
-    //         const res = await DocumentPicker.pick({
-    //             type: [DocumentPicker.types.allFiles],
-    //         });
-    //         console.log(res, "res");
-    //         setFileResponse(res);
-    //     } catch (err) {
-    //         if (DocumentPicker.isCancel(err)) {
-    //             // User cancelled the picker, exit any dialogs or menus and move on
-    //         } else {
-    //             throw err;
-    //         }
-    //     }
-    // };
+    useEffect(() => {
+        getData('token').then((token) => {
+            setToken(token);
+        });
+    }, [])
 
-    // useEffect(() => {
-    //     console.log(fileResponse, "fileResponse");
-
-    // }, [fileResponse])
-
-    // const handleFileUpload = async () => {
-    //     if (!fileResponse) return;
-    //     console.log(fileResponse, "fileResponse");
-
-    //     const data = new FormData();
-    //     data.append('file', {
-    //         uri: fileResponse.uri,
-    //         type: fileResponse.type,
-    //         name: fileResponse.name,
-    //     });
-
-    //     try {
-    //         const response = await axios.post('YOUR_UPLOAD_URL', data, {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //         });
-    //         console.log('File uploaded successfully', response.data);
-    //     } catch (error) {
-    //         console.error('File upload failed', error);
-    //     }
-    // };
+    useEffect(() => {
+        getPrescriptionApi(token, setImageList, setIsLoading)
+    }, [token])
 
     const handleFilePicker = async () => {
         try {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
             });
-            setFileResponse(res);
+            const formData = new FormData();
+            formData.append('image', res[0])
+            prescriptionUploadApi(formData, token, setImageList, setIsLoading);
+
         } catch (err) {
             if (DocumentPicker.isCancel(err)) {
                 console.log('User cancelled the picker');
@@ -75,32 +49,28 @@ export default function PrescriptionUpload() {
         }
     };
 
-
+    if (isLoading) {
+        return <LoadingScreen />;
+    }
     return (
         <View style={styles.container}>
-            <ScrollView >
-                <View style={styles.container1}>
-                    <TouchableOpacity style={styles.dottedBox} onPress={handleFilePicker}>
-                        <Text style={styles.text}>Tap to Upload File</Text>
-                    </TouchableOpacity>
-                    {/* {fileResponse && (
-                        <View style={styles.fileInfo}>
-                            <Text style={styles.textStyle}>File Name: {fileResponse.name}</Text>
-                            <Text style={styles.textStyle}>Type: {fileResponse.type}</Text>
-                        </View>
-                    )} */}
-                </View>
-                <FlatList
-                    data={data}
-                    keyExtractor={(item) => item.id}
-                    numColumns={2} // Change this value to display the images in a grid format
-                    renderItem={({ item }) => (
-                        <View style={styles.imageContainer}>
-                            <Image source={item.source} style={styles.image} />
-                            <Text style={styles.imageTitle}>{item.title}</Text>
-                        </View>
-                    )}
-                />
+              <ScrollView > 
+            <View style={styles.container1}>
+                <TouchableOpacity style={styles.dottedBox} onPress={handleFilePicker}>
+                    <Text style={styles.text}>Tap to Upload File</Text>
+                </TouchableOpacity>
+            </View>
+            <FlatList
+                data={imageList}
+                keyExtractor={(item) => item._id}
+                numColumns={2}
+                renderItem={({ item }) => (
+                    <View style={styles.imageContainer}>
+                        <Image source={{ uri: item.image }} style={styles.image} />
+                    </View>
+                )}
+                // ListFooterComponent={<Footer />}
+            />
             </ScrollView>
             <Footer />
         </View>
@@ -112,7 +82,7 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#0A142A'
     },
-    
+
     container1: {
         flex: 1,
         justifyContent: 'center',
@@ -140,7 +110,7 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         margin: 10,
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     image: {
         width: Dimensions.get('window').width / 2 - 30, // Dynamic width for grid layout

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { View, Image, Text, ScrollView, TouchableOpacity, FlatList, Dimensions, StyleSheet } from 'react-native'
 import Footer from '../components/Footer'
 import DocumentPicker from 'react-native-document-picker';
-import { imageUploadApi , getImageApi} from '../apiService/UploadFile';
+import { imageUploadApi, getImageApi } from '../apiService/UploadFile';
 import { getData } from '../helper';
+import LoadingScreen from '../components/LoadingScreen';
 
 const data = [
     { id: '1', source: require('../assets/Rectangle.png'), title: 'Image 1' },
@@ -15,9 +16,9 @@ const data = [
 ];
 
 export default function ImageUpload() {
-    const [fileResponse, setFileResponse] = useState({});
     const [token, setToken] = useState(null)
     const [imageList, setImageList] = useState([])
+    const [isLoading, setIsLoading] = React.useState(false);
 
     useEffect(() => {
         getData('token').then((token) => {
@@ -26,59 +27,19 @@ export default function ImageUpload() {
     }, [])
 
     useEffect(() => {
-        getImageApi(token, setImageList)
-        // imageUploadApi('file',token, setImageList)
+        getImageApi(token, setImageList, setIsLoading)
     }, [token])
-    // const handleFilePicker = async () => {
-    //     try {
-    //         const res = await DocumentPicker.pick({
-    //             type: [DocumentPicker.types.allFiles],
-    //         });
-    //         console.log(res, "res");
-    //         setFileResponse(res);
-    //     } catch (err) {
-    //         if (DocumentPicker.isCancel(err)) {
-    //             // User cancelled the picker, exit any dialogs or menus and move on
-    //         } else {
-    //             throw err;
-    //         }
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     console.log(fileResponse, "fileResponse");
-
-    // }, [fileResponse])
-
-    // const handleFileUpload = async () => {
-    //     if (!fileResponse) return;
-    //     console.log(fileResponse, "fileResponse");
-
-    //     const data = new FormData();
-    //     data.append('file', {
-    //         uri: fileResponse.uri,
-    //         type: fileResponse.type,
-    //         name: fileResponse.name,
-    //     });
-
-    //     try {
-    //         const response = await axios.post('YOUR_UPLOAD_URL', data, {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //         });
-    //         console.log('File uploaded successfully', response.data);
-    //     } catch (error) {
-    //         console.error('File upload failed', error);
-    //     }
-    // };
 
     const handleFilePicker = async () => {
         try {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
             });
-            setFileResponse(res);
+            const formData = new FormData();
+            formData.append('image', res[0])
+            imageUploadApi(formData, token,setImageList, setIsLoading);
+           
+
         } catch (err) {
             if (DocumentPicker.isCancel(err)) {
                 console.log('User cancelled the picker');
@@ -88,6 +49,9 @@ export default function ImageUpload() {
         }
     };
 
+    if (isLoading) {
+        return <LoadingScreen />;
+    }
 
     return (
         <View style={styles.container}>
@@ -104,13 +68,12 @@ export default function ImageUpload() {
                     )} */}
                 </View>
                 <FlatList
-                    data={data}
-                    keyExtractor={(item) => item.id}
+                    data={imageList}
+                    keyExtractor={(item) => item._id}
                     numColumns={2} // Change this value to display the images in a grid format
                     renderItem={({ item }) => (
                         <View style={styles.imageContainer}>
-                            <Image source={item.source} style={styles.image} />
-                            <Text style={styles.imageTitle}>{item.title}</Text>
+                            <Image source={{uri: item.image}} style={styles.image} />
                         </View>
                     )}
                 />
@@ -153,7 +116,7 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         margin: 10,
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     image: {
         width: Dimensions.get('window').width / 2 - 30, // Dynamic width for grid layout

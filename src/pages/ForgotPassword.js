@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
+import { sendOtpApi } from '../apiService/Users';
+
 const ForgotPassword = () => {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
+
     const navigation = useNavigation();
     const onSubmit = (data) => {
         setSubmitted(true);
-        // Perform your login logic here
-        Alert.alert('Login Successful', `Welcome ${data.email}!`);
+        sendOtpApi(data,navigation);
+        // Alert.alert('Login Successful', `Welcome ${data.email}!`);
     };
 
     return (
@@ -47,7 +50,7 @@ const ForgotPassword = () => {
                     name="email"
                 />
                
-                <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate('Login')}>
+                <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit(onSubmit)}>
                     <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
 
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
         marginBottom: 15,
-        color: '#232C3F',
+        color: '#fff',
         placeholderTextColor: "#fff",
     },
     isInvalid: {

@@ -12,6 +12,7 @@ export const userSignUpApi = (data, navigation) => {
     })
     .catch(function (error) {
       console.log(error);
+      
     });
 }
 
@@ -20,15 +21,15 @@ export const userLoginApi = (data, setIsLoading, navigation) => {
   setIsLoading(true);
 
   axios.post(`${API_URL}users/login`, data)
-    .then(function (response) {
+    .then(function (response) {      
       mergeData('userDetails', response?.data?.user);
       storeData('token', response?.data?.token)
-      setTimeout(() => {
-        setIsLoading(false);
-        navigation.navigate('Home')
-      }, 2000)
+      setIsLoading(false);
+      navigation.navigate('Home')
+
     })
     .catch(function (error) {
+      setIsLoading(false);
       console.log(error);
     });
 }

@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
+import { changePasswordApi } from '../apiService/Users';
+import  {getData} from "../helper";
+
 const ChangePassword = () => {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
+    const [token, setToken] = useState(null)
+    const [message, setMessage] = useState(null)
     const navigation = useNavigation();
+
+    useEffect(() => {
+        getData('token').then((token) => {
+            setToken(token);
+        });
+    }, [])
+
     const onSubmit = (data) => {
         setSubmitted(true);
-        // Perform your login logic here
-        Alert.alert('Login Successful', `Welcome ${data.email}!`);
+        changePasswordApi(data,token,setMessage,navigation)
     };
 
     return (
@@ -27,19 +38,19 @@ const ChangePassword = () => {
                         <>
                             <Text style={styles.label}> Current Password*</Text>
                             <TextInput
-                                style={[styles.input, submitted && errors.password ? styles.isInvalid : null]}
+                                style={[styles.input, submitted && errors.current_password ? styles.isInvalid : null]}
                                 // placeholder="Password*"
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
-                                secureTextEntry
+                                // secureTextEntry
                             />
-                            {submitted && errors.password && (
-                                <Text style={styles.errorText}>{errors.password.message}</Text>
+                            {submitted && errors.current_password && (
+                                <Text style={styles.errorText}>{errors.current_password.message}</Text>
                             )}
                         </>
                     )}
-                    name="password"
+                    name="current_password"
                 />
                 <Controller
                     control={control}
@@ -50,19 +61,19 @@ const ChangePassword = () => {
                         <>
                             <Text style={styles.label}>New Password*</Text>
                             <TextInput
-                                style={[styles.input, submitted && errors.password ? styles.isInvalid : null]}
+                                style={[styles.input, submitted && errors.new_password ? styles.isInvalid : null]}
                                 // placeholder="Password*"
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
-                                secureTextEntry
+                                // secureTextEntry
                             />
-                            {submitted && errors.password && (
-                                <Text style={styles.errorText}>{errors.password.message}</Text>
+                            {submitted && errors.new_password && (
+                                <Text style={styles.errorText}>{errors.new_password.message}</Text>
                             )}
                         </>
                     )}
-                    name="password"
+                    name="new_password"
                 />
                 <Controller
                     control={control}
@@ -73,23 +84,23 @@ const ChangePassword = () => {
                         <>
                             <Text style={styles.label}>Confirm new Password*</Text>
                             <TextInput
-                                style={[styles.input, submitted && errors.password ? styles.isInvalid : null]}
+                                style={[styles.input, submitted && errors.confirm_password ? styles.isInvalid : null]}
                                 // placeholder="Password*"
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
-                                secureTextEntry
+                                // secureTextEntry
                             />
-                            {submitted && errors.password && (
-                                <Text style={styles.errorText}>{errors.password.message}</Text>
+                            {submitted && errors.confirm_password && (
+                                <Text style={styles.errorText}>{errors.confirm_password.message}</Text>
                             )}
                         </>
                     )}
-                    name="password"
+                    name="confirm_password"
                 />
 
-
-                <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate(-1)}>
+                    <Text>{message}</Text>
+                <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit(onSubmit)}>
                     <Text style={styles.buttonText}>Update Password</Text>
                 </TouchableOpacity>
 
@@ -130,7 +141,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
         marginBottom: 15,
-        color: '#232C3F',
+        color: '#fff',
         placeholderTextColor: "#fff",
     },
     isInvalid: {

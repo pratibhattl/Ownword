@@ -32,11 +32,9 @@ export default function EditProfile() {
 
     const onSubmit = (data) => {
         console.log("sdfsdf", data);
-
         setSubmitted(true);
-        
         // updateUserApi(data);
-        Alert.alert('Updated Successful');
+        alert('Updated Successful');
     };
 
     const handleFilePicker = async () => {
@@ -54,10 +52,6 @@ export default function EditProfile() {
         }
     };
 
-
-
-
-
     return (
         <View style={styles.container}>
             <ScrollView >
@@ -71,6 +65,7 @@ export default function EditProfile() {
                     <View style={styles.formWrap}>
                         <Controller
                             control={control}
+                            defaultValue={userDetails?.name}
                             rules={{
                                 required: 'Enter your name'
                             }}
@@ -82,7 +77,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value ? value : userDetails?.name}
+                                        value={value}
 
                                     />
                                     {submitted && errors.name && (
@@ -125,13 +120,14 @@ export default function EditProfile() {
                         /> */}
                         <Controller
                             control={control}
+                            defaultValue={userDetails?.gender}
                             rules={{ required: 'Select your gender' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
                                     <Text style={styles.label}>Gender*</Text>
                                     <View style={[styles.pickerContainer, errors.gender ? styles.isInvalid : null]}>
                                         <Picker
-                                            selectedValue={value ? value : userDetails?.gender}
+                                            selectedValue={value}
                                             onValueChange={(itemValue) => onChange(itemValue)}
                                             style={styles.picker}
                                         >
@@ -149,6 +145,7 @@ export default function EditProfile() {
 
                         <Controller
                             control={control}
+                            defaultValue={userDetails?.email}
                             rules={{
                                 required: 'Enter your email'
                             }}
@@ -160,7 +157,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value ? value : userDetails?.email}
+                                        value={value}
 
                                     />
                                     {submitted && errors.email && (
@@ -172,6 +169,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
+                            defaultValue={userDetails?.phone}
                             rules={{
                                 required: 'Enter your phone number'
                             }}
@@ -183,7 +181,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value ? value : userDetails?.phone}
+                                        value={value}
 
                                     />
                                     {submitted && errors.phone && (
@@ -195,6 +193,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
+                            defaultValue={userDetails?.address}
                             rules={{
                                 required: 'Enter your address'
                             }}
@@ -206,7 +205,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value ? value : userDetails?.address}
+                                        value={value}
 
                                     />
                                     {submitted && errors.address && (
@@ -218,59 +217,39 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
+                            defaultValue={userDetails?.location}
                             rules={{
-                                required: 'Enter your locality'
+                                required: 'Enter your location'
                             }}
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <>
-                                    <Text style={styles.label}>Locality*</Text>
+                                    <Text style={styles.label}>Location*</Text>
                                     <TextInput
-                                        style={[styles.input, submitted && errors.locality ? styles.isInvalid : null]}
+                                        style={[styles.input, submitted && errors.location ? styles.isInvalid : null]}
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
                                         value={value}
 
                                     />
-                                    {submitted && errors.locality && (
-                                        <Text style={styles.errorText}>{errors.locality.message}</Text>
+                                    {submitted && errors.location && (
+                                        <Text style={styles.errorText}>{errors.location.message}</Text>
                                     )}
                                 </>
                             )}
-                            name="locality"
+                            name="location"
                         />
+                       
                         <Controller
                             control={control}
-                            rules={{ required: 'Select your city' }}
-                            render={({ field: { onChange, value } }) => (
-                                <>
-                                    <Text style={styles.label}>City*</Text>
-                                    <View style={[styles.pickerContainer, errors.city ? styles.isInvalid : null]}>
-                                        <Picker
-                                            selectedValue={value ? value : userDetails?.city}
-                                            onValueChange={(itemValue) => onChange(itemValue)}
-                                            style={styles.picker}
-                                        >
-                                            <Picker.Item label="Select city" value="" />
-                                            <Picker.Item label="Kolkata" value="kolkata" />
-                                            <Picker.Item label="Bhuwaneshwar" value="bhuwaneshwar" />
-                                            <Picker.Item label="Other" value="other" />
-                                        </Picker>
-                                    </View>
-                                    {errors.city && <Text style={styles.errorText}>{errors.city.message}</Text>}
-                                </>
-                            )}
-                            name="city"
-                        />
-                        <Controller
-                            control={control}
+                            defaultValue={userDetails?.state}
                             rules={{ required: 'Select your state' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
                                     <Text style={styles.label}>State*</Text>
                                     <View style={[styles.pickerContainer, errors.state ? styles.isInvalid : null]}>
                                         <Picker
-                                            selectedValue={value ? value : userDetails?.state}
+                                            selectedValue={value}
                                             onValueChange={(itemValue) => onChange(itemValue)}
                                             style={styles.picker}
                                         >
@@ -285,8 +264,33 @@ export default function EditProfile() {
                             )}
                             name="state"
                         />
+                         <Controller
+                            control={control}
+                            defaultValue={userDetails?.country}
+                            rules={{ required: 'Select your country' }}
+                            render={({ field: { onChange, value } }) => (
+                                <>
+                                    <Text style={styles.label}>Country*</Text>
+                                    <View style={[styles.pickerContainer, errors.country ? styles.isInvalid : null]}>
+                                        <Picker
+                                            selectedValue={value}
+                                            onValueChange={(itemValue) => onChange(itemValue)}
+                                            style={styles.picker}
+                                        >
+                                            <Picker.Item label="Select country" value="" />
+                                            <Picker.Item label="Kolkata" value="kolkata" />
+                                            <Picker.Item label="Bhuwaneshwar" value="bhuwaneshwar" />
+                                            <Picker.Item label="Other" value="other" />
+                                        </Picker>
+                                    </View>
+                                    {errors.country && <Text style={styles.errorText}>{errors.country.message}</Text>}
+                                </>
+                            )}
+                            name="country"
+                        />
                         <Controller
                             control={control}
+                            defaultValue={userDetails?.pincode}
                             rules={{
                                 required: 'Enter your pin number'
                             }}
@@ -294,19 +298,19 @@ export default function EditProfile() {
                                 <>
                                     <Text style={styles.label}>Pin number*</Text>
                                     <TextInput
-                                        style={[styles.input, submitted && errors.pinCode ? styles.isInvalid : null]}
+                                        style={[styles.input, submitted && errors.pincode ? styles.isInvalid : null]}
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value ? value : userDetails?.pinCode}
+                                        value={value}
 
                                     />
-                                    {submitted && errors.pinCode && (
-                                        <Text style={styles.errorText}>{errors.pinCode.message}</Text>
+                                    {submitted && errors.pincode && (
+                                        <Text style={styles.errorText}>{errors.pincode.message}</Text>
                                     )}
                                 </>
                             )}
-                            name="pinCode"
+                            name="pincode"
                         />
                         {/* </View> */}
                         <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit(onSubmit)}>
