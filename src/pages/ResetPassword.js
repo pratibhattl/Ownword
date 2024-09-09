@@ -170,6 +170,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 15,
     },
+    buttonText: {
+        color: '#000',
+        fontSize: 16,
+    },
     secondaryButton: {
         backgroundColor: 'transparent',
         padding: 15,
@@ -178,10 +182,6 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         borderColor: '#fff',
         borderWidth: 1,
-    },
-    buttonText: {
-        color: '#000',
-        fontSize: 16,
     },
     skipText: {
         alignItems: 'center',

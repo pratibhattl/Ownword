@@ -19,6 +19,9 @@ import Donation from './src/pages/Donation';
 import ImageUpload from './src/pages/ImageUpload';
 import PrescriptionUpload from './src/pages/PrescriptionUpload';
 import ResetPassword from './src/pages/ResetPassword';
+import DonationDetails from './src/pages/DonationDetails';
+import Payment from './src/pages/Payment';
+import WaterIntake from './src/pages/WaterIntake';
 import { getData } from './src/helper';
 const Stack = createNativeStackNavigator();
 
@@ -40,8 +43,8 @@ function App() {
           return <Header title={title} />;  // Pass the title to Header component
         }
       })}>
-        {/* {!token ?
-          <> */}
+        {!token ?
+          <>
             <Stack.Screen
               name="Welcome"
               component={Welcome}
@@ -67,9 +70,9 @@ function App() {
               component={ResetPassword}
               options={{ headerShown: false }}
             />
-          {/* </>
-          // :
-          // <> */}
+          </>
+           :
+           <>
             <Stack.Screen
               name="Home"
               component={Home}
@@ -115,6 +118,16 @@ function App() {
               component={Donation}
               options={{ headerShown: true, title: 'Onward - Donations' }}
             />
+             <Stack.Screen
+              name="DonationDetails"
+              component={DonationDetails}
+              options={{ headerShown: true, title: 'Onward - Donations' }}
+            />
+             <Stack.Screen
+              name="Payment"
+              component={Payment}
+              options={{ headerShown: true, title: 'Onward - Payment' }}
+            />
             <Stack.Screen
               name="ImageUpload"
               component={ImageUpload}
@@ -125,8 +138,13 @@ function App() {
               component={PrescriptionUpload}
               options={{ headerShown: true, title: 'Onward - Prescription Upload' }}
             />
-        {/* //   </>
-        // } */}
+             <Stack.Screen
+              name="WaterIntake"
+              component={WaterIntake}
+              options={{ headerShown: true, title: 'Onward - Water Intake' }}
+            />
+         </>
+         } 
       </Stack.Navigator>
       {/* <Footer /> */}
     </NavigationContainer>

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     },
     cardMain: {
         with: '100%',
-        flexDirection: 'column',  // Horizontal layout
+        flexDirection: 'column',
         alignItems: 'end',
         padding: 10,
         backgroundColor: '#232C3F',
@@ -73,19 +73,19 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 5,
         shadowOffset: { width: 0, height: 2 },
-        elevation: 2,  // For Android shadow,
+        elevation: 2, 
         marginRight: 10,
         marginLeft: 10
     },
     cardContainer: {
-        flexDirection: 'row',  // Horizontal layout
-        alignItems: 'center',  // Center content vertically
+        flexDirection: 'row',
+        alignItems: 'center',
         width: '52%'
     },
     cardImage: {
         width: 50,
         height: 50,
-        borderRadius: 25,  // Circular image
+        borderRadius: 25, 
         marginRight: 10,
     },
     cardText: {

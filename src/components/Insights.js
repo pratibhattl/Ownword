@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import Footer from '../components/Footer'
-export default function Settings() {
+export default function Insights() {
     const [selectedTab, setSelectedTab] = useState('insights')
     const notificationArr = [{
         imageUrl: require('../assets/Ellipse.png'),
