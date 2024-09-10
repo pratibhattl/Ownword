@@ -9,4 +9,6 @@ npm install react-native-vector-icons
 npm install react-native-document-picker axios react-native-fs
 npm install @react-native-community/datetimepicker
 npm install @react-native-picker/picker
-
+npm install react-devtools
+npx flipper-server
+run npm devtools

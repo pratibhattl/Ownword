@@ -64,7 +64,7 @@ export default function Home() {
                         <Text style={styles.cardText}>Water Intake</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.card} >
+                    <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate('Menstrual')} >
                         <Image source={require('../assets/Frame1.png')} style={styles.icon} />
                         <Text style={styles.cardText}>Menstrual Cycles</Text>
                     </TouchableOpacity>

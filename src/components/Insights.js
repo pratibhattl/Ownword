@@ -1,41 +1,71 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import Footer from '../components/Footer'
+import { getData } from '../helper'
+import LoadingScreen from './LoadingScreen'
+import { getInsightsApi,getBlogsApi } from '../apiService/InsightsApi'
+
+const notificationArr = [{
+    imageUrl: require('../assets/Ellipse.png'),
+    image: require('../assets/Rectangle1.png'),
+    name: 'Pratibha Thakur',
+    date: '2:32 pm 03rd sep 2024',
+    description: 'Kingpin of ring that trafficked 12,000 west bengal girls held ',
+    text: 'Making any realistic assessment of the scale of the those problems of trafficking in india is a difficult enterprise. while there are number...........'
+},
+{
+    imageUrl: require('../assets/Ellipse.png'),
+    image: require('../assets/Rectangle1.png'),
+    name: 'Pratibha Thakur',
+    date: '2:32 pm 03rd sep 2024',
+    description: 'Kingpin of ring that trafficked 12,000 west bengal girls held ',
+    text: 'Making any realistic assessment of the scale of the those problems of trafficking in india is a difficult enterprise. while there are number...........'
+},
+{
+    imageUrl: require('../assets/Ellipse.png'),
+    image: require('../assets/Rectangle1.png'),
+    name: 'Pratibha Thakur',
+    date: '2:32 pm 03rd sep 2024',
+    description: 'Kingpin of ring that trafficked 12,000 west bengal girls held ',
+    text: 'Making any realistic assessment of the scale of the those problems of trafficking in india is a difficult enterprise. while there are number...........'
+},
+{
+    imageUrl: require('../assets/Ellipse.png'),
+    image: require('../assets/Rectangle1.png'),
+    name: 'Pratibha Thakur',
+    date: '2:32 pm 03rd sep 2024',
+    description: 'Kingpin of ring that trafficked 12,000 west bengal girls held ',
+    text: 'Making any realistic assessment of the scale of the those problems of trafficking in india is a difficult enterprise. while there are number...........'
+}
+]
 export default function Insights() {
-    const [selectedTab, setSelectedTab] = useState('insights')
-    const notificationArr = [{
-        imageUrl: require('../assets/Ellipse.png'),
-        image: require('../assets/Rectangle1.png'),
-        name: 'Pratibha Thakur',
-        date: '2:32 pm 03rd sep 2024',
-        description: 'Kingpin of ring that trafficked 12,000 west bengal girls held ',
-        text: 'Making any realistic assessment of the scale of the those problems of trafficking in india is a difficult enterprise. while there are number...........'
-    },
-    {
-        imageUrl: require('../assets/Ellipse.png'),
-        image: require('../assets/Rectangle1.png'),
-        name: 'Pratibha Thakur',
-        date: '2:32 pm 03rd sep 2024',
-        description: 'Kingpin of ring that trafficked 12,000 west bengal girls held ',
-        text: 'Making any realistic assessment of the scale of the those problems of trafficking in india is a difficult enterprise. while there are number...........'
-    },
-    {
-        imageUrl: require('../assets/Ellipse.png'),
-        image: require('../assets/Rectangle1.png'),
-        name: 'Pratibha Thakur',
-        date: '2:32 pm 03rd sep 2024',
-        description: 'Kingpin of ring that trafficked 12,000 west bengal girls held ',
-        text: 'Making any realistic assessment of the scale of the those problems of trafficking in india is a difficult enterprise. while there are number...........'
-    },
-    {
-        imageUrl: require('../assets/Ellipse.png'),
-        image: require('../assets/Rectangle1.png'),
-        name: 'Pratibha Thakur',
-        date: '2:32 pm 03rd sep 2024',
-        description: 'Kingpin of ring that trafficked 12,000 west bengal girls held ',
-        text: 'Making any realistic assessment of the scale of the those problems of trafficking in india is a difficult enterprise. while there are number...........'
+    const [selectedTab, setSelectedTab] = useState('insights');
+    const [token, setToken] = useState(null)
+    const [insightsList, setInsightsList] = useState([])
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    useEffect(() => {
+        getData('token').then((token) => {
+            setToken(token);
+        });
+    }, [])
+
+    useEffect(() => {
+        if(selectedTab == 'insights'){
+            getInsightsApi(token, setInsightsList, setIsLoading)
+        }else if(selectedTab == 'blogs'){
+            getBlogsApi(token, setInsightsList, setIsLoading)
+        }else{
+            getInsightsApi(token, setInsightsList, setIsLoading)
+        }
+       
+    }, [token,selectedTab])
+
+
+    if (isLoading) {
+        return <LoadingScreen />;
     }
-    ]
+
     return (
         <View style={styles.container}>
             <ScrollView >
@@ -47,20 +77,20 @@ export default function Insights() {
                         <Text style={styles.buttonText}>Blogs</Text>
                     </TouchableOpacity>
                 </View>
-                {notificationArr?.length > 0 && notificationArr?.map((data) => {
+                {insightsList?.length > 0 && insightsList?.map((data) => {
                     return (
                         <View style={styles.cardMain}>
-                            <View style={styles.cardContainer}><Image source={data.imageUrl} style={styles.cardImage} />
-                                <Text style={styles.cardName}>{data.name}</Text>
+                            <View style={styles.cardContainer}><Image source={{uri:data.insight_image ? data.insight_image : data.blog_image}} style={styles.cardImage} />
+                                <Text style={styles.cardName}>{data.title}</Text>
                             </View>
                             <View style={styles.textStyle}>
-                                <Text style={styles.dateStyle} >{data.date}</Text>
+                                <Text style={styles.dateStyle} >{data.createdAt}</Text>
                             </View>
                             <View>
-                                <Image source={data.image} style={styles.banner} />
+                                <Image source={{uri:data.insight_image ? data.insight_image : data.blog_image}} style={styles.banner} />
                             </View>
                             <Text style={styles.desTitle}>{data.description}</Text>
-                            <Text style={styles.desText}>{data.text}</Text>
+                            <Text style={styles.desText}>{data.title}</Text>
                             <View style={styles.imageStyle}>
                                 <View style={styles.optionIcon}>
                                     <Text style={styles.desText}>12 </Text>
@@ -113,6 +143,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#0A142A',
         padding: 15,
     },
+    // banner:{
+    //     width: '100%',
+    //     height: '50%'
+    // },
     optionButton: {
         fontSize: 15,
         color: '#fff'

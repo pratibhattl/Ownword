@@ -22,6 +22,8 @@ import ResetPassword from './src/pages/ResetPassword';
 import DonationDetails from './src/pages/DonationDetails';
 import Payment from './src/pages/Payment';
 import WaterIntake from './src/pages/WaterIntake';
+import Menstrual from './src/pages/Menstrual';
+import FoodIntake from './src/pages/FoodIntake';
 import { getData } from './src/helper';
 const Stack = createNativeStackNavigator();
 
@@ -71,7 +73,7 @@ function App() {
               options={{ headerShown: false }}
             />
           </>
-           :
+         :
            <>
             <Stack.Screen
               name="Home"
@@ -143,7 +145,17 @@ function App() {
               component={WaterIntake}
               options={{ headerShown: true, title: 'Onward - Water Intake' }}
             />
-         </>
+            <Stack.Screen
+              name="Menstrual"
+              component={Menstrual}
+              options={{ headerShown: true, title: 'Onward - Menstrual Cycle' }}
+            />
+            <Stack.Screen
+              name="FoodIntake"
+              component={FoodIntake}
+              options={{ headerShown: true, title: 'Onward - Food Intake' }}
+            />
+          </>
          } 
       </Stack.Navigator>
       {/* <Footer /> */}

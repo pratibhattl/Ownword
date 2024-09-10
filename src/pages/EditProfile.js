@@ -88,7 +88,7 @@ export default function EditProfile() {
                             name="name"
                         />
                         {/* <View style={{display: 'flex', flexDirection:'row',width: '100%'}}>  */}
-                        {/* <Controller
+                        <Controller
                             control={control}
                             // rules={{ required: 'Select your date of birth' }}
                             render={({ field: { onChange, value } }) => (
@@ -103,7 +103,7 @@ export default function EditProfile() {
                                         </Text>
                                     </TouchableOpacity>
                                     {errors.dob && <Text style={styles.errorText}>{errors.dob.message}</Text>}
-                                    {Platform.OS === 'ios' && (
+                                    {showDatePicker && (
                                         <DateTimePicker
                                             value={value || new Date()}
                                             mode="date"
@@ -111,13 +111,14 @@ export default function EditProfile() {
                                             onChange={(event, selectedDate) => {
                                                 const currentDate = selectedDate || value;
                                                 onChange(currentDate);
+                                                setShowDatePicker(false)
                                             }}
                                         />
                                     )}
                                 </>
                             )}
                             name="dob"
-                        /> */}
+                        />
                         <Controller
                             control={control}
                             defaultValue={userDetails?.gender}
