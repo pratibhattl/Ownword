@@ -1,26 +1,23 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker'; // For Date Picker
 import { getData } from '../helper';
-
+import { Picker } from '@react-native-picker/picker';
+import { getFoodIntakeApi, createFoodIntakeApi, createUserFoodIntakeApi } from '../apiService/IntakeApi';
 
 export default function FoodIntake() {
-    const [showDatePicker, setShowDatePicker] = useState(false)
-    const [showEndDatePicker, setShowEndDatePicker] = useState(false)
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [token, setToken] = useState(null)
     const [intakeList, setIntakeList] = useState([])
     const [isLoading, setIsLoading] = React.useState(false);
+    const [details, setDetails] = useState(null);
+    const [showText, setShowText] = useState(false)
     const navigation = useNavigation();
-    const onSubmit = (data) => {
-        setSubmitted(true);
-        // createWaterIntakeApi(token,data, setIntakeList, setIsLoading)
-    };
+
     useEffect(() => {
         getData('token').then((token) => {
             setToken(token);
@@ -28,8 +25,54 @@ export default function FoodIntake() {
     }, [])
 
     useEffect(() => {
-        // getWaterIntakeApi(token, setIntakeList, setIsLoading)
+        getFoodIntakeApi(token, setIntakeList, setIsLoading)
     }, [token])
+
+    const onChange = (e) => {
+        let obj = {}
+        if (e === 'others') {
+            setShowText(true)
+
+        } else {
+            setShowText(false)
+            let arr = intakeList.find((item) => item._id === e)
+            obj.name = e,
+                obj.caloryAmount = arr?.caloryAmount
+        }
+        setDetails(obj)
+
+    }
+    const onTextChangeFunc = (e) => {
+        setDetails({
+            ...details,
+            name: e,
+        })
+    }
+
+    const onCaloryChangeFunc = (e) => {
+        setDetails({
+            ...details,
+            caloryAmount: e,
+        })
+    }
+
+    const onSubmit = () => {
+        // setSubmitted(true);
+        console.log(details, "detailsdetails");
+
+        if (showText) {
+            createFoodIntakeApi(token, details, Alert, setIntakeList, setIsLoading)
+        } else {
+            createUserFoodIntakeApi(token, details, Alert, setIntakeList, setIsLoading)
+
+        }
+    };
+
+
+
+
+
+
 
     if (isLoading) {
         return <LoadingScreen />;
@@ -41,40 +84,86 @@ export default function FoodIntake() {
             <ScrollView>
 
                 <View style={styles.formWrap}>
-                    <Controller
-                        control={control}
-                        // rules={{ required: 'Select your date of birth' }}
-                        render={({ field: { onChange, value } }) => (
-                            <>
-                                <Text style={styles.label}>Name*</Text>
-                                <TouchableOpacity
-                                    style={[styles.input, errors.name ? styles.isInvalid : null]}
-                                    onPress={() => setShowDatePicker(true)}
-                                />
-                            </>
-                        )}
-                        name="name"
-                    />
 
-                    <Controller
-                        control={control}
-                        // rules={{ required: 'Select your date of birth' }}
-                        render={({ field: { onChange, value } }) => (
-                            <>
-                                <Text style={styles.label}>Calory Amount</Text>
-                                <TouchableOpacity
-                                    style={[styles.input, errors.caloryAmount ? styles.isInvalid : null]}
-                                    onPress={() => setShowEndDatePicker(true)}
-                                />
-                            </>
-                        )}
-                        name="caloryAmount"
-                    />
+                    <Text style={styles.label}>Name*</Text>
+                    <View>
+                        <Picker
+                            selectedValue={details?.name}
+                            onValueChange={(item) => onChange(item)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Select name" value={details?.name} />
+                            {intakeList?.length > 0 && intakeList?.map((x) => {
+                                return (
+                                    <Picker.Item label={x?.foodName} value={x?._id} />
+                                )
+                            })}
+                            <Picker.Item label={'Others'} value={'others'} />
+                        </Picker>
+
+                    </View>
+                    {showText &&
+                        <>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={onTextChangeFunc}
+                                value={details?.name ? String(details?.name) : null}
+                                keyboardType="name"
+                                autoCapitalize="none"
+                            />
+                            {!details?.name && details?.name == '' &&
+                                <Text style={styles.errorText}>{'Please enter food name'}</Text>}
+
+
+                            <Text style={styles.label}>calory amount*</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={onCaloryChangeFunc}
+                                value={details?.caloryAmount ? String(details?.caloryAmount) : null}
+                                keyboardType="caloryAmount"
+                                autoCapitalize="none"
+                            // editable={showText ? true : false}
+                            />
+                            {!details?.caloryAmount && details?.caloryAmount == '' && (
+                                <Text style={styles.errorText}>{'enter calory'}</Text>
+                            )}
+                            <Text style={styles.label}>Fat amount*</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(e) => setDetails({
+                                    ...details,
+                                    fatAmount: e,
+                                })}
+                                value={details?.fatAmount ? String(details?.fatAmount) : null}
+                                keyboardType="fatAmount"
+                                autoCapitalize="none"
+                            // editable={showText ? true : false}
+                            />
+                            {!details?.fatAmount && details?.fatAmount == '' && (
+                                <Text style={styles.errorText}>{'enter fat amount'}</Text>
+                            )}
+                            <Text style={styles.label}>Protein amount*</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(e) => setDetails({
+                                    ...details,
+                                    proteinAmount: e,
+                                })}
+                                value={details?.proteinAmount ? String(details?.proteinAmount) : null}
+                                keyboardType="proteinAmount"
+                                autoCapitalize="none"
+                            // editable={showText ? true : false}
+                            />
+                            {!details?.proteinAmount && details?.proteinAmount == '' && (
+                                <Text style={styles.errorText}>{'enter protein amount'}</Text>
+                            )}
+                        </>}
+
 
                 </View>
 
             </ScrollView >
-            <TouchableOpacity style={styles.secondoryButton} onPress={handleSubmit(onSubmit)}>
+            <TouchableOpacity style={styles.secondoryButton} onPress={onSubmit}>
                 <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
             <Footer />
@@ -134,7 +223,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // marginBottom: 15,
     },
-
+    pickerContainer: {
+        borderColor: '#fff',
+        borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 15,
+        justifyContent: 'center',
+    },
+    picker: {
+        color: '#fff',
+        backgroundColor: '#232C3F'
+        // marginBottom: 15,
+    },
     buttonText: {
         color: '#000',
         fontSize: 16,

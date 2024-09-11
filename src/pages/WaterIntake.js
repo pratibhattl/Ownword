@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { getWaterIntakeApi,createWaterIntakeApi } from '../apiService/IntakeApi';
+import { getWaterIntakeApi, createWaterIntakeApi } from '../apiService/IntakeApi';
 import { getData } from '../helper';
 
 
@@ -18,7 +18,7 @@ export default function WaterIntake() {
   const navigation = useNavigation();
   const onSubmit = (data) => {
     setSubmitted(true);
-    createWaterIntakeApi(token,data, setIntakeList, setIsLoading)
+    createWaterIntakeApi(token, data, setIntakeList, setIsLoading)
   };
   useEffect(() => {
     getData('token').then((token) => {
@@ -30,6 +30,9 @@ export default function WaterIntake() {
     getWaterIntakeApi(token, setIntakeList, setIsLoading)
   }, [token])
 
+
+
+
   if (isLoading) {
     return <LoadingScreen />;
   }
@@ -38,37 +41,27 @@ export default function WaterIntake() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View style={styles.formWrap}>
-
-          <TextInput
-            style={styles.input}
-            defaultValue={'10'}
-            editable={false}
-          />
-          <TouchableOpacity style={styles.primaryButton}>
-            <Text style={styles.buttonText}>Delete</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.formWrap}>
-
-          <TextInput
-            style={styles.input}
-            defaultValue={'100'}
-            editable={false}
-          />
-
-          <TouchableOpacity style={styles.primaryButton}>
-            <Text style={styles.buttonText}>Delete</Text>
-          </TouchableOpacity>
-        </View>
+       
+            <View style={styles.formWrap}>
+              <TextInput
+                style={styles.input}
+                defaultValue={String(intakeList?.amount)}
+                editable={false}
+              />
+              <TouchableOpacity style={styles.primaryButton}>
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+        
         <View style={styles.formWrap}>
           <Controller
             control={control}
-            render={({ field: { value } }) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <TextInput
                   style={[styles.input, submitted && errors.amount ? styles.isInvalid : null]}
                   value={value}
+                  onChangeText={onChange}
 
                 />
                 {submitted && errors.amount && (
