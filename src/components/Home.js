@@ -48,11 +48,12 @@ export default function Home() {
             <ScrollView >
                 {/* <View style={styles.container}> */}
                 <View style={styles.dailyTracker}>
+                    <Pressable onPress={()=> navigation.navigate('MigraineLog')}> 
                     <View style={styles.titleStyle}>
                         <Text style={styles.title}>Track every day and see what could cause attacks</Text>
                         <Text style={styles.subtitle}>Daily Tracker ⚡</Text>
-
                     </View>
+                    </Pressable>
                     <View style={styles.imageStye}>
                         <Image source={require('../assets/homeIcon.png')} style={styles.image} />
                     </View>
@@ -74,12 +75,12 @@ export default function Home() {
                         <Text style={styles.cardText}>Food Intake</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.card}>
+                    <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate('TimeInBed')}>
                         <Image source={require('../assets/Frame3.png')} style={styles.icon} />
                         <Text style={styles.cardText}>Sleep Pattern</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.card}>
+                    <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate('Medication')}>
                         <Image source={require('../assets/Frame4.png')} style={styles.icon} />
                         <Text style={styles.cardText}>Medications</Text>
                     </TouchableOpacity>

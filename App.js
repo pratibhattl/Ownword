@@ -1,5 +1,5 @@
 
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Welcome from './src/pages/Welcome';
@@ -24,12 +24,18 @@ import Payment from './src/pages/Payment';
 import WaterIntake from './src/pages/WaterIntake';
 import Menstrual from './src/pages/Menstrual';
 import FoodIntake from './src/pages/FoodIntake';
+import TimeInBed from './src/pages/TimeInBed';
 import { getData } from './src/helper';
+import TimeAsleep from './src/pages/TimeAsleep';
+import Medication from './src/pages/Medication';
+import MigraineLog from './src/pages/MigraineLog';
+import PainArea from './src/pages/PainArea';
+import MigraineReason from './src/pages/MigraineReason';
 const Stack = createNativeStackNavigator();
 
 function App() {
   const [token, setToken] = React.useState(null);
-  
+
   useEffect(() => {
     getData('token').then((token) => {
       setToken(token);
@@ -45,8 +51,8 @@ function App() {
           return <Header title={title} />;  // Pass the title to Header component
         }
       })}>
-        {!token ?
-          <>
+        {/* {!token ?
+          <> */}
             <Stack.Screen
               name="Welcome"
               component={Welcome}
@@ -72,9 +78,9 @@ function App() {
               component={ResetPassword}
               options={{ headerShown: false }}
             />
-          </>
-         :
-           <>
+          {/* </>
+          :
+          <> */}
             <Stack.Screen
               name="Home"
               component={Home}
@@ -120,12 +126,12 @@ function App() {
               component={Donation}
               options={{ headerShown: true, title: 'Onward - Donations' }}
             />
-             <Stack.Screen
+            <Stack.Screen
               name="DonationDetails"
               component={DonationDetails}
               options={{ headerShown: true, title: 'Onward - Donations' }}
             />
-             <Stack.Screen
+            <Stack.Screen
               name="Payment"
               component={Payment}
               options={{ headerShown: true, title: 'Onward - Payment' }}
@@ -140,11 +146,19 @@ function App() {
               component={PrescriptionUpload}
               options={{ headerShown: true, title: 'Onward - Prescription Upload' }}
             />
-             <Stack.Screen
+            <Stack.Screen
               name="WaterIntake"
               component={WaterIntake}
               options={{ headerShown: true, title: 'Onward - Water Intake' }}
             />
+            <Stack.Screen
+              name="TimeInBed"
+              component={TimeInBed}
+              options={{ headerShown: true, title: 'Onward - Time in Bed' }}
+            />
+            <Stack.Screen name="TimeAsleep"
+              component={TimeAsleep}
+              options={{ headerShown: true, title: 'Onward - Time Asleep' }} />
             <Stack.Screen
               name="Menstrual"
               component={Menstrual}
@@ -155,8 +169,28 @@ function App() {
               component={FoodIntake}
               options={{ headerShown: true, title: 'Onward - Food Intake' }}
             />
-          </>
-         } 
+             <Stack.Screen
+              name="Medication"
+              component={Medication}
+              options={{ headerShown: true, title: 'Onward - Medications' }}
+            />
+             <Stack.Screen
+              name="MigraineLog"
+              component={MigraineLog}
+              options={{ headerShown: true, title: 'Onward - Migraine Log' }}
+            />
+             <Stack.Screen
+              name="PainArea"
+              component={PainArea}
+              options={{ headerShown: true, title: 'Onward - Migraine Log' }}
+            />
+              <Stack.Screen
+              name="MigraineReason"
+              component={MigraineReason}
+              options={{ headerShown: true, title: 'Onward - Migraine Log' }}
+            />
+          {/* </>
+        } */}
       </Stack.Navigator>
       {/* <Footer /> */}
     </NavigationContainer>

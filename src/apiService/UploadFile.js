@@ -3,7 +3,7 @@ import { API_URL } from '@env';
 
 export const getImageApi = (token, setImageList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}prepscription/get-normal-image?page=1&limit=100`, {
+    axios.get(`${API_URL}prepscription/get-normal-image?page=1&limit=1000`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const getImageApi = (token, setImageList, setIsLoading) => {
 
 export const getPrescriptionApi = (token, setImageList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}prepscription/prepscription-list?page=1&limit=100`, {
+    axios.get(`${API_URL}prepscription/prepscription-list?page=1&limit=1000`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',

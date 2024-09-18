@@ -4,23 +4,23 @@ import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { getWaterIntakeApi, createWaterIntakeApi } from '../apiService/IntakeApi';
+import { getMenstrualApi, addMenstrualApi } from '../apiService/MenstrualApi';
 import DateTimePicker from '@react-native-community/datetimepicker'; // For Date Picker
 import { getData } from '../helper';
 
 
 export default function Menstrual() {
     const [showDatePicker, setShowDatePicker] = useState(false)
-    const [showEndDatePicker,setShowEndDatePicker] = useState(false)
+    const [showEndDatePicker, setShowEndDatePicker] = useState(false)
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [token, setToken] = useState(null)
-    const [intakeList, setIntakeList] = useState([])
+    const [menstrualList, setMenstrualList] = useState([])
     const [isLoading, setIsLoading] = React.useState(false);
     const navigation = useNavigation();
     const onSubmit = (data) => {
         setSubmitted(true);
-        // createWaterIntakeApi(token,data, setIntakeList, setIsLoading)
+        addMenstrualApi(token, data, setMenstrualList, setIsLoading)
     };
     useEffect(() => {
         getData('token').then((token) => {
@@ -29,22 +29,9 @@ export default function Menstrual() {
     }, [])
 
     useEffect(() => {
-        // getWaterIntakeApi(token, setIntakeList, setIsLoading)
+        getMenstrualApi(token, setMenstrualList, setIsLoading)
     }, [token])
-    const handleFilePicker = async () => {
-        try {
-            const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
-            });
-            setFileResponse(res);
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                console.log('User cancelled the picker');
-            } else {
-                console.log('Unknown Error: ', err);
-            }
-        }
-    };
+
     if (isLoading) {
         return <LoadingScreen />;
     }
@@ -118,13 +105,13 @@ export default function Menstrual() {
                         )}
                         name="end_date"
                     />
-                   
-                </View>
-               
-            </ScrollView >
-            <TouchableOpacity style={styles.secondoryButton} onPress={handleSubmit(onSubmit)}>
+                    <TouchableOpacity style={styles.secondoryButton} onPress={handleSubmit(onSubmit)}>
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
+                </View>
+
+            </ScrollView >
+
             <Footer />
         </View >
     )
