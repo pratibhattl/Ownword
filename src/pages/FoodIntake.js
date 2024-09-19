@@ -9,7 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import { getFoodIntakeApi, createFoodIntakeApi, createUserFoodIntakeApi } from '../apiService/IntakeApi';
 
 export default function FoodIntake() {
-    const { control, handleSubmit, formState: { errors } } = useForm();
+    const { control, handleSubmit,reset, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [token, setToken] = useState(null)
     const [intakeList, setIntakeList] = useState([])
@@ -58,12 +58,13 @@ export default function FoodIntake() {
 
     const onSubmit = () => {
         // setSubmitted(true);
-        console.log(details, "detailsdetails");
 
         if (showText) {
             createFoodIntakeApi(token, details, Alert, setIntakeList, setIsLoading)
+            reset();
         } else {
             createUserFoodIntakeApi(token, details, Alert, setIntakeList, setIsLoading)
+            reset();
 
         }
     };
@@ -161,7 +162,7 @@ export default function FoodIntake() {
 
 
                 </View>
-
+               
             </ScrollView >
             <TouchableOpacity style={styles.secondoryButton} onPress={onSubmit}>
                 <Text style={styles.buttonText}>Submit</Text>

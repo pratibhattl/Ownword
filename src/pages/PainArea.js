@@ -1,11 +1,11 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Text, TextInput } from 'react-native';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { getData } from '../helper';
 import { getPositionApi } from '../apiService/MigraineLogApi';
-
+import { mergeData } from '../helper';
 export default function PainArea() {
 
     const [token, setToken] = useState(null)
@@ -14,7 +14,7 @@ export default function PainArea() {
     const navigation = useNavigation();
     const [painArea, setPainArea] = useState([])
     const [positionList,setPositionList] = useState([])
-
+    const [details,setDetails] = useState(null)
     const onSubmit = (data) => {
         setSubmitted(true);
         // addMenstrualApi(token, data, setMenstrualList, setIsLoading)
@@ -23,7 +23,12 @@ export default function PainArea() {
         getData('token').then((token) => {
             setToken(token);
         });
+        getData('migrainLog').then((data) => {
+            setDetails(data);
+        });
+        
     }, [])
+
 
     const onSelectReason = (e) => {
         let arr = [...painArea]
@@ -34,12 +39,24 @@ export default function PainArea() {
             arr.push(e);
         }
         setPainArea(arr)
+        setDetails({
+            ...details,
+            painPosition: arr
+        })
     }
 
 
     useEffect(() => {
         getPositionApi(token, setPositionList, setIsLoading)
     }, [token])
+
+
+    const onGoForward=()=>{
+        navigation.navigate('MigraineReason');
+        mergeData('migrainLog', details);
+    }
+
+
 
     if (isLoading) {
         return <LoadingScreen />;
@@ -63,6 +80,17 @@ export default function PainArea() {
                             <Text style={styles.buttonText}> {"Back pain"} </Text>
                         </TouchableOpacity>
                     </View> */}
+                     <Text style={styles.label}>Pain Scale*</Text>
+                    <TextInput
+                        name='painScale'
+                        style={styles.input}
+                        onChangeText={(e) => {console.log(e), setDetails({
+                            ...details,
+                            painScale: e
+                        })}}
+                        keyboardType="name"
+                        autoCapitalize="none"
+                    />
                 </View>
                 <View style={styles.grid}>
                 {positionList?.map((x) => {
@@ -76,7 +104,7 @@ export default function PainArea() {
                 </View>
             </ScrollView >
             <TouchableOpacity style={styles.arrowButton}
-                onPress={() => navigation.navigate('MigraineReason',{state: painArea})}
+                onPress={() =>onGoForward()}
             >
                 <Image style={styles.arrowStyle} source={require('../assets/right-arrow.jpg')} />
             </TouchableOpacity>
@@ -117,6 +145,25 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         // marginBottom: 15,
+    },
+    input: {
+        // width: '60%',
+        height: 50,
+        borderColor: '#fff',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 15,
+        color: '#fff',
+        placeholderTextColor: "#fff",
+        backgroundColor: '#232C3F',
+    },
+    isInvalid: {
+        borderColor: 'red',
+    },
+    errorText: {
+        color: 'red',
+        marginBottom: 10,
     },
     buttonText: {
         color: '#000',

@@ -4,13 +4,20 @@ import Footer from '../components/Footer'
 import { getData } from '../helper'
 import LoadingScreen from '../components/LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
-import { getMigraineReasonApi } from '../apiService/MigraineLogApi'
+import { getMigraineReasonApi,addNewTrigger } from '../apiService/MigraineLogApi'
 export default function MigraineReason() {
     const [isLoading, setIsLoading] = React.useState(false);
     const [migraineReason, setMigraineReason] = React.useState([]);
     const [reason, setReason] = useState([])
     const navigation = useNavigation();
     const [token, setToken] = useState(null)
+    const [details, setDetails] = useState(null)
+    useEffect(() => {
+        getData('migrainLog').then((data) => {
+            setDetails(data);
+        });
+        
+    }, [])
 
     useEffect(() => {
         const fetchToken = async () => {
@@ -34,10 +41,14 @@ export default function MigraineReason() {
             arr.push(e);
         }
         setReason(arr)
+        setDetails({
+            ...details,
+            painReason: arr
+        })
     }
 
-    const submitFunction = () => {
-        addNewTrigger(reason, )
+    const onSubmit=()=>{
+        addNewTrigger(token, details, setIsLoading,navigation)
     }
 
 
@@ -60,7 +71,7 @@ export default function MigraineReason() {
                     })}
                 </View>
 
-                <TouchableOpacity style={styles.secondoryButton} >
+                <TouchableOpacity style={styles.secondoryButton} onPress={()=> onSubmit()} >
                     <Text style={styles.buttonText}>Add new trigger</Text>
                 </TouchableOpacity>
             </ScrollView>

@@ -51,8 +51,8 @@ function App() {
           return <Header title={title} />;  // Pass the title to Header component
         }
       })}>
-        {/* {!token ?
-          <> */}
+        {!token ?
+          <>
             <Stack.Screen
               name="Welcome"
               component={Welcome}
@@ -78,9 +78,9 @@ function App() {
               component={ResetPassword}
               options={{ headerShown: false }}
             />
-          {/* </>
+          </>
           :
-          <> */}
+          <>
             <Stack.Screen
               name="Home"
               component={Home}
@@ -189,8 +189,8 @@ function App() {
               component={MigraineReason}
               options={{ headerShown: true, title: 'Onward - Migraine Log' }}
             />
-          {/* </>
-        } */}
+          </>
+        }
       </Stack.Navigator>
       {/* <Footer /> */}
     </NavigationContainer>

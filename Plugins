@@ -12,3 +12,5 @@ npm install @react-native-picker/picker
 npm install react-devtools
 npx flipper-server
 run npm devtools
+npm i react-native-date-picker
+npm install moment --save

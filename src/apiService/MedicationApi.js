@@ -29,8 +29,7 @@ export const addMedicineApi = (token, details, Alert, setMedicationList, setIsLo
         }
     })
         .then(function (response) {
-            // console.log('response', response?.data);
-            Alert.alert("Medicine added")
+            Alert.alert("Medicine added successfully")
             getMedicationApi(token, setMedicationList, setIsLoading);
         })
         .catch(function (error) {

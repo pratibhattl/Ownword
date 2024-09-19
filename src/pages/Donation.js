@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, StyleSheet, Pressable } from 'react-native'
 import Footer from '../components/Footer'
 import { useNavigation } from '@react-navigation/native'
+import { getData } from '../helper';
+import { getDonationApi } from '../apiService/DonationApi';
+import LoadingScreen from '../components/LoadingScreen';
 
 const notificationArr = [{
     imageUrl: require('../assets/donationIcon.png'),
@@ -30,17 +33,34 @@ const notificationArr = [{
 ]
 export default function Donation() {
 const navigation = useNavigation();
+const [token, setToken] = useState(null)
+const [donationList, setDonationList] = useState([])
+const [isLoading, setIsLoading] = React.useState(false);
+useEffect(() => {
+    getData('token').then((token) => {
+        setToken(token);
+    });
+   
+}, []);
 
+useEffect(() => {
+    getDonationApi(token, setDonationList, setIsLoading)
+}, [token])
+
+
+if (isLoading) {
+    return <LoadingScreen />;
+}
 
     return (
         <View style={styles.container}>
             <ScrollView >
-                {notificationArr?.length > 0 && notificationArr?.map((data) => {
+                {donationList?.length > 0 && donationList?.map((data) => {
                     return (
                         <View style={styles.cardMain}>
-                            <Pressable  onPress={()=> navigation.navigate("DonationDetails")} > 
-                            <View style={styles.cardContainer}><Image source={data.imageUrl} style={styles.cardImage} />
-                                <Text style={styles.cardText}>{data.title}</Text>
+                            <Pressable  onPress={()=> navigation.navigate("DonationDetails",{id:data?._id})} > 
+                            <View style={styles.cardContainer}><Image source={{uri:data.image}} style={styles.cardImage} />
+                                <Text style={styles.cardText}>{data.description}</Text>
                             </View>
                             </Pressable>
                         </View>
@@ -81,7 +101,7 @@ const styles = StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: '52%'
+        width: '80%'
     },
     cardImage: {
         width: 50,

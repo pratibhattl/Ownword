@@ -10,9 +10,7 @@ export const getWaterIntakeApi = (token, setIntakeList, setIsLoading) => {
             'Custom-Header': 'CustomHeaderValue'
         }
     })
-        .then(function (response) {    
-            console.log(response?.data,"Waterrrrrrrrrr");
-                    
+        .then(function (response) {                        
             setIsLoading(false)
             setIntakeList(response?.data?.result);
         })
@@ -25,7 +23,6 @@ export const getWaterIntakeApi = (token, setIntakeList, setIsLoading) => {
 
 export const createWaterIntakeApi = (token, data,setIntakeList, setIsLoading) => {
     setIsLoading(true)
-
     axios.post(`${API_URL}intake/create-water-consumption`, data,{
         headers: {
             'x-access-token': token,
@@ -42,6 +39,32 @@ export const createWaterIntakeApi = (token, data,setIntakeList, setIsLoading) =>
             setIsLoading(false)
             console.log(error);
         });
+}
+
+
+
+
+
+export const updateWaterIntakeApi = (token,id, setIntakeList, setIsLoading,navigation,removeData) => {
+    console.log(token,"token", id);
+    let config = {
+        method: 'put',
+        maxBodyLength: Infinity,
+        url: `${API_URL}intake/update-water-consumption-data/${id}`,
+        headers: { 
+          'x-access-token': token
+        }
+      };
+      
+      axios.request(config)
+      .then((response) => {
+        alert('Log removed !!')
+        getWaterIntakeApi(token, setIntakeList, setIsLoading)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    
 }
 
 

@@ -1,20 +1,47 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { View, Text, StyleSheet, ScrollView,TouchableOpacity, Image } from 'react-native'
 import Footer from '../components/Footer';
 import { useNavigation } from '@react-navigation/native';
+import { getSingleDonationApi } from '../apiService/DonationApi';
+import LoadingScreen from '../components/LoadingScreen';
+import { getData } from '../helper';
 
-export default function DonationDetails() {
+export default function DonationDetails({route}) {
+const { id } = route.params;
 const navigation = useNavigation();
+const [token, setToken] = useState(null)
+const [donationDetails, setDonationDetails] = useState({})
+const [isLoading, setIsLoading] = React.useState(false);
+useEffect(() => {
+    getData('token').then((token) => {
+        setToken(token);
+    });
+   
+}, []);
+
+useEffect(() => {
+    getSingleDonationApi(token,id, setDonationDetails, setIsLoading)
+}, [token])
+
+
+
+
+if (isLoading) {
+    return <LoadingScreen />;
+}
+
+
+
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.imageStyle}>
-                    <Image source={require('../assets/donationIcon.png')} />
-                    <Text style={styles.textStyle}>{"Help people who can’t continue their education"}</Text>
+                    <Image source={donationDetails?.image ?{uri:donationDetails?.image} : require('../assets/donationIcon.png')} />
+                    <Text style={styles.textStyle}>{donationDetails?.title}</Text>
                 </View>
                 <View>
-                <Text style={styles.daysStyle}>{"9/16 Days Left"} </Text>
+                <Text style={styles.daysStyle}>{donationDetails?.description} </Text>
 
                 </View>
             </ScrollView>
@@ -32,6 +59,8 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         alignItems: 'center',
+        height: 100,
+        width:'100%'
     },
     textStyle: {
         color: '#fff',

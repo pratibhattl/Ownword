@@ -4,22 +4,31 @@ import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { getMigraineLogApi } from '../apiService/MigraineLogApi';
-import DateTimePicker from '@react-native-community/datetimepicker'; // For Date Picker
+import { getMigraineLogApi ,updateNewTrigger} from '../apiService/MigraineLogApi';
 import { getData } from '../helper';
-import { shouldUseActivityState } from 'react-native-screens';
-
-
+import Moment from 'moment';
+import { Button } from 'react-native';
+import DatePicker from 'react-native-date-picker'
+import { mergeData } from '../helper';
 export default function MigraineLog() {
-    const [showDatePicker, setShowDatePicker] = useState(false)
-    const [showEndDatePicker, setShowEndDatePicker] = useState(false)
+
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [token, setToken] = useState(null)
     const [migraineLogs, setMigraineLogs] = useState([])
     const [isLoading, setIsLoading] = React.useState(false);
-    const [startDate, setStartDate] = useState(null)
-    const [endDate, setEndDate] = useState(null)
+    const [startDate, setStartDate] = useState(new Date())
+    const [endDate, setEndDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
+    const [openDate, setOpenDate] = useState(false)
+    const [startTime, setStartTime] = useState(new Date())
+    const [endTime, setEndTime] = useState(new Date())
+    const [openEndTime, setOpenEndTime] = useState(false)
+
+
+    const [openEndDate, setOpenEndDate] = useState(false)
+    const [details, setDetails] = useState({})
+
     const navigation = useNavigation();
     const onSubmit = (data) => {
         setSubmitted(true);
@@ -35,6 +44,21 @@ export default function MigraineLog() {
         getMigraineLogApi(token, setMigraineLogs, setIsLoading)
     }, [token])
 
+    const onGoForward = () => {
+        if(!migraineLogs[0]?.endDate){
+    console.log(migraineLogs[0], "sfsddfg");
+
+            let id= migraineLogs[0]?._id
+            updateNewTrigger(token, details,id, setIsLoading,navigation)
+        }else{
+        navigation.navigate('PainArea');
+        mergeData('migrainLog', details);
+        }
+    }
+
+
+
+
     if (isLoading) {
         return <LoadingScreen />;
     }
@@ -45,107 +69,143 @@ export default function MigraineLog() {
             <ScrollView>
 
                 <View style={styles.formWrap}>
-                    <Controller
-                        control={control}
-                        // rules={{ required: 'Select your date of birth' }}
-                        render={({ field: { onChange, value } }) => (
-                            <>
-                                <Text style={styles.label}>Start Time*</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    onChangeText={(e) => setDetails({
-                                        ...details,
-                                        start_time: e
-                                    })}
-                                    // value={details?.name ? String(details?.name) : null}
-                                    keyboardType="name"
-                                    autoCapitalize="none"
-                                    name='start_time'
-
-                                />
-                                {/* <Text style={styles.label}>1:35 AM</Text> */}
-                                <TouchableOpacity
-                                    style={[styles.input, errors.start_date ? styles.isInvalid : null]}
-                                    onPress={() => setShowDatePicker(true)}
-                                >
-                                    <Text style={{ color: value ? '#232C3F' : '#fff' }}>
-                                        {startDate ? startDate.toDateString() : 'Select Date'}
-                                    </Text>
-                                </TouchableOpacity>
-                                {errors.start_date && <Text style={styles.errorText}>{errors.start_date.message}</Text>}
-                                {showDatePicker && (
-                                    <DateTimePicker
-                                        value={value || new Date()}
-                                        mode="date"
-                                        display="default"
-                                        onChange={(event, selectedDate) => {
-                                            const currentDate = selectedDate || value;
-                                            onChange(currentDate);
-                                            setStartDate(currentDate)
-                                            setShowDatePicker(false)
-                                        }}
-                                    />
+                    {!migraineLogs[0]?.endDate ?
+                        <>
+                            <Controller
+                                control={control}
+                                // rules={{ required: 'Select your date of birth' }}
+                                render={({ field: { onChange, value } }) => (
+                                    <>
+                                        <Text style={styles.label}>End Time*</Text>
+                                        <Text style={styles.label}>{details?.endTime}</Text>
+                                        <Button title="Open" onPress={() => setOpenEndTime(true)} />
+                                        {endTime &&
+                                            <DatePicker
+                                                modal
+                                                mode={"time"}
+                                                open={openEndTime}
+                                                date={endDate}
+                                                onConfirm={(date) => {
+                                                    setOpenEndTime(false)
+                                                    setDetails({
+                                                        ...details,
+                                                        endTime: Moment(date).format("HH:MMA")
+                                                    })
+                                                    onChange(Moment(date).format("HH:MMA"))
+                                                }}
+                                                onCancel={() => {
+                                                    setOpenEndTime(false)
+                                                }}
+                                            />
+                                        }
+                                    </>
                                 )}
-                            </>
-                        )}
-                        name="start_date"
-                    />
-
-                    <TouchableOpacity style={styles.secondoryButton} onPress={handleSubmit(onSubmit)}>
-                        <Text style={styles.buttonText}>Today</Text>
-                    </TouchableOpacity>
-                    <Controller
-                        control={control}
-                        // rules={{ required: 'Select your date of birth' }}
-                        render={({ field: { onChange, value } }) => (
-                            <>
-                                <Text style={styles.label}>End Time</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    onChangeText={(e) => setDetails({
-                                        ...details,
-                                        start_time: e
-                                    })}
-                                    // value={details?.name ? String(details?.name) : null}
-                                    keyboardType="name"
-                                    autoCapitalize="none"
-                                    name='end_time'
-
-                                />
-                                <TouchableOpacity
-                                    style={[styles.input, errors.end_date ? styles.isInvalid : null]}
-                                    onPress={() => setShowEndDatePicker(true)}
-                                >
-                                    <Text style={{ color: value ? '#232C3F' : '#fff' }}>
-                                        {endDate ? endDate.toDateString() : 'Select Date'}
-                                    </Text>
-                                </TouchableOpacity>
-                                {errors.end_date && <Text style={styles.errorText}>{errors.end_date.message}</Text>}
-                                {showEndDatePicker && (
-                                    <DateTimePicker
-                                        value={value || new Date()}
-                                        mode="date"
-                                        display="default"
-                                        onChange={(event, selectedDate) => {
-                                            const currentDate = selectedDate || value;
-                                            onChange(currentDate);
-                                            setEndDate(currentDate)
-                                            setShowEndDatePicker(false)
-                                        }}
-                                    />
+                                name="endTime"
+                            />
+                            <Controller
+                                control={control}
+                                // rules={{ required: 'Select your date of birth' }}
+                                render={({ field: { onChange, value } }) => (
+                                    <>
+                                        <Text style={styles.label}>End Date*</Text>
+                                        <Text style={styles.label}>{details?.endDate}</Text>
+                                        <Button title="Open" onPress={() => setOpenEndDate(true)} />
+                                        {openEndDate &&
+                                            <DatePicker
+                                                modal
+                                                mode={"date"}
+                                                open={openEndDate}
+                                                date={endDate}
+                                                onConfirm={(date) => {
+                                                    setOpenEndDate(false)
+                                                    setDetails({
+                                                        ...details,
+                                                        endDate: Moment(date).format("DD/MM/YYYY")
+                                                    })
+                                                    onChange(Moment(date).format("DD/MM/YYYY"))
+                                                }}
+                                                onCancel={() => {
+                                                    setOpenEndDate(false)
+                                                }}
+                                            />
+                                        }
+                                    </>
                                 )}
-                            </>
-                        )}
-                        name="end_date"
-                    />
-                    <TouchableOpacity style={styles.secondoryButton} onPress={handleSubmit(onSubmit)}>
-                        <Text style={styles.buttonText}>Today</Text>
-                    </TouchableOpacity>
+                                name="endDate"
+                            />
+                        </>
+                        :
+                        <>
+                            <Controller
+                                control={control}
+                                // rules={{ required: 'Select your date of birth' }}
+                                render={({ field: { onChange, value } }) => (
+                                    <>
+                                        <Text style={styles.label}>Start Time*</Text>
+                                        <Text style={styles.label}>{details?.start_time}</Text>
+                                        <Button title="Open" onPress={() => setOpen(true)} />
+                                        {open &&
+                                            <DatePicker
+                                                modal
+                                                mode={"time"}
+                                                open={open}
+                                                date={startTime}
+                                                onConfirm={(date) => {
+                                                    setOpen(false)
+                                                    setDetails({
+                                                        ...details,
+                                                        start_time: Moment(date).format("HH:MMA")
+                                                    })
+                                                    onChange(Moment(date).format("HH:MMA"))
+                                                }}
+                                                onCancel={() => {
+                                                    setOpen(false)
+                                                }}
+                                            />
+                                        }
+                                    </>
+                                )}
+                                name="start_time"
+                            />
+                            <Controller
+                                control={control}
+                                // rules={{ required: 'Select your date of birth' }}
+                                render={({ field: { onChange, value } }) => (
+                                    <>
+                                        <Text style={styles.label}>Start date*</Text>
+                                        <Text style={styles.label}>{details?.start_date}</Text>
+                                        <Button title="Open" onPress={() => setOpenDate(true)} />
+                                        {openDate &&
+                                            <DatePicker
+                                                modal
+                                                mode={"date"}
+                                                open={openDate}
+                                                date={startDate}
+                                                onConfirm={(date) => {
+                                                    setOpenDate(false)
+                                                    setDetails({
+                                                        ...details,
+                                                        start_date: Moment(date).format("DD/MM/YYYY")
+                                                    })
+                                                    onChange(Moment(date).format("DD/MM/YYYY"))
+                                                }}
+                                                onCancel={() => {
+                                                    setOpenDate(false)
+                                                }}
+                                            />
+                                        }
+                                    </>
+                                )}
+                                name="start_date"
+                            />
+
+
+                        </>}
                 </View>
 
             </ScrollView>
             <TouchableOpacity style={styles.arrowButton}
-                onPress={() => navigation.navigate('PainArea')}
+                onPress={() => onGoForward()}
             >
                 <Image style={styles.arrowStyle} source={require('../assets/right-arrow.jpg')} />
             </TouchableOpacity>

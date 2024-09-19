@@ -22,10 +22,9 @@ export const getMenstrualApi = (token, setMenstrualList, setIsLoading) => {
 }
 export const addMenstrualApi = (token, details, setMenstrualList, setIsLoading) => {
     let body={
-        startDate: details
+        startDate: details.startDate
     }
-    // console.log(body,"body");
-    
+        
     axios.post(`${API_URL}menstrual-cycle/create`,body, {
         headers: {
             'x-access-token': token,
@@ -34,8 +33,31 @@ export const addMenstrualApi = (token, details, setMenstrualList, setIsLoading) 
         }
     })
         .then(function (response) {
-            // console.log('response', response?.data);
-            alert("Medicine added")
+            console.log('response', response?.data);
+            alert("Menstrual cycle added")
+            getMenstrualApi(token, setMenstrualList, setIsLoading);
+        })
+        .catch(function (error) {
+            setIsLoading(false)
+            console.log(error);
+        });
+}
+
+export const updateMenstrualApi = (token, details,id, setMenstrualList, setIsLoading) => {
+    let body={
+        endDate: details.endDate
+    }
+    
+    axios.put(`${API_URL}menstrual-cycle/update-end-date/${id}`,body, {
+        headers: {
+            'x-access-token': token,
+            'Content-Type': 'application/json',
+            'Custom-Header': 'CustomHeaderValue'
+        }
+    })
+        .then(function (response) {
+            console.log('response', response?.data);
+            alert("Menstrual cycle updated")
             getMenstrualApi(token, setMenstrualList, setIsLoading);
         })
         .catch(function (error) {

@@ -6,7 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { getData } from '../helper';
 import { Picker } from '@react-native-picker/picker';
-import { getMedicationApi ,addMedicineApi} from '../apiService/MedicationApi';
+import { getMedicationApi, addMedicineApi } from '../apiService/MedicationApi';
+import { Button } from 'react-native'
+import DatePicker from 'react-native-date-picker'
+import Moment from 'moment';
 const notificationArr = [{
     imageUrl: require('../assets/donationIcon.png'),
     name: 'Pratibha Thakur',
@@ -59,12 +62,15 @@ const daysList = [{
     value: 'daily'
 }]
 export default function Medication() {
-   
+
     const [token, setToken] = useState(null)
     const [medicationList, setMedicationList] = useState([])
     const [isLoading, setIsLoading] = React.useState(false);
     const [details, setDetails] = useState(null);
-    const [showText, setShowText] = useState(false)
+    const [timeValue, setTimeValue] = useState( new Date())
+    const [open, setOpen] = useState(false)
+
+
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -75,11 +81,12 @@ export default function Medication() {
 
     useEffect(() => {
         getMedicationApi(token, setMedicationList, setIsLoading)
+        setDetails(null)
     }, [token])
 
 
     const onSubmit = () => {
-       
+
         addMedicineApi(token, details, Alert, setMedicationList, setIsLoading)
 
     };
@@ -95,19 +102,30 @@ export default function Medication() {
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.formWrap}>
-                    <Text style={styles.label}>Start Time*</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={(e) => setDetails({
-                            ...details,
-                            start_time: e
-                        })}
-                        // value={details?.name ? String(details?.name) : null}
-                        keyboardType="name"
-                        autoCapitalize="none"
-                        name='start_time'
+                    <View>
+                        <Text style={styles.label}>Start Time*</Text>
+                        <Text style={styles.label}>{details?.start_time}</Text>
+                        <Button title="Open" onPress={() => setOpen(true)} />
 
-                    />
+                        {open &&
+                            <DatePicker
+                                modal
+                                mode="time"
+                                open={open}
+                                date={timeValue}
+                                onConfirm={(date) => {
+                                    setOpen(false)                                    
+                                    setDetails({
+                                        ...details,
+                                        start_time: Moment(date).format("HH:MMA")
+                                    })
+                                }}
+                                onCancel={() => {
+                                    setOpen(false)
+                                }}
+                            />
+                        }
+                    </View>
                     {!details?.start_time && details?.start_time == '' &&
                         <Text style={styles.errorText}>{'Please enter start time'}</Text>}
 
@@ -146,7 +164,7 @@ export default function Medication() {
                     <View style={styles.label}>
                         <Picker
                             selectedValue={details?.medicine_time}
-                            onValueChange={(item) =>setDetails({
+                            onValueChange={(item) => setDetails({
                                 ...details,
                                 medicine_time: item
                             })}
@@ -158,7 +176,7 @@ export default function Medication() {
                             <Picker.Item label={'after food'} value={'after food'} />
                         </Picker>
                     </View>
-                    <TouchableOpacity style={styles.secondoryButton} onPress={()=>onSubmit()}>
+                    <TouchableOpacity style={styles.secondoryButton} onPress={() => onSubmit()}>
                         <Text style={styles.buttonText}>Add Medicine</Text>
                     </TouchableOpacity>
                     {medicationList?.map((x) => {
@@ -169,11 +187,11 @@ export default function Medication() {
                                         style={styles.cardImage} />
                                         <Text style={styles.cardText}>{x.medicine_name}</Text>
                                     </View>
-                                    <View > 
+                                    <View >
                                         <Text style={styles.cardText}>{x.medicine_time}</Text>
                                         <Text style={styles.cardText}>{x.start_time}</Text>
                                         <Text style={styles.cardText}>{x.end_time}</Text>
-                                        </View>
+                                    </View>
                                 </Pressable>
                             </View>
                         )
