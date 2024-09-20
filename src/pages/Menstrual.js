@@ -12,7 +12,7 @@ import Moment from 'moment';
 export default function Menstrual() {
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [showEndDatePicker, setShowEndDatePicker] = useState(false)
-    const { control, handleSubmit, formState: { errors } } = useForm();
+    const { control, handleSubmit,reset, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [token, setToken] = useState(null)
     const [menstrualList, setMenstrualList] = useState([])
@@ -28,7 +28,8 @@ export default function Menstrual() {
             updateMenstrualApi(token, data,id, setMenstrualList, setIsLoading)
         }else{
         setSubmitted(true);
-        addMenstrualApi(token, data, setMenstrualList, setIsLoading)
+        addMenstrualApi(token, data, setMenstrualList, setIsLoading);
+        reset();
     }
     };
     useEffect(() => {
@@ -40,6 +41,8 @@ export default function Menstrual() {
     useEffect(() => {
         getMenstrualApi(token, setMenstrualList, setIsLoading)
     }, [token])
+
+    
 
     if (isLoading) {
         return <LoadingScreen />;

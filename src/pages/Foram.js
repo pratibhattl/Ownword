@@ -3,13 +3,13 @@ import { View, Text, ScrollView, Image, StyleSheet, Pressable } from 'react-nati
 import Footer from '../components/Footer'
 import { useNavigation } from '@react-navigation/native'
 import { getData } from '../helper';
-import { getDonationApi } from '../apiService/DonationApi';
+import { getForamApi } from '../apiService/ForamApi';
 import LoadingScreen from '../components/LoadingScreen';
 
-export default function Donation() {
+export default function Foram() {
 const navigation = useNavigation();
 const [token, setToken] = useState(null)
-const [donationList, setDonationList] = useState([])
+const [foramList, setForamList] = useState([])
 const [isLoading, setIsLoading] = React.useState(false);
 useEffect(() => {
     getData('token').then((token) => {
@@ -19,7 +19,7 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-    getDonationApi(token, setDonationList, setIsLoading)
+    getForamApi(token, setForamList, setIsLoading)
 }, [token])
 
 
@@ -30,12 +30,13 @@ if (isLoading) {
     return (
         <View style={styles.container}>
             <ScrollView >
-                {donationList?.length > 0 && donationList?.map((data) => {
+                {foramList?.length > 0 && foramList?.map((data) => {
                     return (
                         <View style={styles.cardMain}>
-                            <Pressable  onPress={()=> navigation.navigate("DonationDetails",{id:data?._id})} > 
-                            <View style={styles.cardContainer}><Image source={{uri:data.image}} style={styles.cardImage} />
-                                <Text style={styles.cardText}>{data.description}</Text>
+                            <Pressable  onPress={()=> navigation.navigate("Chat",{id:data?._id})} > 
+                                <Text style={styles.textStyle}>{data?.title}</Text>
+                            <View style={styles.cardContainer}>
+                                <Text style={styles.cardText}>{data?.description}</Text>
                             </View>
                             </Pressable>
                         </View>
@@ -54,8 +55,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#0A142A'
     },
     textStyle: {
-        justifyContent: 'end',
-        alignItems: 'flex-end'
+       color: '#fff',
+        fontSize: 20
+
     },
     cardMain: {
         with: '100%',
@@ -78,12 +80,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '80%'
     },
-    cardImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 8,
-        marginRight: 10,
-    },
+   
     cardText: {
         fontSize: 16,
         color: '#fff',

@@ -67,6 +67,10 @@ export default function Menu() {
                     <Image source={require('../assets/lock.png')} />
                     <Text style={styles.menuText} onPress={() => navigation.navigate('ChangePassword')}> {"Change Password"}</Text>
                 </View>
+                <View style={styles.menuStyle} >
+                    <Image source={require('../assets/notify.png')} />
+                    <Text style={styles.menuText} onPress={() => navigation.navigate('Foram')}> {"Chat"}</Text>
+                </View>
                 <View style={styles.menuStyle}>
                     <Image source={require('../assets/logout.png')} />
                     <Text style={styles.menuText} onPress={() => logout()}> {"Logout"}</Text>

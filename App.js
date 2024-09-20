@@ -31,6 +31,8 @@ import Medication from './src/pages/Medication';
 import MigraineLog from './src/pages/MigraineLog';
 import PainArea from './src/pages/PainArea';
 import MigraineReason from './src/pages/MigraineReason';
+import Foram from './src/pages/Foram';
+import Chat from './src/pages/Chat';
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -51,8 +53,8 @@ function App() {
           return <Header title={title} />;  // Pass the title to Header component
         }
       })}>
-        {!token ?
-          <>
+        {/* {!token ?
+          <> */}
             <Stack.Screen
               name="Welcome"
               component={Welcome}
@@ -78,9 +80,9 @@ function App() {
               component={ResetPassword}
               options={{ headerShown: false }}
             />
-          </>
+          {/* </>
           :
-          <>
+          <> */}
             <Stack.Screen
               name="Home"
               component={Home}
@@ -189,8 +191,18 @@ function App() {
               component={MigraineReason}
               options={{ headerShown: true, title: 'Onward - Migraine Log' }}
             />
-          </>
-        }
+             <Stack.Screen
+              name="Foram"
+              component={Foram}
+              options={{ headerShown: true, title: 'Onward - Chat' }}
+            />
+             <Stack.Screen
+              name="Chat"
+              component={Chat}
+              options={{ headerShown: true, title: 'Onward - Chat' }}
+            />
+          {/* </>
+        } */}
       </Stack.Navigator>
       {/* <Footer /> */}
     </NavigationContainer>

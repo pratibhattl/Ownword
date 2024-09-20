@@ -4,50 +4,52 @@ import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { getWaterIntakeApi, createWaterIntakeApi } from '../apiService/IntakeApi';
-import DateTimePicker from '@react-native-community/datetimepicker'; // For Date Picker
+import { getTimeAsleepApi, addAsleepTimeApi,updateTimeASpleepApi } from '../apiService/SleepTrackerApi';
 import { getData } from '../helper';
-import { shouldUseActivityState } from 'react-native-screens';
+import { Button } from 'react-native'
+import DatePicker from 'react-native-date-picker'
+import Moment from 'moment';
 
-
-export default function TimeAsleep() {
-    const [showDatePicker, setShowDatePicker] = useState(false)
-    const [showEndDatePicker, setShowEndDatePicker] = useState(false)
+export default function TimeAsleep({route}) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [token, setToken] = useState(null)
-    const [intakeList, setIntakeList] = useState([])
+    const [asleepTimeList, setAsleepTimeList] = useState({})
     const [isLoading, setIsLoading] = React.useState(false);
-    const [startDate, setStartDate] = useState(null)
-    const [endDate, setEndDate] = useState(null)
+    const [startDate, setStartDate] = useState(new Date())
+    const [startTime, setStartTime] = useState(new Date())
+    const [showStartDate, setShowStartDate] = useState(false)
+    const [showStartTime, setShowStartTime] = useState(false)
+    const [endDate, setEndDate] = useState(new Date())
+    const [endTime, setEndTime] = useState(new Date())
+    const [showEndTime, setShowEndTime] = useState(false)
+    const [showEndDate, setShowEndDate] = useState(false)
     const navigation = useNavigation();
+
     const onSubmit = (data) => {
         setSubmitted(true);
-        // createWaterIntakeApi(token,data, setIntakeList, setIsLoading)
-    };
+        if ( !asleepTimeList?.endDate) {
+            let id = asleepTimeList?._id
+            updateTimeASpleepApi(token, data, id, setIsLoading, navigation);
+            reset();
+        } else {
+            addAsleepTimeApi(token, data, navigation, setIsLoading);
+            reset();
+        }
+    }
+
     useEffect(() => {
         getData('token').then((token) => {
             setToken(token);
         });
+       
     }, [])
 
     useEffect(() => {
-        // getWaterIntakeApi(token, setIntakeList, setIsLoading)
+        getTimeAsleepApi(token, setAsleepTimeList, setIsLoading)
     }, [token])
-    const handleFilePicker = async () => {
-        try {
-            const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
-            });
-            setFileResponse(res);
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                console.log('User cancelled the picker');
-            } else {
-                console.log('Unknown Error: ', err);
-            }
-        }
-    };
+
+
     if (isLoading) {
         return <LoadingScreen />;
     }
@@ -57,84 +59,145 @@ export default function TimeAsleep() {
         <View style={styles.container}>
             <ScrollView>
 
-                <View style={styles.formWrap}>
-                    <Controller
-                        control={control}
-                        // rules={{ required: 'Select your date of birth' }}
-                        render={({ field: { onChange, value } }) => (
-                            <>
-                                <Text style={styles.label}>Start Time*</Text>
-                                <Text style={styles.label}>1:35 AM</Text>
-                                <TouchableOpacity
-                                    style={[styles.input, errors.start_date ? styles.isInvalid : null]}
-                                    onPress={() => setShowDatePicker(true)}
-                                >
-                                    <Text style={{ color: value ? '#232C3F' : '#fff' }}>
-                                        {startDate ? startDate.toDateString() : 'Select Date'}
-                                    </Text>
-                                </TouchableOpacity>
-                                {errors.start_date && <Text style={styles.errorText}>{errors.start_date.message}</Text>}
-                                {showDatePicker && (
-                                    <DateTimePicker
-                                        value={value || new Date()}
-                                        mode="date"
-                                        display="default"
-                                        onChange={(event, selectedDate) => {
-                                            const currentDate = selectedDate || value;
-                                            onChange(currentDate);
-                                            setStartDate(currentDate)
-                                            setShowDatePicker(false)
-                                        }}
-                                    />
-                                )}
-                            </>
-                        )}
-                        name="start_date"
-                    />
+                  <View style={styles.formWrap}>
+                    { !asleepTimeList?.endDate ?
 
-                    <TouchableOpacity style={styles.secondoryButton} onPress={handleSubmit(onSubmit)}>
-                        <Text style={styles.buttonText}>Today</Text>
-                    </TouchableOpacity>
-                    <Controller
-                        control={control}
-                        // rules={{ required: 'Select your date of birth' }}
-                        render={({ field: { onChange, value } }) => (
-                            <>
-                                <Text style={styles.label}>End Time</Text>
-                                <Text style={styles.label}>1:35 AM</Text>
-                                <TouchableOpacity
-                                    style={[styles.input, errors.end_date ? styles.isInvalid : null]}
-                                    onPress={() => setShowEndDatePicker(true)}
-                                >
-                                    <Text style={{ color: value ? '#232C3F' : '#fff' }}>
-                                        {endDate ? endDate.toDateString() : 'Select Date'}
-                                    </Text>
-                                </TouchableOpacity>
-                                {errors.end_date && <Text style={styles.errorText}>{errors.end_date.message}</Text>}
-                                {showEndDatePicker && (
-                                    <DateTimePicker
-                                        value={value || new Date()}
-                                        mode="date"
-                                        display="default"
-                                        onChange={(event, selectedDate) => {
-                                            const currentDate = selectedDate || value;
-                                            onChange(currentDate);
-                                            setEndDate(currentDate)
-                                            setShowEndDatePicker(false)
-                                        }}
-                                    />
+                        <>
+                            <Controller
+                                control={control}
+                                rules={{ required: 'Select end time' }}
+                                defaultValue={String(Moment(endTime).format('HH:MMA'))}
+                                render={({ field: { onChange, value } }) => (
+                                    <>
+                                        <Text style={styles.label}>End time*</Text>
+                                        <Text style={styles.label}>{String(Moment(endTime).format('HH:MM A'))}</Text>
+                                        <Button title="Open" onPress={() => setShowEndTime(true)} />
+                                        {errors.endTime && <Text style={styles.errorText}>{errors.endTime.message}</Text>}
+                                        {showEndTime && (
+
+                                            <DatePicker
+                                                modal
+                                                mode={"time"}
+                                                open={showEndTime}
+                                                date={endTime}
+                                                onConfirm={(date) => {
+                                                    onChange(Moment(date).format('HH:MMA'));
+                                                    setEndTime(date)
+                                                    setShowEndTime(false)
+                                                }}
+                                                onCancel={() => {
+                                                    setShowEndTime(false)
+                                                }}
+                                            />
+                                        )}
+                                    </>
                                 )}
-                            </>
-                        )}
-                        name="end_date"
-                    />
-                    <TouchableOpacity style={styles.secondoryButton} onPress={handleSubmit(onSubmit)}>
-                        <Text style={styles.buttonText}>Today</Text>
-                    </TouchableOpacity>
+                                name="endTime"
+                            />
+                            <Controller
+                                control={control}
+                                rules={{ required: 'Select end date' }}
+                                defaultValue={String(Moment(endDate).format('DD/MM/YYYY'))}
+                                render={({ field: { onChange, value } }) => (
+                                    <>
+                                        <Text style={styles.label}>End date*</Text>
+                                        <Text style={styles.label}>{String(Moment(endDate).format('DD/MM/YYYY'))}</Text>
+                                        <Button title="Open" onPress={() => setShowEndDate(true)} />
+                                        {errors.endDate && <Text style={styles.errorText}>{errors.endDate.message}</Text>}
+                                        {showEndDate && (
+
+                                            <DatePicker
+                                                modal
+                                                mode={"date"}
+                                                open={showEndDate}
+                                                date={endDate}
+                                                onConfirm={(date) => {
+                                                    onChange(Moment(date).format('DD/MM/YYYY'));
+                                                    setEndDate(date)
+                                                    setShowEndDate(false)
+                                                }}
+                                                onCancel={() => {
+                                                    setShowEndDate(false)
+                                                }}
+                                            />
+                                        )}
+                                    </>
+                                )}
+                                name="endDate"
+                            />
+                        </>
+                        :
+                        <>
+                            <Controller
+                                control={control}
+                                rules={{ required: 'Select start time' }}
+                                defaultValue={String(Moment(startTime).format('HH:MM A'))}
+                                render={({ field: { onChange, value } }) => (
+                                    <>
+                                        <Text style={styles.label}>Start Time*</Text>
+                                        <Text style={styles.label}>{String(Moment(startTime).format('HH:MM A'))}</Text>
+                                        <Button title="Open" onPress={() => setShowStartTime(true)} />
+                                        {errors.startTime && <Text style={styles.errorText}>{errors.startTime.message}</Text>}
+                                        {showStartTime && (
+                                            <DatePicker
+                                                modal
+                                                mode={"time"}
+                                                open={showStartTime}
+                                                date={startTime}
+                                                onConfirm={(date) => {
+                                                    onChange(Moment(date).format('HH:MM A'));
+                                                    setStartTime(date)
+                                                    setShowStartTime(false)
+                                                }}
+                                                onCancel={() => {
+                                                    setShowStartTime(false)
+                                                }}
+                                            />
+                                        )}
+                                    </>
+                                )}
+                                name="startTime"
+                            />
+                            <Controller
+                                control={control}
+                                rules={{ required: 'Select start date' }}
+                                defaultValue={String(Moment(startDate).format('DD/MM/YYYY'))}
+                                render={({ field: { onChange, value } }) => (
+                                    <>
+                                        <Text style={styles.label}>Start Date*</Text>
+                                        <Text style={styles.label}>{String(Moment(startDate).format('DD/MM/YYYY'))}</Text>
+                                        <Button title="Open" onPress={() => setShowStartDate(true)} />
+                                        {errors.startDate && <Text style={styles.errorText}>{errors.startDate.message}</Text>}
+                                        {showStartDate && (
+
+                                            <DatePicker
+                                                modal
+                                                mode={"date"}
+                                                open={showStartDate}
+                                                date={startDate}
+                                                onConfirm={(date) => {
+                                                    onChange(Moment(date).format('DD/MM/YYYY'));
+                                                    setStartDate(date)
+                                                    setShowStartDate(false)
+                                                }}
+                                                onCancel={() => {
+                                                    setShowStartDate(false)
+                                                }}
+                                            />
+                                        )}
+                                    </>
+                                )}
+                                name="startDate"
+                            />
+                        </>
+
+                    }
                 </View>
-
+                <TouchableOpacity style={styles.arrowButton} onPress={handleSubmit(onSubmit)} >
+                    <Image style={styles.arrowStyle} source={require('../assets/right-arrow.jpg')} />
+                </TouchableOpacity>
             </ScrollView>
-           
+
             <Footer />
         </View >
     )
@@ -195,7 +258,7 @@ const styles = StyleSheet.create({
     },
     secondoryButton: {
         // width: '30%',
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#fff',
         padding: 15,
         borderRadius: 5,
         alignItems: 'center',

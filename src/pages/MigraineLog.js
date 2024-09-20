@@ -46,7 +46,6 @@ export default function MigraineLog() {
 
     const onGoForward = () => {
         if(!migraineLogs[0]?.endDate){
-    console.log(migraineLogs[0], "sfsddfg");
 
             let id= migraineLogs[0]?._id
             updateNewTrigger(token, details,id, setIsLoading,navigation)

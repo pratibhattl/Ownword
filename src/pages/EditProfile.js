@@ -26,6 +26,8 @@ export default function EditProfile() {
         });
     }, [])
 
+
+
     useEffect(() => {
         userDetailsApi(userDetails?._id, token, setUserDetails)
     }, [token])
@@ -59,13 +61,15 @@ export default function EditProfile() {
                     {/* <Text style={styles.logo}>LOGO</Text> */}
                     <View style={{ alignItems: 'center' }}>
                         <TouchableOpacity style={styles.dottedBox} onPress={handleFilePicker}>
-                            <Image source={require('../assets/edit.png')} />
+                            {/* <Image source={require('../assets/edit.png')} /> */}
+
+                            <Image source={{ uri: userDetails?.profile_img }} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.formWrap}>
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.name}
+                            defaultValue={String(userDetails?.name)}
                             rules={{
                                 required: 'Enter your name'
                             }}
@@ -77,7 +81,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value}
+                                        value={value ? value : String(userDetails?.name)}
 
                                     />
                                     {submitted && errors.name && (
@@ -121,7 +125,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.gender}
+                            defaultValue={String(userDetails?.gender)}
                             rules={{ required: 'Select your gender' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
@@ -146,7 +150,7 @@ export default function EditProfile() {
 
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.email}
+                            defaultValue={String(userDetails?.email)}
                             rules={{
                                 required: 'Enter your email'
                             }}
@@ -170,7 +174,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.phone}
+                            defaultValue={String(userDetails?.phone)}
                             rules={{
                                 required: 'Enter your phone number'
                             }}
@@ -194,7 +198,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.address}
+                            defaultValue={String(userDetails?.address)}
                             rules={{
                                 required: 'Enter your address'
                             }}
@@ -218,7 +222,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.location}
+                            defaultValue={String(userDetails?.location)}
                             rules={{
                                 required: 'Enter your location'
                             }}
@@ -240,10 +244,10 @@ export default function EditProfile() {
                             )}
                             name="location"
                         />
-                       
+
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.state}
+                            defaultValue={String(userDetails?.state)}
                             rules={{ required: 'Select your state' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
@@ -265,9 +269,9 @@ export default function EditProfile() {
                             )}
                             name="state"
                         />
-                         <Controller
+                        <Controller
                             control={control}
-                            defaultValue={userDetails?.country}
+                            defaultValue={String(userDetails?.country)}
                             rules={{ required: 'Select your country' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
@@ -291,7 +295,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.pincode}
+                            defaultValue={String(userDetails?.pincode)}
                             rules={{
                                 required: 'Enter your pin number'
                             }}
