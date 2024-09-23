@@ -6,7 +6,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer'
 import { getData } from '../helper';
-import { userDetailsApi } from "../apiService/Users"
+import { userDetailsApi, getCountryApi, getStateApi } from "../apiService/Users"
+import DocumentPicker from 'react-native-document-picker';
+import { Button } from 'react-native'
+import DatePicker from 'react-native-date-picker'
+import Moment from 'moment';
 // import edit from "../assets/edit.png"
 export default function EditProfile() {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -16,6 +20,9 @@ export default function EditProfile() {
     const navigation = useNavigation();
     const [userDetails, setUserDetails] = useState({})
     const [token, setToken] = useState(null)
+    const [countryList, setCountryList] = useState([])
+    const [stateList, setStateList] = useState([])
+    const [dob, setDob] = useState(new Date())
 
     useEffect(() => {
         getData('userDetails').then((data) => {
@@ -27,15 +34,19 @@ export default function EditProfile() {
     }, [])
 
 
-
     useEffect(() => {
         userDetailsApi(userDetails?._id, token, setUserDetails)
+        getCountryApi(token, setCountryList)
     }, [token])
+
+    const onCountrySelect = (country) => {
+        getStateApi(token, country, setStateList)
+    }
 
     const onSubmit = (data) => {
         console.log("sdfsdf", data);
         setSubmitted(true);
-        // updateUserApi(data);
+        updateUserApi(data);
         alert('Updated Successful');
     };
 
@@ -44,7 +55,12 @@ export default function EditProfile() {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
             });
-            setFileResponse(res);
+            setFileResponse(res[0]);
+
+            setUserDetails({
+                ...userDetails,
+                profile_img: res[0]
+            })
         } catch (err) {
             if (DocumentPicker.isCancel(err)) {
                 console.log('User cancelled the picker');
@@ -61,15 +77,16 @@ export default function EditProfile() {
                     {/* <Text style={styles.logo}>LOGO</Text> */}
                     <View style={{ alignItems: 'center' }}>
                         <TouchableOpacity style={styles.dottedBox} onPress={handleFilePicker}>
-                            {/* <Image source={require('../assets/edit.png')} /> */}
-
-                            <Image source={{ uri: userDetails?.profile_img }} />
+                            {fileResponse?.uri ?
+                                <Image style={styles.imageStyle} source={{ uri: fileResponse?.uri }} />
+                                :
+                                <Image style={styles.imageStyle} source={{ uri: String(userDetails?.profile_img) }} />
+                            }
                         </TouchableOpacity>
                     </View>
                     <View style={styles.formWrap}>
                         <Controller
                             control={control}
-                            defaultValue={String(userDetails?.name)}
                             rules={{
                                 required: 'Enter your name'
                             }}
@@ -81,7 +98,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value ? value : String(userDetails?.name)}
+                                        value={value ? value : userDetails?.name}
 
                                     />
                                     {submitted && errors.name && (
@@ -89,50 +106,52 @@ export default function EditProfile() {
                                     )}
                                 </>
                             )}
+                            defaultValue={userDetails?.name}
+
                             name="name"
                         />
                         {/* <View style={{display: 'flex', flexDirection:'row',width: '100%'}}>  */}
                         <Controller
-                            control={control}
-                            // rules={{ required: 'Select your date of birth' }}
-                            render={({ field: { onChange, value } }) => (
-                                <>
-                                    <Text style={styles.label}>Date of Birth*</Text>
-                                    <TouchableOpacity
-                                        style={[styles.input, errors.dob ? styles.isInvalid : null]}
-                                        onPress={() => setShowDatePicker(true)}
-                                    >
-                                        <Text style={{ color: value ? '#232C3F' : '#fff' }}>
-                                            {value ? value.toDateString() : 'Select Date'}
-                                        </Text>
-                                    </TouchableOpacity>
-                                    {errors.dob && <Text style={styles.errorText}>{errors.dob.message}</Text>}
-                                    {showDatePicker && (
-                                        <DateTimePicker
-                                            value={value || new Date()}
-                                            mode="date"
-                                            display="default"
-                                            onChange={(event, selectedDate) => {
-                                                const currentDate = selectedDate || value;
-                                                onChange(currentDate);
-                                                setShowDatePicker(false)
-                                            }}
-                                        />
-                                    )}
-                                </>
-                            )}
-                            name="dob"
-                        />
+                        control={control}
+                        rules={{ required: 'Select Date of Birth' }}
+                        defaultValue={Moment(userDetails?.dob).format('DD/MM/YYYY')}
+                        render={({ field: { onChange, value } }) => (
+                            <>
+                                <Text style={styles.label}>Select Date of Birth*</Text>
+                                <Text style={styles.label}>{String(Moment(userDetails?.dob).format('DD/MM/YYYY'))}</Text>
+                                <Button title="Open" onPress={() => setShowDatePicker(true)} />
+                                {errors.dob && <Text style={styles.errorText}>{errors.dob.message}</Text>}
+                                {showDatePicker && (
+
+                                    <DatePicker
+                                        modal
+                                        mode={"date"}
+                                        open={showDatePicker}
+                                        date={dob}
+                                        onConfirm={(date) => {
+                                            onChange(Moment(date).format('DD/MM/YYYY'));
+                                            setDob(date)
+                                            setShowDatePicker(false)
+                                        }}
+                                        onCancel={() => {
+                                            setShowDatePicker(false)
+                                        }}
+                                    />
+                                )}
+                            </>
+                        )}
+                        name="dob"
+                    />
                         <Controller
                             control={control}
-                            defaultValue={String(userDetails?.gender)}
+                            defaultValue={userDetails?.gender}
                             rules={{ required: 'Select your gender' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
                                     <Text style={styles.label}>Gender*</Text>
                                     <View style={[styles.pickerContainer, errors.gender ? styles.isInvalid : null]}>
                                         <Picker
-                                            selectedValue={value}
+                                            selectedValue={value ? value : userDetails?.gender}
                                             onValueChange={(itemValue) => onChange(itemValue)}
                                             style={styles.picker}
                                         >
@@ -150,7 +169,7 @@ export default function EditProfile() {
 
                         <Controller
                             control={control}
-                            defaultValue={String(userDetails?.email)}
+                            defaultValue={userDetails?.email}
                             rules={{
                                 required: 'Enter your email'
                             }}
@@ -162,7 +181,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value}
+                                        value={value ? value : userDetails?.email}
 
                                     />
                                     {submitted && errors.email && (
@@ -174,7 +193,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={String(userDetails?.phone)}
+                            defaultValue={userDetails?.phone}
                             rules={{
                                 required: 'Enter your phone number'
                             }}
@@ -186,7 +205,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value}
+                                        value={value ? value : userDetails?.phone}
 
                                     />
                                     {submitted && errors.phone && (
@@ -198,7 +217,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={String(userDetails?.address)}
+                            defaultValue={userDetails?.address?.address}
                             rules={{
                                 required: 'Enter your address'
                             }}
@@ -210,7 +229,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value}
+                                        value={value ? value : userDetails?.address?.address}
 
                                     />
                                     {submitted && errors.address && (
@@ -222,7 +241,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={String(userDetails?.location)}
+                            defaultValue={userDetails?.address?.location}
                             rules={{
                                 required: 'Enter your location'
                             }}
@@ -234,7 +253,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value}
+                                        value={value ? value : userDetails?.address?.location}
 
                                     />
                                     {submitted && errors.location && (
@@ -244,49 +263,27 @@ export default function EditProfile() {
                             )}
                             name="location"
                         />
-
                         <Controller
                             control={control}
-                            defaultValue={String(userDetails?.state)}
-                            rules={{ required: 'Select your state' }}
-                            render={({ field: { onChange, value } }) => (
-                                <>
-                                    <Text style={styles.label}>State*</Text>
-                                    <View style={[styles.pickerContainer, errors.state ? styles.isInvalid : null]}>
-                                        <Picker
-                                            selectedValue={value}
-                                            onValueChange={(itemValue) => onChange(itemValue)}
-                                            style={styles.picker}
-                                        >
-                                            <Picker.Item label="Select state" value="" />
-                                            <Picker.Item label="West Bengal" value="West Bengal" />
-                                            <Picker.Item label="Udisa" value="Udisa" />
-                                            <Picker.Item label="Other" value="Other" />
-                                        </Picker>
-                                    </View>
-                                    {errors.state && <Text style={styles.errorText}>{errors.state.message}</Text>}
-                                </>
-                            )}
-                            name="state"
-                        />
-                        <Controller
-                            control={control}
-                            defaultValue={String(userDetails?.country)}
+                            defaultValue={userDetails?.address?.country}
                             rules={{ required: 'Select your country' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
                                     <Text style={styles.label}>Country*</Text>
                                     <View style={[styles.pickerContainer, errors.country ? styles.isInvalid : null]}>
                                         <Picker
-                                            selectedValue={value}
-                                            onValueChange={(itemValue) => onChange(itemValue)}
+                                            selectedValue={value ? value : userDetails?.address?.country}
+                                            onValueChange={(itemValue) => { onChange(itemValue), onCountrySelect(itemValue) }}
                                             style={styles.picker}
                                         >
                                             <Picker.Item label="Select country" value="" />
-                                            <Picker.Item label="Kolkata" value="kolkata" />
-                                            <Picker.Item label="Bhuwaneshwar" value="bhuwaneshwar" />
-                                            <Picker.Item label="Other" value="other" />
+                                            {countryList?.length > 0 && countryList?.map((x) => {
+                                                return (
+                                                    <Picker.Item label={x?.country} value={x?.country} />
+                                                )
+                                            })}
                                         </Picker>
+
                                     </View>
                                     {errors.country && <Text style={styles.errorText}>{errors.country.message}</Text>}
                                 </>
@@ -295,7 +292,34 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={String(userDetails?.pincode)}
+                            defaultValue={userDetails?.address?.state}
+                            rules={{ required: 'Select your state' }}
+                            render={({ field: { onChange, value } }) => (
+                                <>
+                                    <Text style={styles.label}>State*</Text>
+                                    <View style={[styles.pickerContainer, errors.state ? styles.isInvalid : null]}>
+                                        <Picker
+                                            selectedValue={value ? value : userDetails?.address?.state}
+                                            onValueChange={(itemValue) => onChange(itemValue)}
+                                            style={styles.picker}
+                                        >
+                                            <Picker.Item label="Select state" value="" />
+                                            {stateList?.length > 0 && stateList?.map((x) => {
+                                                return (
+                                                    <Picker.Item label={x} value={x} />
+                                                )
+                                            })}
+                                        </Picker>
+                                    </View>
+                                    {errors.state && <Text style={styles.errorText}>{errors.state.message}</Text>}
+                                </>
+                            )}
+                            name="state"
+                        />
+
+                        <Controller
+                            control={control}
+                            defaultValue={userDetails?.address?.pincode}
                             rules={{
                                 required: 'Enter your pin number'
                             }}
@@ -307,7 +331,7 @@ export default function EditProfile() {
                                         // placeholder="Password*"
                                         onBlur={onBlur}
                                         onChangeText={onChange}
-                                        value={value}
+                                        value={value ? value : userDetails?.address?.pincode}
 
                                     />
                                     {submitted && errors.pincode && (
@@ -339,6 +363,10 @@ const styles = StyleSheet.create({
     textStyle: {
         fontSize: 25,
         color: '#fff'
+    },
+    imageStyle: {
+        height: 100,
+        width: 100
     },
     container1: {
         flex: 1,

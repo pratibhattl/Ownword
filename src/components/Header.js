@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useNavigationState } from '@react-navigation/native';
@@ -19,7 +19,7 @@ const Header = ({ title }) => {
         getData('userDetails').then((data) => {
             setUserDetails(data);
         });
-        
+
     }, [])
 
     return (
@@ -29,7 +29,11 @@ const Header = ({ title }) => {
             </TouchableOpacity>
             {routeName !== 'Menu' &&
                 <TouchableOpacity style={styles.button} >
-                    <Image source={require('../assets/Ellipse.png')} style={styles.profileImage} />
+                    {userDetails?.profile_img ?
+                        <Image style={styles.profileImage} source={{ uri: String(userDetails?.profile_img) }} />
+                        :
+                        <Image source={require('../assets/Ellipse.png')} style={styles.profileImage} />
+                    }
                 </TouchableOpacity>
             }
             <View style={styles.titleContainer}>

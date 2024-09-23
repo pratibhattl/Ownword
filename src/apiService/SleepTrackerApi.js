@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { API_URL } from '@env';
 
-export const getTimeInBedApi = (token,setBedTimeList, setIsLoading) => {
+export const getTimeInBedApi = (token, setBedTimeList, setIsLoading, navigation) => {
     setIsLoading(true)
-    axios.get(`${API_URL}sleep-tracker/time-in-bed/details`, {
+    axios.get(`${API_URL}sleep-tracker/get-tracking-list`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -13,6 +13,12 @@ export const getTimeInBedApi = (token,setBedTimeList, setIsLoading) => {
         .then(function (response) {
             setIsLoading(false)
             setBedTimeList(response?.data?.result);
+
+            if (response?.data?.result?.status == 'active') {
+                navigation.navigate('TimeAsleep');
+            }
+           
+
         })
         .catch(function (error) {
             setIsLoading(false)
@@ -22,9 +28,10 @@ export const getTimeInBedApi = (token,setBedTimeList, setIsLoading) => {
 
 
 
-export const addBedTimeApi = (token,data,navigation, setIsLoading) => {
+export const addBedTimeApi = (token, data, navigation, setIsLoading) => {
+
     setIsLoading(true)
-    axios.post(`${API_URL}sleep-tracker/time-in-bed/create`, data,{
+    axios.post(`${API_URL}sleep-tracker/create`, data, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -46,10 +53,10 @@ export const addBedTimeApi = (token,data,navigation, setIsLoading) => {
 
 
 
-export const updateBedTimeApi = (token, data, id, setIsLoading, navigation) => {
-    
+export const updateBedTimeApi = (token, data, setIsLoading, navigation) => {
+
     setIsLoading(true)
-    axios.put(`${API_URL}sleep-tracker/time-in-bed/stop/${id}`, data,{
+    axios.put(`${API_URL}sleep-tracker/update-sleep-tacket`, data, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -59,7 +66,7 @@ export const updateBedTimeApi = (token, data, id, setIsLoading, navigation) => {
         .then(function (response) {
             console.log('response', response?.data);
             setIsLoading(false)
-            // navigation.navigate('Home');
+            navigation.navigate('TimeInBed');
             alert("time updated successfully !!")
 
         })
@@ -69,67 +76,3 @@ export const updateBedTimeApi = (token, data, id, setIsLoading, navigation) => {
         });
 }
 
-export const getTimeAsleepApi = (token,setAsleepTimeList, setIsLoading) => {
-    setIsLoading(true)
-    axios.get(`${API_URL}sleep-tracker/time-asleep/details`, {
-        headers: {
-            'x-access-token': token,
-            'Content-Type': 'application/json',
-            'Custom-Header': 'CustomHeaderValue'
-        }
-    })
-        .then(function (response) {
-            setIsLoading(false)
-            setAsleepTimeList(response?.data?.result);
-        })
-        .catch(function (error) {
-            setIsLoading(false)
-            console.log(error);
-        });
-}
-
-export const addAsleepTimeApi = (token,data,navigation, setIsLoading) => {
-    setIsLoading(true)
-    axios.post(`${API_URL}sleep-tracker/time-in-bed/create`, data,{
-        headers: {
-            'x-access-token': token,
-            'Content-Type': 'application/json',
-            'Custom-Header': 'CustomHeaderValue'
-        }
-    })
-        .then(function (response) {
-            // console.log('response', response?.data?.result);
-            setIsLoading(false)
-            navigation.navigate('TimeAsleep');
-            alert("Time added successfully !!")
-
-        })
-        .catch(function (error) {
-            setIsLoading(false)
-            console.log(error);
-        });
-}
-
-
-export const updateTimeASpleepApi = (token, data, id, setIsLoading, navigation) => {
-    
-    setIsLoading(true)
-    axios.put(`${API_URL}sleep-tracker/time-asleep/stop/${id}`, data,{
-        headers: {
-            'x-access-token': token,
-            'Content-Type': 'application/json',
-            'Custom-Header': 'CustomHeaderValue'
-        }
-    })
-        .then(function (response) {
-            console.log('response', response?.data);
-            setIsLoading(false)
-            navigation.navigate('Home');
-            alert("time updated successfully !!")
-
-        })
-        .catch(function (error) {
-            setIsLoading(false)
-            console.log(error);
-        });
-}

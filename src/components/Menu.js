@@ -22,24 +22,29 @@ export default function Menu() {
 
     useEffect(() => {
         const fetchToken = async () => {
-            const storedToken = await getData('userDetails'); 
+            const storedToken = await getData('userDetails');
             setUserDetails(storedToken);
-            setIsLoading(false); 
-          };
+            setIsLoading(false);
+        };
 
-          fetchToken()
+        fetchToken()
     }, [])
 
     if (isLoading) {
-        return <LoadingScreen />; 
-      }
-    
+        return <LoadingScreen />;
+    }
+
 
     return (
         <View style={styles.container}>
             <ScrollView >
                 <View style={styles.container1}>
-                    <Image source={require('../assets/Ellipse.png')} style={styles.profileImage} />
+                    {userDetails?.profile_img ?
+                        <Image style={styles.profileImage} source={{ uri: String(userDetails?.profile_img) }} />
+                        :
+                        <Image source={require('../assets/Ellipse.png')} style={styles.profileImage} />
+                    }
+
                     <Text style={styles.textStyle}> {userDetails?.name}</Text>
                     <Text style={styles.text}> {userDetails?.email}</Text>
                 </View>

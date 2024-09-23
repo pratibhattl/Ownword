@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { getTimeInBedApi, addBedTimeApi, updateBedTimeApi, getTimeAsleepApi } from '../apiService/SleepTrackerApi';
+import { getTimeInBedApi, addBedTimeApi } from '../apiService/SleepTrackerApi';
 import { getData, mergeData } from '../helper';
 import { Button } from 'react-native'
 import DatePicker from 'react-native-date-picker'
@@ -17,33 +17,20 @@ export default function TimeInBed() {
     const [token, setToken] = useState(null)
     const [bedTimeList, setBedTimeList] = useState({})
     const [isLoading, setIsLoading] = React.useState(false);
-    const [startDate, setStartDate] = useState(new Date())
-    const [startTime, setStartTime] = useState(new Date())
-    const [showStartDate, setShowStartDate] = useState(false)
-    const [showStartTime, setShowStartTime] = useState(false)
-    const [endDate, setEndDate] = useState(new Date())
-    const [endTime, setEndTime] = useState(new Date())
-    const [showEndTime, setShowEndTime] = useState(false)
-    const [showEndDate, setShowEndDate] = useState(false);
-    const [asleepTimeList, setAsleepTimeList] = useState({})
-
+    const [asleepStartDate, setasleepStartDate] = useState(new Date())
+    const [asleepStartTime, setasleepStartTime] = useState(new Date())
+    const [showasleepStartDate, setShowasleepStartDate] = useState(false)
+    const [showasleepStartTime, setShowasleepStartTime] = useState(false)
+    const [inBedStartDate, setinBedStartDate] = useState(new Date())
+    const [inBedStartTime, setInBedStartTime] = useState(new Date())
+    const [showStartBedTime, setShowStartBedTime] = useState(false)
+    const [showinBedStartDate, setShowinBedStartDate] = useState(false);
     const navigation = useNavigation();
 
-    const onSubmit = (data) => {
+    const onSubmit = (data) => {        
         setSubmitted(true);
-        let id = bedTimeList?._id
-        if (asleepTimeList?.cat === "time-asleep") {
-            navigation.navigate('TimeAsleep',{id: id});
-        }
-        else if (asleepTimeList?.cat === "time-in-bed" && !bedTimeList?.endDate) {
-           
-            updateBedTimeApi(token, data, id, setIsLoading, navigation);
-            reset();
-        } else {
-            addBedTimeApi(token, data, navigation, setIsLoading);
-            reset();
-        }
-
+        addBedTimeApi(token, data, navigation, setIsLoading);
+        reset();
 
     };
     useEffect(() => {
@@ -53,13 +40,8 @@ export default function TimeInBed() {
     }, [])
 
     useEffect(() => {
-        getTimeInBedApi(token, setBedTimeList, setIsLoading);
-        getTimeAsleepApi(token, setAsleepTimeList, setIsLoading);
+        getTimeInBedApi(token, setBedTimeList, setIsLoading,navigation);
     }, [token])
-
-
-    console.log(asleepTimeList, "asleepTimeList");
-
 
 
     if (isLoading) {
@@ -72,136 +54,130 @@ export default function TimeInBed() {
             <ScrollView>
 
                 <View style={styles.formWrap}>
-                    {!bedTimeList?.endDate ?
 
-                        <>
-                            <Controller
-                                control={control}
-                                rules={{ required: 'Select end time' }}
-                                defaultValue={String(Moment(endTime).format('HH:MMA'))}
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <Text style={styles.label}>End Time*</Text>
-                                        <Text style={styles.label}>{String(Moment(endTime).format('HH:MM A'))}</Text>
-                                        <Button title="Open" onPress={() => setShowEndTime(true)} />
-                                        {errors.endTime && <Text style={styles.errorText}>{errors.endTime.message}</Text>}
-                                        {showEndTime && (
+                    <Controller
+                        control={control}
+                        rules={{ required: 'Select Start Bed Time' }}
+                        defaultValue={String(Moment(inBedStartTime).format('HH:MMA'))}
+                        render={({ field: { onChange, value } }) => (
+                            <>
+                                <Text style={styles.label}>Start Bed Time*</Text>
+                                <Text style={styles.label}>{String(Moment(inBedStartTime).format('HH:MM A'))}</Text>
+                                <Button title="Open" onPress={() => setShowStartBedTime(true)} />
+                                {errors.inBedStartTime && <Text style={styles.errorText}>{errors.inBedStartTime.message}</Text>}
+                                {showStartBedTime && (
 
-                                            <DatePicker
-                                                modal
-                                                mode={"time"}
-                                                open={showEndTime}
-                                                date={endTime}
-                                                onConfirm={(date) => {
-                                                    onChange(Moment(date).format('HH:MMA'));
-                                                    setEndTime(date)
-                                                    setShowEndTime(false)
-                                                }}
-                                                onCancel={() => {
-                                                    setShowEndTime(false)
-                                                }}
-                                            />
-                                        )}
-                                    </>
+                                    <DatePicker
+                                        modal
+                                        mode={"time"}
+                                        open={showStartBedTime}
+                                        date={inBedStartTime}
+                                        onConfirm={(date) => {
+                                            onChange(Moment(date).format('HH:MMA'));
+                                            setInBedStartTime(date)
+                                            setShowStartBedTime(false)
+                                        }}
+                                        onCancel={() => {
+                                            setShowStartBedTime(false)
+                                        }}
+                                    />
                                 )}
-                                name="endTime"
-                            />
-                            <Controller
-                                control={control}
-                                rules={{ required: 'Select end date' }}
-                                defaultValue={String(Moment(endDate).format('HH:MMA'))}
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <Text style={styles.label}>End Date*</Text>
-                                        <Text style={styles.label}>{String(Moment(endDate).format('DD/MM/YYYY'))}</Text>
-                                        <Button title="Open" onPress={() => setShowEndDate(true)} />
-                                        {errors.endDate && <Text style={styles.errorText}>{errors.endDate.message}</Text>}
-                                        {showEndDate && (
+                            </>
+                        )}
+                        name="inBedStartTime"
+                    />
+                    <Controller
+                        control={control}
+                        rules={{ required: 'Select start bed date' }}
+                        defaultValue={String(Moment(inBedStartDate).format('DD/MM/YYYY'))}
+                        render={({ field: { onChange, value } }) => (
+                            <>
+                                <Text style={styles.label}>Start Bed Date*</Text>
+                                <Text style={styles.label}>{String(Moment(inBedStartDate).format('DD/MM/YYYY'))}</Text>
+                                <Button title="Open" onPress={() => setShowinBedStartDate(true)} />
+                                {errors.inBedStartDate && <Text style={styles.errorText}>{errors.inBedStartDate.message}</Text>}
+                                {showinBedStartDate && (
 
-                                            <DatePicker
-                                                modal
-                                                mode={"date"}
-                                                open={showEndDate}
-                                                date={endDate}
-                                                onConfirm={(date) => {
-                                                    onChange(Moment(date).format('DD/MM/YYYY'));
-                                                    setEndDate(date)
-                                                    setShowEndDate(false)
-                                                }}
-                                                onCancel={() => {
-                                                    setShowEndDate(false)
-                                                }}
-                                            />
-                                        )}
-                                    </>
+                                    <DatePicker
+                                        modal
+                                        mode={"date"}
+                                        open={showinBedStartDate}
+                                        date={inBedStartDate}
+                                        onConfirm={(date) => {
+                                            onChange(Moment(date).format('DD/MM/YYYY'));
+                                            setinBedStartDate(date)
+                                            setShowinBedStartDate(false)
+                                        }}
+                                        onCancel={() => {
+                                            setShowinBedStartDate(false)
+                                        }}
+                                    />
                                 )}
-                                name="endDate"
-                            />
-                        </>
-                        :
-                        <>
-                            <Controller
-                                control={control}
-                                rules={{ required: 'Select start time' }}
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <Text style={styles.label}>Start Time*</Text>
-                                        <Text style={styles.label}>{String(Moment(startTime).format('HH:MM A'))}</Text>
-                                        <Button title="Open" onPress={() => setShowStartTime(true)} />
-                                        {errors.startTime && <Text style={styles.errorText}>{errors.startTime.message}</Text>}
-                                        {showStartTime && (
-                                            <DatePicker
-                                                modal
-                                                mode={"time"}
-                                                open={showStartTime}
-                                                date={startTime}
-                                                onConfirm={(date) => {
-                                                    onChange(Moment(date).format('HH:MM A'));
-                                                    setStartTime(date)
-                                                    setShowStartTime(false)
-                                                }}
-                                                onCancel={() => {
-                                                    setShowStartTime(false)
-                                                }}
-                                            />
-                                        )}
-                                    </>
-                                )}
-                                name="startTime"
-                            />
-                            <Controller
-                                control={control}
-                                rules={{ required: 'Select start date' }}
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <Text style={styles.label}>Start Date*</Text>
-                                        <Text style={styles.label}>{String(Moment(startDate).format('HH:MM A'))}</Text>
-                                        <Button title="Open" onPress={() => setShowStartDate(true)} />
-                                        {errors.startDate && <Text style={styles.errorText}>{errors.startDate.message}</Text>}
-                                        {showStartDate && (
+                            </>
+                        )}
+                        name="inBedStartDate"
+                    />
 
-                                            <DatePicker
-                                                modal
-                                                mode={"date"}
-                                                open={showStartDate}
-                                                date={startDate}
-                                                onConfirm={(date) => {
-                                                    onChange(Moment(date).format('DD/MM/YYYY'));
-                                                    setStartDate(date)
-                                                    setShowStartDate(false)
-                                                }}
-                                                onCancel={() => {
-                                                    setShowStartDate(false)
-                                                }}
-                                            />
-                                        )}
-                                    </>
+                    <Controller
+                        control={control}
+                        rules={{ required: 'Select start time' }}
+                        render={({ field: { onChange, value } }) => (
+                            <>
+                                <Text style={styles.label}>Start Asleep Time*</Text>
+                                <Text style={styles.label}>{String(Moment(asleepStartTime).format('HH:MM A'))}</Text>
+                                <Button title="Open" onPress={() => setShowasleepStartTime(true)} />
+                                {errors.asleepStartTime && <Text style={styles.errorText}>{errors.asleepStartTime.message}</Text>}
+                                {showasleepStartTime && (
+                                    <DatePicker
+                                        modal
+                                        mode={"time"}
+                                        open={showasleepStartTime}
+                                        date={asleepStartTime}
+                                        onConfirm={(date) => {
+                                            onChange(Moment(date).format('HH:MM A'));
+                                            setasleepStartTime(date)
+                                            setShowasleepStartTime(false)
+                                        }}
+                                        onCancel={() => {
+                                            setShowasleepStartTime(false)
+                                        }}
+                                    />
                                 )}
-                                name="startDate"
-                            />
-                        </>
+                            </>
+                        )}
+                        name="asleepStartTime"
+                    />
+                    <Controller
+                        control={control}
+                        rules={{ required: 'Select start date' }}
+                        render={({ field: { onChange, value } }) => (
+                            <>
+                                <Text style={styles.label}>Start Asleep Date*</Text>
+                                <Text style={styles.label}>{String(Moment(asleepStartDate).format('DD/MM/YYYY'))}</Text>
+                                <Button title="Open" onPress={() => setShowasleepStartDate(true)} />
+                                {errors.asleepStartDate && <Text style={styles.errorText}>{errors.asleepStartDate.message}</Text>}
+                                {showasleepStartDate && (
 
-                    }
+                                    <DatePicker
+                                        modal
+                                        mode={"date"}
+                                        open={showasleepStartDate}
+                                        date={asleepStartDate}
+                                        onConfirm={(date) => {
+                                            onChange(Moment(date).format('DD/MM/YYYY'));
+                                            setasleepStartDate(date)
+                                            setShowasleepStartDate(false)
+                                        }}
+                                        onCancel={() => {
+                                            setShowasleepStartDate(false)
+                                        }}
+                                    />
+                                )}
+                            </>
+                        )}
+                        name="asleepStartDate"
+                    />
+
                 </View>
                 <TouchableOpacity style={styles.arrowButton} onPress={handleSubmit(onSubmit)} >
                     <Image style={styles.arrowStyle} source={require('../assets/right-arrow.jpg')} />
