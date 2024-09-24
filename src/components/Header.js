@@ -3,13 +3,14 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useNavigationState } from '@react-navigation/native';
 import { getData, getMultiple } from '../helper';
-
+import { refreshTokenApi } from '../apiService/Users';
+import LoadingScreen from './LoadingScreen';
 const Header = ({ title }) => {
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const navigation = useNavigation();
     const [userDetails, setUserDetails] = useState({})
-
-
+    const [token, setToken] = useState(null)
     const routeName = useNavigationState((state) => {
         const index = state.index;
         return state.routes[index].name;
@@ -19,8 +20,19 @@ const Header = ({ title }) => {
         getData('userDetails').then((data) => {
             setUserDetails(data);
         });
+        getData('token').then((token) => {
+            setToken(token);
+        });
 
     }, [])
+    useEffect(()=>{
+        refreshTokenApi(token,userDetails?._id,setIsLoading)
+    },[token])
+
+    // if (isLoading) {
+    //     return <LoadingScreen />;
+    // }
+
 
     return (
         <View style={styles.headerContainer}>

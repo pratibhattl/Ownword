@@ -53,8 +53,8 @@ function App() {
           return <Header title={title} />;  // Pass the title to Header component
         }
       })}>
-        {!token ?
-          <>
+        {/* {!token ?
+          <> */}
             <Stack.Screen
               name="Welcome"
               component={Welcome}
@@ -80,9 +80,9 @@ function App() {
               component={ResetPassword}
               options={{ headerShown: false }}
             />
-          </>
+          {/* </>
           :
-          <>
+          <> */}
             <Stack.Screen
               name="Home"
               component={Home}
@@ -201,8 +201,8 @@ function App() {
               component={Chat}
               options={{ headerShown: true, title: 'Onward - Chat' }}
             />
-          </>
-        }
+          {/* </>
+        } */}
       </Stack.Navigator>
       {/* <Footer /> */}
     </NavigationContainer>

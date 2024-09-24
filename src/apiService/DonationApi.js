@@ -33,7 +33,7 @@ export const getSingleDonationApi = (token,id,setDonationDetails, setIsLoading) 
         }
     })
         .then(function (response) {
-            // console.log('response', response?.data?.result);
+            console.log('response', response?.data?.result);
             setIsLoading(false)
             setDonationDetails(response?.data?.result);
         })

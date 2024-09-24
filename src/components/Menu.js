@@ -4,11 +4,16 @@ import Footer from './Footer'
 import { useNavigation } from '@react-navigation/native';
 import { getData, removeData } from '../helper';
 import LoadingScreen from './LoadingScreen';
+import { userDetailsApi } from '../apiService/Users';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function Menu() {
     const navigation = useNavigation();
     const [userDetails, setUserDetails] = useState({})
-    const [isLoading, setIsLoading] = React.useState(true);
+    const [token, setToken] = useState(null)
+    const [isLoading, setIsLoading] = React.useState(false);
+    const isFocused = useIsFocused();
+
     const logout = () => {
         removeData('userDetails')
         removeData('token')
@@ -21,14 +26,21 @@ export default function Menu() {
 
 
     useEffect(() => {
-        const fetchToken = async () => {
-            const storedToken = await getData('userDetails');
-            setUserDetails(storedToken);
-            setIsLoading(false);
-        };
+        getData('userDetails').then((data) => {
+            setUserDetails(data);
+        });
+        getData('token').then((token) => {
+            setToken(token);
+        });
 
-        fetchToken()
     }, [])
+    useEffect(() => {
+        if (isFocused) {
+            userDetailsApi(userDetails?._id, token, setUserDetails,setIsLoading)
+        }
+      }, [isFocused]);
+
+
 
     if (isLoading) {
         return <LoadingScreen />;

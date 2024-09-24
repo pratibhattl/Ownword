@@ -14,3 +14,4 @@ npx flipper-server
 run npm devtools
 npm i react-native-date-picker
 npm install moment --save
+npm i react-native-modal

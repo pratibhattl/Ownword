@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker'; // For Date Picker
 import { Picker } from '@react-native-picker/picker'; // For Gender Picker
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer'
 import { getData } from '../helper';
-import { userDetailsApi, getCountryApi, getStateApi } from "../apiService/Users"
+import { userDetailsApi, getCountryApi, getStateApi, updateUserApi } from "../apiService/Users"
 import DocumentPicker from 'react-native-document-picker';
 import { Button } from 'react-native'
 import DatePicker from 'react-native-date-picker'
 import Moment from 'moment';
+import {useIsFocused} from '@react-navigation/native';
 // import edit from "../assets/edit.png"
 export default function EditProfile() {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -20,34 +20,50 @@ export default function EditProfile() {
     const navigation = useNavigation();
     const [userDetails, setUserDetails] = useState({})
     const [token, setToken] = useState(null)
+    const [address, setAddress] = useState(null)
     const [countryList, setCountryList] = useState([])
     const [stateList, setStateList] = useState([])
     const [dob, setDob] = useState(new Date())
-
+    const [isLoading, setIsLoading] = React.useState(false);
+    const isFocused = useIsFocused();
     useEffect(() => {
         getData('userDetails').then((data) => {
             setUserDetails(data);
+            setAddress(data?.address?.address)
+            onCountrySelect(data?.address?.country)
         });
         getData('token').then((token) => {
             setToken(token);
         });
     }, [])
 
-
     useEffect(() => {
-        userDetailsApi(userDetails?._id, token, setUserDetails)
-        getCountryApi(token, setCountryList)
-    }, [token])
+        if (isFocused) {
+            userDetailsApi(userDetails?._id, token, setUserDetails,setIsLoading)
+            getCountryApi(token, setCountryList)
+        }
+      }, [isFocused]);
+  
 
     const onCountrySelect = (country) => {
         getStateApi(token, country, setStateList)
     }
 
-    const onSubmit = (data) => {
-        console.log("sdfsdf", data);
-        setSubmitted(true);
-        updateUserApi(data);
-        alert('Updated Successful');
+    const onSubmit = () => {
+        var formData = new FormData();
+        formData.append('image', userDetails?.profile_img)
+        formData.append('name', userDetails?.name)
+        formData.append('email', userDetails?.email)
+        formData.append('phone', userDetails?.phone)
+        formData.append('gender', userDetails?.gender)
+        formData.append('dob', userDetails?.dob)
+        formData.append('address', address)
+        formData.append('location', userDetails?.location ? userDetails?.location : userDetails?.address?.location)
+        formData.append('state', userDetails?.state ? userDetails?.state : userDetails?.address?.state)
+        formData.append('country', userDetails?.country ? userDetails?.country : userDetails?.address?.country)
+        formData.append('pincode', userDetails?.pincode ? userDetails?.pincode : userDetails?.address?.pincode)
+        
+        updateUserApi(token, formData, navigation,setUserDetails,setIsLoading);  // Ensure updateUserApi is defined
     };
 
     const handleFilePicker = async () => {
@@ -70,6 +86,9 @@ export default function EditProfile() {
         }
     };
 
+
+    
+
     return (
         <View style={styles.container}>
             <ScrollView >
@@ -85,74 +104,69 @@ export default function EditProfile() {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.formWrap}>
-                        <Controller
-                            control={control}
-                            rules={{
-                                required: 'Enter your name'
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <>
-                                    <Text style={styles.label}>Name*</Text>
-                                    <TextInput
-                                        style={[styles.input, submitted && errors.name ? styles.isInvalid : null]}
-                                        // placeholder="Password*"
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value ? value : userDetails?.name}
 
-                                    />
-                                    {submitted && errors.name && (
-                                        <Text style={styles.errorText}>{errors.name.message}</Text>
-                                    )}
-                                </>
-                            )}
+                        <Text style={styles.label}>Name*</Text>
+                        <TextInput
+                            style={styles.input}
+                            // style={[styles.input, submitted && errors.name ? styles.isInvalid : null]}
+                            // placeholder="Password*"
+                            onChangeText={(e) => setUserDetails({
+                                ...userDetails,
+                                name: e ? e : userDetails?.name
+                            })}
                             defaultValue={userDetails?.name}
 
-                            name="name"
                         />
-                        {/* <View style={{display: 'flex', flexDirection:'row',width: '100%'}}>  */}
-                        <Controller
-                        control={control}
-                        rules={{ required: 'Select Date of Birth' }}
-                        defaultValue={Moment(userDetails?.dob).format('DD/MM/YYYY')}
-                        render={({ field: { onChange, value } }) => (
-                            <>
-                                <Text style={styles.label}>Select Date of Birth*</Text>
-                                <Text style={styles.label}>{String(Moment(userDetails?.dob).format('DD/MM/YYYY'))}</Text>
-                                <Button title="Open" onPress={() => setShowDatePicker(true)} />
-                                {errors.dob && <Text style={styles.errorText}>{errors.dob.message}</Text>}
-                                {showDatePicker && (
 
-                                    <DatePicker
-                                        modal
-                                        mode={"date"}
-                                        open={showDatePicker}
-                                        date={dob}
-                                        onConfirm={(date) => {
-                                            onChange(Moment(date).format('DD/MM/YYYY'));
-                                            setDob(date)
-                                            setShowDatePicker(false)
-                                        }}
-                                        onCancel={() => {
-                                            setShowDatePicker(false)
-                                        }}
-                                    />
-                                )}
-                            </>
+                        {/* <View style={{display: 'flex', flexDirection:'row',width: '100%'}}>  */}
+
+                        <Text style={styles.label}>Select Date of Birth*</Text>
+                        <Text style={styles.label}>
+                            {String(userDetails?.dob)}
+                        </Text>
+                        <Button title="Open" onPress={() => setShowDatePicker(true)} />
+                        {/* {errors.dob && <Text style={styles.errorText}>{errors.dob.message}</Text>} */}
+                        {showDatePicker && (
+
+                            <DatePicker
+                                modal
+                                mode={"date"}
+                                open={showDatePicker}
+                                date={dob}
+                                onConfirm={(date) => {
+                                    setDob(date)
+                                    setUserDetails({
+                                        ...userDetails,
+                                        dob: Moment(date).format('DD/MM/YYYY')
+                                    })
+                                    setShowDatePicker(false)
+                                }}
+                                onCancel={() => {
+                                    setShowDatePicker(false)
+                                }}
+                            />
                         )}
-                        name="dob"
-                    />
+
                         <Controller
                             control={control}
                             defaultValue={userDetails?.gender}
-                            rules={{ required: 'Select your gender' }}
+                            rules={{ required: 'Select your country' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
                                     <Text style={styles.label}>Gender*</Text>
-                                    <View style={[styles.pickerContainer, errors.gender ? styles.isInvalid : null]}>
+                                    <View
+                                        // style={[styles.pickerContainer, errors.gender ? styles.isInvalid : null]}
+                                        style={styles.pickerContainer}
+                                    >
                                         <Picker
                                             selectedValue={value ? value : userDetails?.gender}
-                                            onValueChange={(itemValue) => onChange(itemValue)}
+                                            onValueChange={(itemValue) => {
+                                                onChange(itemValue);
+                                                setUserDetails({
+                                                    ...userDetails,
+                                                    gender: itemValue ? itemValue : userDetails?.gender
+                                                })
+                                            }}
                                             style={styles.picker}
                                         >
                                             <Picker.Item label="Select Gender" value="" />
@@ -161,108 +175,75 @@ export default function EditProfile() {
                                             <Picker.Item label="Other" value="other" />
                                         </Picker>
                                     </View>
-                                    {errors.gender && <Text style={styles.errorText}>{errors.gender.message}</Text>}
+
                                 </>
                             )}
-                            name="gender"
+                            name="country"
                         />
-
-                        <Controller
-                            control={control}
+                        <Text style={styles.label}>Email*</Text>
+                        <TextInput
+                            style={styles.input}
+                            // style={[styles.input, submitted && errors.email ? styles.isInvalid : null]}
+                            // placeholder="Password*"
+                            onChangeText={(e) => setUserDetails({
+                                ...userDetails,
+                                email: e ? e : userDetails?.email
+                            })}
                             defaultValue={userDetails?.email}
-                            rules={{
-                                required: 'Enter your email'
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <>
-                                    <Text style={styles.label}>Email*</Text>
-                                    <TextInput
-                                        style={[styles.input, submitted && errors.email ? styles.isInvalid : null]}
-                                        // placeholder="Password*"
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value ? value : userDetails?.email}
 
-                                    />
-                                    {submitted && errors.email && (
+                        />
+                        {/* {submitted && errors.email && (
                                         <Text style={styles.errorText}>{errors.email.message}</Text>
-                                    )}
-                                </>
-                            )}
-                            name="email"
-                        />
-                        <Controller
-                            control={control}
+                                    )} */}
+
+
+                        <Text style={styles.label}>Phone*</Text>
+                        <TextInput
+                            style={styles.input}
+                            // style={[styles.input, submitted && errors.phone ? styles.isInvalid : null]}
+                            // placeholder="Password*"
+                            onChangeText={(e) => setUserDetails({
+                                ...userDetails,
+                                phone: e ? e : userDetails?.phone
+                            })}
                             defaultValue={userDetails?.phone}
-                            rules={{
-                                required: 'Enter your phone number'
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <>
-                                    <Text style={styles.label}>Phone*</Text>
-                                    <TextInput
-                                        style={[styles.input, submitted && errors.phone ? styles.isInvalid : null]}
-                                        // placeholder="Password*"
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value ? value : userDetails?.phone}
 
-                                    />
-                                    {submitted && errors.phone && (
+                        />
+                        {/* {submitted && errors.phone && (
                                         <Text style={styles.errorText}>{errors.phone.message}</Text>
-                                    )}
-                                </>
-                            )}
-                            name="phone"
-                        />
-                        <Controller
-                            control={control}
-                            defaultValue={userDetails?.address?.address}
-                            rules={{
-                                required: 'Enter your address'
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <>
-                                    <Text style={styles.label}>Address*</Text>
-                                    <TextInput
-                                        style={[styles.input, submitted && errors.address ? styles.isInvalid : null]}
-                                        // placeholder="Password*"
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value ? value : userDetails?.address?.address}
+                                    )} */}
 
-                                    />
-                                    {submitted && errors.address && (
+
+                        <Text style={styles.label}>Address*</Text>
+                        <TextInput
+                            style={styles.input}
+                            // style={[styles.input, submitted && errors.address ? styles.isInvalid : null]}
+                            // placeholder="Password*"
+                            onChangeText={(e) => setAddress(e)}
+                            defaultValue={address}
+
+                        />
+                        {/* {submitted && errors.address && (
                                         <Text style={styles.errorText}>{errors.address.message}</Text>
-                                    )}
-                                </>
-                            )}
-                            name="address"
-                        />
-                        <Controller
-                            control={control}
-                            defaultValue={userDetails?.address?.location}
-                            rules={{
-                                required: 'Enter your location'
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <>
-                                    <Text style={styles.label}>Location*</Text>
-                                    <TextInput
-                                        style={[styles.input, submitted && errors.location ? styles.isInvalid : null]}
-                                        // placeholder="Password*"
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value ? value : userDetails?.address?.location}
+                                    )} */}
 
-                                    />
-                                    {submitted && errors.location && (
-                                        <Text style={styles.errorText}>{errors.location.message}</Text>
-                                    )}
-                                </>
-                            )}
-                            name="location"
+
+                        <Text style={styles.label}>Location*</Text>
+                        <TextInput
+                            // style={[styles.input, submitted && errors.location ? styles.isInvalid : null]}
+                            // placeholder="Password*"
+                            style={styles.input}
+                            onChangeText={(e) => setUserDetails({
+                                ...userDetails,
+                                location: e ? e : userDetails?.location
+                            })}
+                            defaultValue={userDetails?.address?.location}
+
                         />
+                        {/* {submitted && errors.location && (
+                                        <Text style={styles.errorText}>{errors.location.message}</Text>
+                                    )} */}
+
                         <Controller
                             control={control}
                             defaultValue={userDetails?.address?.country}
@@ -270,10 +251,20 @@ export default function EditProfile() {
                             render={({ field: { onChange, value } }) => (
                                 <>
                                     <Text style={styles.label}>Country*</Text>
-                                    <View style={[styles.pickerContainer, errors.country ? styles.isInvalid : null]}>
+                                    <View
+                                        // style={[styles.pickerContainer, errors.country ? styles.isInvalid : null]}
+                                        style={styles.pickerContainer}
+                                    >
                                         <Picker
                                             selectedValue={value ? value : userDetails?.address?.country}
-                                            onValueChange={(itemValue) => { onChange(itemValue), onCountrySelect(itemValue) }}
+                                            onValueChange={(itemValue) => {
+                                                onChange(itemValue);
+                                                onCountrySelect(itemValue);
+                                                setUserDetails({
+                                                    ...userDetails,
+                                                    country: itemValue ? itemValue : userDetails?.country
+                                                })
+                                            }}
                                             style={styles.picker}
                                         >
                                             <Picker.Item label="Select country" value="" />
@@ -285,7 +276,7 @@ export default function EditProfile() {
                                         </Picker>
 
                                     </View>
-                                    {errors.country && <Text style={styles.errorText}>{errors.country.message}</Text>}
+                                    {/* {errors.country && <Text style={styles.errorText}>{errors.country.message}</Text>} */}
                                 </>
                             )}
                             name="country"
@@ -297,10 +288,20 @@ export default function EditProfile() {
                             render={({ field: { onChange, value } }) => (
                                 <>
                                     <Text style={styles.label}>State*</Text>
-                                    <View style={[styles.pickerContainer, errors.state ? styles.isInvalid : null]}>
+                                    <View
+                                        // style={[styles.pickerContainer, errors.state ? styles.isInvalid : null]}
+                                        style={styles.pickerContainer}
+                                    >
                                         <Picker
                                             selectedValue={value ? value : userDetails?.address?.state}
-                                            onValueChange={(itemValue) => onChange(itemValue)}
+                                            onValueChange={(itemValue) => {
+                                                onChange(itemValue);
+                                                setUserDetails({
+                                                    ...userDetails,
+                                                    state: itemValue ? itemValue : userDetails?.state
+                                                })
+                                            }
+                                            }
                                             style={styles.picker}
                                         >
                                             <Picker.Item label="Select state" value="" />
@@ -311,43 +312,36 @@ export default function EditProfile() {
                                             })}
                                         </Picker>
                                     </View>
-                                    {errors.state && <Text style={styles.errorText}>{errors.state.message}</Text>}
+                                    {/* {errors.state && <Text style={styles.errorText}>{errors.state.message}</Text>} */}
                                 </>
                             )}
                             name="state"
                         />
 
-                        <Controller
-                            control={control}
-                            defaultValue={userDetails?.address?.pincode}
-                            rules={{
-                                required: 'Enter your pin number'
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <>
-                                    <Text style={styles.label}>Pin number*</Text>
-                                    <TextInput
-                                        style={[styles.input, submitted && errors.pincode ? styles.isInvalid : null]}
-                                        // placeholder="Password*"
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value ? value : userDetails?.address?.pincode}
 
-                                    />
-                                    {submitted && errors.pincode && (
-                                        <Text style={styles.errorText}>{errors.pincode.message}</Text>
-                                    )}
-                                </>
-                            )}
-                            name="pincode"
+                        <Text style={styles.label}>Pin number*</Text>
+                        <TextInput
+                            // style={[styles.input, submitted && errors.pincode ? styles.isInvalid : null]}
+                            // placeholder="Password*"
+                            style={styles.input}
+                            onChangeText={(e) => setUserDetails({
+                                ...userDetails,
+                                pincode: e ? e : userDetails?.pincode
+                            })}
+                            defaultValue={userDetails?.address?.pincode}
+
                         />
+                        {/* {submitted && errors.pincode && (
+                                        <Text style={styles.errorText}>{errors.pincode.message}</Text>
+                                    )} */}
+
                         {/* </View> */}
-                        <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit(onSubmit)}>
-                            <Text style={styles.buttonText}>Update details</Text>
-                        </TouchableOpacity>
+
 
                     </View>
-
+                    <TouchableOpacity style={styles.primaryButton} onPress={() => onSubmit()}>
+                        <Text style={styles.buttonText}>Update details</Text>
+                    </TouchableOpacity>
 
                 </View>
             </ScrollView>

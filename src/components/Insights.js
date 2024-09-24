@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, TextInput, Button } from 'react-native'
 import Footer from '../components/Footer'
 import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
-import { getInsightsApi, getBlogsApi, getLikeBlogsApi ,getLikeInsightApi} from '../apiService/InsightsApi'
-
+import { getInsightsApi, getBlogsApi, addLikeInsightApi, addLikeBlogsApi, addCommentBlogsApi } from '../apiService/InsightsApi'
+import Modal from "react-native-modal";
 export default function Insights() {
     const [selectedTab, setSelectedTab] = useState('Insight');
     const [token, setToken] = useState(null)
     const [insightsList, setInsightsList] = useState([])
     const [isLoading, setIsLoading] = React.useState(false);
     const [userDetails, setUserDetails] = useState({})
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [comment, setComment] = useState(null);
+    const [commentId, setCommentId] = useState(null);
+
+    const toggleModal = (id) => {
+        setModalVisible(!isModalVisible);
+        setCommentId(id)
+    };
     useEffect(() => {
         getData('token').then((token) => {
             setToken(token);
@@ -18,38 +26,46 @@ export default function Insights() {
         getData('userDetails').then((data) => {
             setUserDetails(data);
         });
-    }, [])
+    }, []);
+
+    // console.log(insightsList, "insightsListinsightsList");
+
 
     useEffect(() => {
-        if (selectedTab == 'insights') {
+        if (selectedTab == 'Insight') {
             getInsightsApi(token, setInsightsList, setIsLoading)
-        } else if (selectedTab == 'blogs') {
+        } else if (selectedTab == 'Blog') {
             getBlogsApi(token, setInsightsList, setIsLoading)
         } else {
+
             getInsightsApi(token, setInsightsList, setIsLoading)
+
         }
+    }, [selectedTab])
 
-    }, [token, selectedTab])
-
-    const likeBlogFunc = (id) => {
-        let data = {}
-        if (selectedTab == 'Insight') {
-            data = {
-                insightId: id,
-                user_id: userDetails?._id,
-                reference_type: selectedTab
-            }
-            getLikeInsightApi(token, data, setIsLoading)
+    const likeBlogFunc = (details) => {
+        let data = {
+            reference_id: details?._id,
+            user_id: userDetails?._id,
+            reference_type: selectedTab
+        }
+        if (selectedTab == 'Blog') {
+            addLikeBlogsApi(token, data, details?.isLiked, setInsightsList, setIsLoading)
         } else if (selectedTab == 'Insight') {
-            data = {
-                blogId: id,
-                user_id: userDetails?._id,
-                reference_type: selectedTab
-            }
-        getLikeBlogsApi(token, data, setIsLoading)
+            addLikeInsightApi(token, data, details?.isLiked, setInsightsList, setIsLoading)
 
         }
 
+    }
+
+    const commentFun = () => {
+        let data = {
+            "reference_id": commentId,
+            "comment": comment,
+            "reference_type": selectedTab,
+            "user_id": userDetails?._id
+        }
+        addCommentBlogsApi(token, data, setInsightsList, setIsLoading, toggleModal)
     }
 
 
@@ -68,41 +84,54 @@ export default function Insights() {
                         <Text style={styles.buttonText}>Blogs</Text>
                     </TouchableOpacity>
                 </View>
-                {insightsList?.length > 0 && insightsList?.map((data) => {
+                {insightsList?.length > 0 ? insightsList?.map((data) => {
                     return (
                         <View style={styles.cardMain}>
-                            <View style={styles.cardContainer}><Image source={{ uri: data.insight_image ? data.insight_image : data.blog_image }} style={styles.cardImage} />
+                            <View style={styles.cardContainer}>
+                                {(data.insight_image || data.blog_image) !== null ?
+                                    <Image source={{ uri: data.insight_image ? data.insight_image : data.blog_image }} style={styles.cardImage} />
+                                    :
+                                    <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} />
+                                }
                                 <Text style={styles.cardName}>{data.title}</Text>
                             </View>
                             <View style={styles.textStyle}>
                                 <Text style={styles.dateStyle} >{data.createdAt}</Text>
                             </View>
                             <View>
-                                <Image source={{ uri: data.insight_image ? data.insight_image : data.blog_image }} style={styles.banner} />
+                                {(data.insight_image || data.blog_image) !== null ?
+                                    <Image source={{ uri: data.insight_image ? data.insight_image : data.blog_image }} style={styles.banner} />
+                                    :
+                                    <Image source={require('../assets/Rectangle.png')} style={styles.banner} />
+                                }
                             </View>
                             <Text style={styles.desTitle}>{data.description}</Text>
-                            <Text style={styles.desText}>{data.title}</Text>
+                            {/* <Text style={styles.desText}>{data.title}</Text> */}
                             <View style={styles.imageStyle}>
                                 <View style={styles.optionIcon}>
-                                    <Text style={styles.desText}>12 </Text>
-                                    <Image source={require('../assets/heart.png')} />
+                                    <Text style={styles.desText}>{data?.likesCount} </Text>
+                                    {data?.isLiked == true ?
+                                        <Text>❤️</Text>
+                                        :
+                                        <Image source={require('../assets/heart.png')} />
+                                    }
                                 </View>
                                 <View style={styles.optionIcon}>
-                                    <Text style={styles.desText}>15 </Text>
+                                    <Text style={styles.desText}>{data?.commentsCount} </Text>
                                     <Image source={require('../assets/message-text.png')} />
                                 </View>
-                                <View style={styles.optionIcon}>
-                                    <Text style={styles.desText}>1 </Text>
+                                {/* <View style={styles.optionIcon}>
+                                    <Text style={styles.desText}> </Text>
                                     <Image source={require('../assets/sendIcon.png')} />
-                                </View>
+                                </View> */}
 
 
                             </View>
                             <View style={styles.secondaryButton1}>
-                                <TouchableOpacity style={styles.secondaryButton} onPress={() => likeBlogFunc(data?._id)}>
+                                <TouchableOpacity style={styles.secondaryButton} onPress={() => likeBlogFunc(data)}>
                                     <Text style={styles.optionButton}>Like</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.secondaryButton}>
+                                <TouchableOpacity style={styles.secondaryButton} onPress={() => toggleModal(data?._id)} >
                                     <Text style={styles.optionButton}>Comments</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.secondaryButton}>
@@ -111,13 +140,40 @@ export default function Insights() {
                             </View>
                         </View>
                     )
-                })}
+                })
+                    :
+                    <Text style={{ justifyContent: 'center', alignItems: 'center', color: '#fff', fontSize: 20 }}>No data added !!</Text>
+                }
+                <View style={{ flex: 1, }}>
+
+                    <Modal isVisible={isModalVisible}>
+                        <View style={{ flex: 1, justifyContent: 'center', height: 50 }}>
+                            <Text>Hello!</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(e) => setComment(e)}
+                            />
+                            <Button title="Comment" onPress={() => commentFun()} />
+                        </View>
+                    </Modal>
+                </View>
             </ScrollView>
             <Footer />
         </View>
     )
 }
 const styles = StyleSheet.create({
+    input: {
+        height: 50,
+        borderColor: '#fff',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 15,
+        color: '#fff',
+        placeholderTextColor: "#fff",
+        backgroundColor: '#232C3F',
+    },
     secondaryButton1: {
         display: 'flex',
         flexDirection: 'row',
