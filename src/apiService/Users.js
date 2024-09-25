@@ -147,7 +147,6 @@ export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading
             setIsLoading(false)
             let arr = response?.data?.blogs?.length > 0 ? response?.data?.blogs : []
             let obj = response?.data?.donationPost?.length > 0 ? response?.data?.donationPost[0] : {}
-            // console.log(arr,"arrrrr");
             
             setHomePageData(arr);
             setdonationData(obj)

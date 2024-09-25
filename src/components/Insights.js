@@ -37,11 +37,10 @@ export default function Insights() {
         } else if (selectedTab == 'Blog') {
             getBlogsApi(token, setInsightsList, setIsLoading)
         } else {
-
             getInsightsApi(token, setInsightsList, setIsLoading)
-
         }
-    }, [selectedTab])
+    }, [token,selectedTab])
+
 
     const likeBlogFunc = (details) => {
         let data = {

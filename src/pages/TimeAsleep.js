@@ -51,11 +51,11 @@ export default function TimeAsleep({ route }) {
                 <View style={styles.formWrap}>
                     <Controller
                         control={control}
-                        rules={{ required: 'Select start time' }}
+                        rules={{ required: 'Select asleep end time' }}
                         defaultValue={String(Moment(asleepEndTime).format('HH:MM A'))}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Start Time*</Text>
+                                <Text style={styles.label}>Asleep End Time*</Text>
                                 <Text style={styles.label}>{String(Moment(asleepEndTime).format('HH:MM A'))}</Text>
                                 <Button title="Open" onPress={() => setShowasleepEndTime(true)} />
                                 {errors.asleepEndTime && <Text style={styles.errorText}>{errors.asleepEndTime.message}</Text>}
@@ -81,11 +81,11 @@ export default function TimeAsleep({ route }) {
                     />
                     <Controller
                         control={control}
-                        rules={{ required: 'Select start date' }}
+                        rules={{ required: 'Select asleep end date' }}
                         defaultValue={String(Moment(asleepEndDate).format('DD/MM/YYYY'))}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Start Date*</Text>
+                                <Text style={styles.label}>Asleep End Date*</Text>
                                 <Text style={styles.label}>{String(Moment(asleepEndDate).format('DD/MM/YYYY'))}</Text>
                                 <Button title="Open" onPress={() => setShowasleepEndDate(true)} />
                                 {errors.asleepEndDate && <Text style={styles.errorText}>{errors.asleepEndDate.message}</Text>}

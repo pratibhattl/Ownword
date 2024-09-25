@@ -138,9 +138,9 @@ export default function Home() {
                                     <Text style={styles.title1}>{item.description}</Text>
                                     <View style={styles.iconsContainer}>
                                         {/* Add icons for likes, shares, etc. */}
-                                        <Text style={styles.iconText}>❤️ 10</Text>
-                                        <Text style={styles.iconText}>💬 15</Text>
-                                        <Text style={styles.iconText}>🔄 5</Text>
+                                        <Text style={styles.iconText}>❤️ {item?.likeCount}</Text>
+                                        <Text style={styles.iconText}>💬 {item?.commentCount}</Text>
+                                        {/* <Text style={styles.iconText}>🔄 5</Text> */}
                                     </View>
                                 </View>
                             )}

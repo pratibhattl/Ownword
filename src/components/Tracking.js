@@ -4,6 +4,8 @@ import Footer from '../components/Footer'
 import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
 import { getTrackingApi } from '../apiService/InsightsApi'
+
+
 export default function Tracking() {
     const [details, setDetails] = useState({});
     const [token, setToken] = useState(null)
@@ -22,17 +24,85 @@ export default function Tracking() {
     useEffect(() => {
         getTrackingApi(token, setDetails, setIsLoading)
     }, [token]);
+    // useEffect(() => {
+    //     // In-bed data
+    //     const data = {
+    //         inBed: {
+    //             startTime: details?.sleep_tracker?.in_bed?.startTime,
+    //             startDate: details?.sleep_tracker?.in_bed?.startDate,
+    //             endTime: details?.sleep_tracker?.in_bed?.endTime,
+    //             endDate: details?.sleep_tracker?.in_bed?.endDate
+    //         },
 
-   
-  // Convert to Date objects
-  const asleepTime = new Date(`${details?.sleep_tracker?.asleep?.startDate.split('/').reverse().join('-')}T${details?.sleep_tracker?.asleep?.startTime}:00`);
-  const inBedTime = new Date(`${details?.sleep_tracker?.in_bed?.startDate.split('/').reverse().join('-')}T${details?.sleep_tracker?.in_bed?.startTime}:00`);
+    //         // Asleep data
+    //         asleep: {
+    //             startTime: details?.sleep_tracker?.asleep?.startTime,
+    //             startDate: details?.sleep_tracker?.asleep?.startDate,
+    //             endTime: details?.sleep_tracker?.asleep?.endTime,
+    //             endDate: details?.sleep_tracker?.asleep?.endDate
+    //         }
+    //     }
+    // }, [details]);
+    const data = {
+        in_bed: {
+            startTime: details?.sleep_tracker?.in_bed?.startTime,
+            startDate: details?.sleep_tracker?.in_bed?.startDate,
+            endTime: details?.sleep_tracker?.in_bed?.endTime,
+            endDate: details?.sleep_tracker?.in_bed?.endDate
+        },
 
-  // Calculate the difference in milliseconds
-  const differenceInMilliseconds = asleepTime - inBedTime;
+        // Asleep data
+        asleep: {
+            startTime: details?.sleep_tracker?.asleep?.startTime,
+            startDate: details?.sleep_tracker?.asleep?.startDate,
+            endTime: details?.sleep_tracker?.asleep?.endTime,
+            endDate: details?.sleep_tracker?.asleep?.endDate
+        }
+    }
 
-  // Convert milliseconds to minutes
-  const differenceInMinutes = Math.floor(differenceInMilliseconds / (1000 * 60));
+
+    const asleepDifference = calculateDifference(
+        data.asleep.startDate,
+        data.asleep.startTime,
+        data.asleep.endDate,
+        data.asleep.endTime
+    );
+
+    const inBedDifference = calculateDifference(
+        data.in_bed.startDate,
+        data.in_bed.startTime,
+        data.in_bed.endDate,
+        data.in_bed.endTime
+    );
+
+
+    const calculateDifference = (startDate, startTime, endDate, endTime) => {
+        // Ensure all values are defined before proceeding
+        if (!startDate || !startTime || !endDate || !endTime) {
+            return { hours: 0, minutes: 0 };  // Return zero if any value is missing
+        }
+    
+        // Convert date format from DD/MM/YYYY to MM/DD/YYYY for proper parsing
+        const formattedStartDate = startDate.split('/').reverse().join('/');
+        const formattedEndDate = endDate.split('/').reverse().join('/');
+    
+        // Create Date objects with corrected format
+        const startDateTime = new Date(`${formattedStartDate} ${startTime}`);
+        const endDateTime = new Date(`${formattedEndDate} ${endTime}`);
+    
+        if (isNaN(startDateTime) || isNaN(endDateTime)) {
+            return { hours: 0, minutes: 0 };  // Handle invalid date formats
+        }
+    
+        // Calculate the difference in milliseconds
+        const differenceMs = endDateTime - startDateTime;
+    
+        // Convert the difference to hours and minutes
+        const hours = Math.floor(differenceMs / (1000 * 60 * 60));
+        const minutes = Math.floor((differenceMs % (1000 * 60 * 60)) / (1000 * 60));
+    
+        return { hours, minutes };
+    }
 
     if (isLoading) {
         return <LoadingScreen />;
@@ -43,57 +113,42 @@ export default function Tracking() {
             <ScrollView >
                 <View style={styles.cardMain}>
                     <View style={styles.cardContainer}>
-                        <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} />
+                        {/* <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} /> */}
                         <Text style={styles.cardName}>{"Water Intake"}</Text>
                     </View>
                     <View style={styles.textStyle}>
-                        <Text style={styles.dateStyle} >{details?.today_water_consumption}</Text>
+                        <Text style={styles.desText} >{details?.today_water_consumption}</Text>
                     </View>
-
-                    <Text style={styles.desTitle}>{"description"}</Text>
-                    {/* <Text style={styles.desText}>{data.title}</Text> */}
                 </View>
-
                 <View style={styles.cardMain}>
                     <View style={styles.cardContainer}>
-                        <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} />
+                        {/* <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} /> */}
                         <Text style={styles.cardName}>{"Menstrual Cycles"}</Text>
                     </View>
                     <View style={styles.textStyle}>
-                        <Text style={styles.dateStyle} >{details?.menstrualDetails?.day}</Text>
+                        <Text style={styles.desText}>{details?.menstrualDetails?.day} {" "} {details?.menstrualDetails?.month} {" "} {details?.menstrualDetails?.year}</Text>
                     </View>
-
-                    <Text style={styles.desTitle}>{details?.menstrualDetails?.month}</Text>
-                    <Text style={styles.desText}>{details?.menstrualDetails?.year}</Text>
                 </View>
-
                 <View style={styles.cardMain}>
                     <View style={styles.cardContainer}>
-                        <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} />
+                        {/* <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} /> */}
                         <Text style={styles.cardName}>{"Food Intake"}</Text>
                     </View>
-                    <View style={styles.textStyle}>
-                        <Text style={styles.dateStyle} >{details?.food_consumption?.calorieAmount}</Text>
-                    </View>
-
-                    <Text style={styles.desTitle}>{details?.food_consumption?.fatAmount}</Text>
-                    <Text style={styles.desText}>{details?.food_consumption?.protineAmount}</Text>
+                    <Text style={styles.desText} >Calorie Amount : {details?.food_consumption?.calorieAmount}</Text>
+                    <Text style={styles.desText}> Fat Amount : {details?.food_consumption?.fatAmount}</Text>
+                    <Text style={styles.desText}> Protine Amount : {details?.food_consumption?.protineAmount}</Text>
                 </View>
                 <View style={styles.cardMain}>
                     <View style={styles.cardContainer}>
-                        <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} />
+                        {/* <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} /> */}
                         <Text style={styles.cardName}>{"Sleep Pattern"}</Text>
                     </View>
                     <View style={styles.textStyle}>
-                        <Text style={styles.dateStyle} >{details?.sleep_tracker?.asleep?.startDate}</Text>
+                        <Text style={styles.desText} >Asleep Time : {asleepDifference.hours} hours {asleepDifference.minutes} minutes</Text>
                     </View>
-                    <View style={styles.textStyle}>
-                        <Text style={styles.dateStyle} >{details?.sleep_tracker?.asleep?.startTime}</Text>
-                    </View>
-                    <Text style={styles.desTitle}>{details?.sleep_tracker?.in_bed?.startDate}</Text>
-                    <Text style={styles.desTitle}>{details?.sleep_tracker?.in_bed?.startTime}</Text>
+                    <Text style={styles.desText}>In Bed Time : {inBedDifference.hours} hours {inBedDifference.minutes} minutes
+                    </Text>
                 </View>
-
             </ScrollView>
             <Footer />
         </View>

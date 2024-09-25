@@ -150,7 +150,7 @@ export const getTrackingApi = (token, setDetails, setIsLoading) => {
         .catch(function (error) {
             setIsLoading(false)
             console.log(error);
-            setInsightsList([]);
+            setDetails({});
             
         });
 }
