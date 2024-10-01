@@ -57,7 +57,7 @@ export default function MigraineReason() {
     }
     return (
         <View style={styles.container}>
-            <ScrollView >
+            <ScrollView style={styles.wrapper}>
                 {/* <View style={styles.container}> */}
 
                 <View style={styles.grid}>
@@ -86,6 +86,9 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         backgroundColor: '#0A142A'
+    },
+    wrapper: {
+        paddingHorizontal: 16,
     },
     textStyle: {
         fontSize: 25,
@@ -156,15 +159,15 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         padding: 10,
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 4,
     },
     card1: {
-        backgroundColor: '#EB7D26',
+        backgroundColor: '#2F1908',
         width: '30%',
         marginVertical: 10,
         padding: 10,
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 4,
     },
     icon: {
         width: 50,

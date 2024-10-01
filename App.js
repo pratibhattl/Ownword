@@ -33,6 +33,7 @@ import PainArea from './src/pages/PainArea';
 import MigraineReason from './src/pages/MigraineReason';
 import Foram from './src/pages/Foram';
 import Chat from './src/pages/Chat';
+import MigraineList from './src/pages/MigraineList';
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -200,6 +201,11 @@ function App() {
               name="Chat"
               component={Chat}
               options={{ headerShown: true, title: 'Onward - Chat' }}
+            />
+            <Stack.Screen
+            name='MigraineList'
+            component={MigraineList}
+            options={{ headerShown: true, title: 'Onward - Migraine Logs' }}
             />
           </>
         }

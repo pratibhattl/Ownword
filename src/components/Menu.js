@@ -72,6 +72,10 @@ export default function Menu() {
                     <Image source={require('../assets/money-send.png')} />
                     <Text style={styles.menuText} onPress={() => navigation.navigate('Donation')}> {"Donations"}</Text>
                 </View>
+                <View style={styles.menuStyle} >
+                    <Image source={require('../assets/notify.png')} />
+                    <Text style={styles.menuText} onPress={() => navigation.navigate('MigraineList')}> {"Migraine Logs"}</Text>
+                </View>
                 <View style={styles.menuStyle}>
                     <Image source={require('../assets/edit-2.png')} />
                     <Text style={styles.menuText} onPress={() => navigation.navigate('EditProfile')}> {"Edit Profile"}</Text>

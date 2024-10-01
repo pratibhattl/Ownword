@@ -63,7 +63,7 @@ export default function PainArea() {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView style={styles.wrapper}>
 
                 <View style={styles.formWrap}>
                     {/* <Text style={styles.label}>Area of Pain</Text> */}
@@ -122,7 +122,7 @@ export default function PainArea() {
             <TouchableOpacity style={styles.arrowButton}
                 onPress={() => onGoForward()}
             >
-                <Image style={styles.arrowStyle} source={require('../assets/right-arrow.jpg')} />
+                <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
             </TouchableOpacity>
             <Footer />
         </View >
@@ -151,18 +151,22 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 20
     },
+    arrowStyle: {
+        height: 24,
+        width: 24,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+    },
     arrowButton: {
-        alignItems: 'flex-end',
-        padding: 20
+        height: 54,
+        width: 54,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+        padding: 15,
+        margin: 16,
+        marginLeft: 'auto',
     },
     formWrap: {
-        padding: 10,
-        margin: 10,
-    },
-    arrowStyle: {
-        fontSize: 20,
-        height: 50,
-        width: 50
     },
     secondoryButton: {
         // width: '30%',
@@ -206,15 +210,15 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         padding: 10,
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 4,
     },
     card1: {
-        backgroundColor: '#EB7D26',
+        backgroundColor: '#2F1908',
         width: '30%',
         marginVertical: 10,
         padding: 10,
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 4,
     },
     icon: {
         width: 50,
@@ -224,7 +228,11 @@ const styles = StyleSheet.create({
     cardText: {
         color: 'white',
         fontSize: 12,
+        textAlign: 'center',
     },
+    wrapper: {
+        paddingHorizontal: 16,
+    }
 })
 
 // {selectedData == 'FrontPain' ?
