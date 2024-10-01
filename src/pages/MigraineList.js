@@ -4,57 +4,97 @@ import Footer from '../components/Footer'
 import { useNavigation } from '@react-navigation/native'
 import { getData } from '../helper';
 import LoadingScreen from '../components/LoadingScreen';
+import { getMigraineLogApi } from '../apiService/MigraineLogApi';
 
 export default function MigraineList() {
-const navigation = useNavigation();
-const [token, setToken] = useState(null)
-const [isLoading, setIsLoading] = React.useState(false);
-useEffect(() => {
-    getData('token').then((token) => {
-        setToken(token);
-    });
-   
-}, []);
+    const navigation = useNavigation();
+    const [token, setToken] = useState(null)
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [migraineList, setMigraineList] = useState([])
+    useEffect(() => {
+        getData('token').then((token) => {
+            setToken(token);
+        });
 
+    }, []);
 
+    useEffect(() => {
+        getMigraineLogApi(token, setMigraineList, setIsLoading)
+    }, [token])
 
-if (isLoading) {
-    return <LoadingScreen />;
-}
+    if (isLoading) {
+        return <LoadingScreen />;
+    }
 
     return (
         <View style={styles.container}>
             <ScrollView style={styles.wrapper}>
-               <View style={styles.summary}>
-                    <View style={styles.summaryleft}>
-                        <View style={styles.summarytext}>
-                            <Text style={styles.summarylable}>Start Date:</Text>
-                            <Text style={styles.summarydata}>13/08/2024</Text>
-                        </View>
-                        <View style={styles.summarytext}>
-                            <Text style={styles.summarylable}>Start Time:</Text>
-                            <Text style={styles.summarydata}>01:34 AM</Text>
-                        </View>
-                    </View>
-                    <View style={styles.summaryright}>
-                        <View style={styles.summarytext}>
-                            <Text style={styles.summarylable}>End Date:</Text>
-                            <Text style={styles.summarydata}>13/08/2024</Text>
-                        </View>
-                        <View style={styles.summarytext}>
-                            <Text style={styles.summarylable}>End Time:</Text>
-                            <Text style={styles.summarydata}>01:34 AM</Text>
-                        </View>
-                    </View>
-               </View>
-               <View style={styles.painpoints}>
-                    <Text style={styles.pheading}>Pain Points</Text>
-               </View>
-               <View style={styles.painpoints}>
-                    <Text style={styles.pheading}>Pain Reasons</Text>
-               </View>
+                {migraineList?.length > 0 &&
+                    migraineList?.map((x) => {
+                        return (
+                            <>
+                                <View style={styles.summary}>
+                                    <View style={styles.summaryleft}>
+                                        <View style={styles.summarytext}>
+                                            <Text style={styles.summarylable}>Start Date:</Text>
+                                            <Text style={styles.summarydata}>{x?.startDate}</Text>
+                                        </View>
+                                        <View style={styles.summarytext}>
+                                            <Text style={styles.summarylable}>Start Time:</Text>
+                                            <Text style={styles.summarydata}>{x?.startTime}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.summaryright}>
+                                        <View style={styles.summarytext}>
+                                            <Text style={styles.summarylable}>End Date:</Text>
+                                            <Text style={styles.summarydata}>{x?.endDate}</Text>
+                                        </View>
+                                        <View style={styles.summarytext}>
+                                            <Text style={styles.summarylable}>End Time:</Text>
+                                            <Text style={styles.summarydata}>{x?.endTime}</Text>
+                                        </View>
+                                        <View style={styles.summarytext}>
+                                            <Text style={styles.summarylable}>Pain Scale:</Text>
+                                            <Text style={styles.summarydata}>{x?.painScale}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                {x?.painPosition?.length > 0 &&
+                                    <View style={styles.painpoints}>
+                                        <Text style={styles.pheading}>Pain Points</Text>
+                                        {x?.painPosition?.map((item) => {
+                                            return (
+                                                <>
+                                                    <View style={styles.summarytext}>
+                                                        <Image source={{ uri: item?.image }} />
+                                                        <Text style={styles.summarydata}>{item?.positionName}</Text>
+                                                    </View>
+
+                                                    {/* <Text>{item?.title}</Text> */}
+                                                </>
+                                            )
+                                        })}
+                                    </View>
+                                }
+                                {x?.painReason?.length > 0 &&
+                                    <View style={styles.painpoints}>
+                                        <Text style={styles.pheading}>Pain Reasons</Text>
+                                        {x?.painReason?.map((item) => {
+                                            return (
+                                                <>
+                                                    <View style={styles.summarytext}>
+                                                        <Image source={{ uri: item?.image }} />
+                                                        <Text style={styles.summarydata}>{item?.title}</Text>
+                                                    </View>
+                                                </>
+                                            )
+                                        })}
+                                    </View>
+                                }
+                            </>)
+                    })}
             </ScrollView>
-           
+
             <Footer />
         </View>
     )
@@ -104,7 +144,7 @@ const styles = StyleSheet.create({
         marginBottom: 24,
         paddingHorizontal: 16,
     },
-    pheading:{
+    pheading: {
         color: '#fff',
         fontSize: 20,
         fontWeight: '200',

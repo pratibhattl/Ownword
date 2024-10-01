@@ -7,6 +7,14 @@ import { getData } from '../helper';
 import { getPositionApi } from '../apiService/MigraineLogApi';
 import { mergeData } from '../helper';
 import Slider from '@react-native-community/slider';
+import leftBackHeadUpper from "../assets/left-back-head-upper.png"
+import leftBackHeadLower from "../assets/left-back-head-lower.png"
+import leftBackNeck from "../assets/left-back-neck.png"
+import leftCheek from "../assets/left-cheek.png"
+import leftEye from "../assets/left-eye.png"
+import leftFrontkHead from "../assets/left-front-head.png"
+// import leftTemple from "../assets/left-temple"
+
 
 export default function PainArea() {
     const [painLevel, setPainLevel] = useState(0);
@@ -112,7 +120,19 @@ export default function PainArea() {
                     {positionList?.map((x) => {
                         return (
                             <TouchableOpacity style={[painArea?.includes(x?._id) ? styles.card1 : styles.card]} onPress={() => onSelectReason(x?._id)}>
-                                {/* <Image source={{ uri: x.image }} style={styles.icon} /> */}
+                               {
+                                x?.positionName ==="Left Back Of Head (Lower)" ?
+                                <Image source={require("../assets/left-back-head-lower.png")} style={styles.icon} />
+                                :
+                                x?.positionName ==="Left Back Of Head (Upper)" ?
+                                <Image source={require("../assets/left-back-head-upper.png")} style={styles.icon} />
+                                :
+                                x?.positionName ==="Left Back Of Neck" ?
+                                <Image source={require("../assets/left-back-neck.png")} style={styles.icon} />
+                                :
+                                x?.positionName === "Between Eye" &&
+                                <Image source={require("../assets/left-eye.png")} style={styles.icon} />
+                               }
                                 <Text style={styles.cardText}>{x?.positionName}</Text>
                             </TouchableOpacity>
                         )

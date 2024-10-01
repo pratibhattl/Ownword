@@ -66,7 +66,6 @@ export const getPositionApi = (token, setPositionList, setIsLoading) => {
 
 export const addNewTrigger = (token, details, setIsLoading,navigation) => {
     setIsLoading(true)
-    console.log(details,"details");
     
     axios.post(`${API_URL}migraine-logs/create-new-log`,details, {
         headers: {
@@ -88,7 +87,6 @@ export const addNewTrigger = (token, details, setIsLoading,navigation) => {
 
 export const updateNewTrigger = (token, details,id, setIsLoading,navigation) => {
     setIsLoading(true)
-    console.log(details,id,"details");
     
     axios.put(`${API_URL}migraine-logs/update-log-time/${id}`,details, {
         headers: {
@@ -103,6 +101,28 @@ export const updateNewTrigger = (token, details,id, setIsLoading,navigation) => 
             setIsLoading(false)
             alert("Log updated successfully")
             navigation.navigate("Home")
+        })
+        .catch(function (error) {
+            setIsLoading(false)
+            console.log(error);
+        });
+}
+
+
+
+export const getMigraneApi = (token, setMigraineList, setIsLoading) => {
+    setIsLoading(true)
+    axios.get(`${API_URL}migraine-logs/user-log-list?page=1&limit=10000`, {
+        headers: {
+            'x-access-token': token,
+            'Content-Type': 'application/json',
+            'Custom-Header': 'CustomHeaderValue'
+        }
+    })
+        .then(function (response) {
+            // console.log('responsesdfsfsdfsdf', response?.data);
+            setIsLoading(false)
+            setMigraineList(response?.data?.lists);
         })
         .catch(function (error) {
             setIsLoading(false)
