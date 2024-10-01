@@ -109,29 +109,35 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textStyle: {
-        fontSize: 20,
-        color: '#20C3D3'
+        fontSize: 16,
+        color: '#20C3D3',
+        lineHeight: 26,
     },
     text: {
         fontSize: 15,
-        color: '#fff'
+        color: '#fff',
+        lineHeight: 26,
+        marginBottom: 18,
     },
     profileImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 20,
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        borderWidth: 2,
+        borderColor: '#fff',
+        marginVertical: 16,
     },
     menuStyle: {
         display: 'flex',
         flexDirection: 'row',
-        marginTop: 50,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        paddingLeft: 20
+        paddingHorizontal: 30,
+        paddingVertical: 14,
     },
     menuText: {
-        fontSize: 18,
+        fontSize: 17,
         color: '#fff',
-        marginLeft: 10
+        marginLeft: 30,
     }
 });

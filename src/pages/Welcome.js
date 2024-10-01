@@ -7,8 +7,8 @@ export default function Welcome() {
 
     return (
         <View style={styles.container}>
-            <Image style={styles.logo} source={require('../assets/Group.png')} />
-            <View>
+            <View style={styles.body}>
+                <Image style={styles.logo} source={require('../assets/Group.png')} />
                 <Text style={styles.topText}> Onward </Text>
                 <Text style={styles.textStyle}> The #1 Migraine and Headache Tracer </Text>
             </View>
@@ -26,9 +26,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        paddingLeft: 35,
-        paddingRight: 35,
+        paddingHorizontal: 24,
         backgroundColor: '#0A142A',
+        width: '100%',
+    },
+    body: {
+        marginVertical: 'auto',
     },
     logo: {
         resizeMode: 'contain',
@@ -40,7 +43,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 30,
         textAlign: 'center'
-
     },
     textStyle: {
         color: '#FFFFFF',
@@ -48,29 +50,31 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     primaryButton: {
-        backgroundColor: '#FFFFFF',
-        padding: 15,
-        borderRadius: 5,
+        width: '100%',
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
         alignItems: 'center',
-        marginBottom: 30,
+        marginBottom: 40,
+        height: 54,
     },
     buttonText: {
         color: '#000',
         fontSize: 20,
+        lineHeight: 54,
     },
-    
     footer: {
         position: 'absolute',
-        bottom: 10,
-        left: 0,
-        right: 0,
-        paddingLeft: 35,
-        paddingRight: 35,
-
+        bottom: 0,
+        left: 24,
+        right: 24,
+        width: '100%',
+        paddingBottom: 40,
+        marginTop: 'auto',
     },
     footertext: {
         textAlign: 'center',
         color: '#fff',
-        fontSize: 17,
+        fontSize: 16,
+        margin: 0,
     },
 })

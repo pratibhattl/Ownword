@@ -43,7 +43,7 @@ const onSubmit=(data)=>{
 
     return (
         <View style={styles.container}>
-            <ScrollView >
+            <ScrollView style={styles.wrapper}>
                 <View style={styles.cardMain}>
                     <Text style={styles.textStyle}>{foramDetails?.title}</Text>
                     <View style={styles.cardContainer}>
@@ -52,46 +52,56 @@ const onSubmit=(data)=>{
                 </View>
                 {commentList?.length > 0 && commentList?.map((data) => {
                     return (
-                        <View style={styles.cardMain}>
-                            <View style={styles.cardContainer}><Image source={{ uri: data.profile_img }} style={styles.cardImage} />
-                                <Text style={styles.cardName}>{data.comment}</Text>
-                                <Text>{" "}</Text>
-                            </View>
-                            <View style={styles.textStyle}>
-                                <Text style={styles.dateStyle} >{data.createdAt}</Text>
+                        <View style={styles.chatMain}>
+                            <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} />
+                            <View style={styles.chatContainer}>
+                                
+                                {/* <Image source={{ uri: data.profile_img }} style={styles.cardImage} /> */}
+                                
+                                {/* <Text>{" "}</Text> */}
+                                <View style={styles.textStyle}>
+                                    <Text style={styles.username} >Holly Harding</Text>
+                                    <Text style={styles.dateStyle} >{data.createdAt}</Text>
+                                </View>
+
+                                <Text style={styles.chatName}>{data.comment}</Text>
                             </View>
                         </View>
                     )
                 })}
                 
             </ScrollView>
+            <View style={styles.chatBottom}>
             <Controller
-                    control={control}
-                    rules={{
-                        required: 'Enter your comment',
-
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, submitted && errors.comment ? styles.isInvalid : null]}
-                                // placeholder="Email*"
-                                onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
-                                keyboardType="comment"
-                                autoCapitalize="none"
-                            />
-                            {submitted && errors.comment && (
-                                <Text style={styles.errorText}>{errors.comment.message}</Text>
-                            )}
-                        </>
-                    )}
-                    name="comment"
-                />
-            <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit(onSubmit)}>
-                <Text style={styles.buttonText}>Send</Text>
-            </TouchableOpacity>
+                     
+                     control={control}
+                     rules={{
+                         required: 'Enter your comment',
+ 
+                     }}
+                     render={({ field: { onChange, onBlur, value } }) => (
+                         <>
+                             <TextInput
+                                 style={[styles.input, submitted && errors.comment ? styles.isInvalid : null]}
+                                 // placeholder="Email*"
+                                 onBlur={onBlur}
+                                 onChangeText={onChange}
+                                 value={value}
+                                 keyboardType="comment"
+                                 autoCapitalize="none"
+                             />
+                             {submitted && errors.comment && (
+                                 <Text style={styles.errorText}>{errors.comment.message}</Text>
+                             )}
+                         </>
+                     )}
+                     name="comment"
+                 />
+             <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit(onSubmit)}>
+                 <Image source={require('../assets/sendbig.png')} />
+             </TouchableOpacity>
+            </View>
+            
             <Footer />
         </View>
     )
@@ -101,10 +111,13 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#0A142A'
     },
+    wrapper: {
+        paddingHorizontal: 16,
+    },
     textStyle: {
         color: '#fff',
-        fontSize: 20
-
+        fontSize: 20,
+        marginBottom: 24,
     },
     buttonText: {
         color: '#000',
@@ -121,39 +134,29 @@ const styles = StyleSheet.create({
     cardMain: {
         with: '100%',
         flexDirection: 'column',
-        alignItems: 'end',
-        padding: 10,
-        backgroundColor: '#232C3F',
-        borderRadius: 8,
-        marginTop: 20,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
-        marginRight: 10,
-        marginLeft: 10
+        borderBottomWidth: 1,
+        borderBottomColor: '#232C3F',
+        paddingBottom: 24,
+        marginBottom: 24,
     },
     cardContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '80%'
     },
-
     cardText: {
-        fontSize: 16,
-        color: '#fff',
+        fontSize: 14,
+        lineHeight: 24,
+        color: '#8DCAFC',
+        fontWeight: '300',
     },
     input: {
-        height: 50,
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 5,
+        height: 54,
         paddingHorizontal: 10,
-        marginBottom: 15,
+        borderRadius: 54,
         color: '#fff',
         placeholderTextColor: "#fff",
-        backgroundColor: '#232C3F',
+        backgroundColor: 'rgba(255,255,255,0.1)',
     },
     isInvalid: {
         borderColor: 'red',
@@ -168,11 +171,57 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     primaryButton: {
-        backgroundColor: '#ffff',
-        padding: 15,
-        borderRadius: 5,
+        width: 44,
+        height: 44,
+        borderRadius: 44,
+        backgroundColor: '#20C3D3',
         alignItems: 'center',
-        marginBottom: 15,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 5,
+        left: 'auto',
+        right: 5,
+    },
+    cardImage: {
+        width: 32,
+        height: 32,
+        borderRadius: 32,
+    },
+
+    chatMain: {
+        with: '100%',
+        flexDirection: 'row',
+        paddingBottom: 24,
+        marginBottom: 24,
+    },
+    chatContainer: {
+        flexDirection: 'column',
+        flex: 1,
+        paddingLeft: 10,
+    },
+    chatText: {
+        fontSize: 14,
+        lineHeight: 24,
+        color: '#8DCAFC',
+        fontWeight: '300',
+    },
+    username: {
+        fontSize: 16,
+        color: '#20C3D3',
+        marginBottom: 10,
+    },
+    dateStyle: {
+        fontSize: 14,
+        color: '#fff',
+    },
+    chatName:  {
+        fontSize: 14,
+        color: '#fff',
+        fontWeight: '300',
+    },
+    chatBottom: {
+        margin: 16,
+        position: 'relative',
     },
 
 });

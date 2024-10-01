@@ -74,28 +74,30 @@ export default function Insights() {
 
     return (
         <View style={styles.container}>
-            <ScrollView >
-                <View style={styles.buttonStyle} >
-                    <TouchableOpacity style={selectedTab === 'Insight' ? styles.selected : styles.primaryButton} onPress={() => setSelectedTab('Insight')}>
-                        <Text style={styles.buttonText}>Insights</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={selectedTab === 'Blog' ? styles.selected : styles.primaryButton} onPress={() => setSelectedTab('Blog')}>
-                        <Text style={styles.buttonText}>Blogs</Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={styles.buttonStyle} >
+                <TouchableOpacity style={selectedTab === 'Insight' ? styles.selected : styles.primaryButton} onPress={() => setSelectedTab('Insight')}>
+                    <Text style={styles.buttonText}>Insights</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={selectedTab === 'Blog' ? styles.selected : styles.primaryButton} onPress={() => setSelectedTab('Blog')}>
+                    <Text style={styles.buttonText}>Blogs</Text>
+                </TouchableOpacity>
+            </View>
+            <ScrollView style={styles.scrollcontainer}>
                 {insightsList?.length > 0 ? insightsList?.map((data) => {
                     return (
                         <View style={styles.cardMain}>
-                            <View style={styles.cardContainer}>
-                                {(data.insight_image || data.blog_image) !== null ?
-                                    <Image source={{ uri: data.insight_image ? data.insight_image : data.blog_image }} style={styles.cardImage} />
-                                    :
-                                    <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} />
-                                }
-                                <Text style={styles.cardName}>{data.title}</Text>
-                            </View>
-                            <View style={styles.textStyle}>
-                                <Text style={styles.dateStyle} >{data.createdAt}</Text>
+                            <View style={styles.cardHeader}>
+                                <View style={styles.cardContainer}>
+                                    {(data.insight_image || data.blog_image) !== null ?
+                                        <Image source={{ uri: data.insight_image ? data.insight_image : data.blog_image }} style={styles.cardImage} />
+                                        :
+                                        <Image source={require('../assets/Rectangle.png')} style={styles.cardImage} />
+                                    }
+                                </View>
+                                <View style={styles.textStyle}>
+                                    <Text style={styles.cardName}>Admin</Text>
+                                    <Text style={styles.dateStyle} >{data.createdAt}</Text>
+                                </View>
                             </View>
                             <View>
                                 {(data.insight_image || data.blog_image) !== null ?
@@ -104,16 +106,15 @@ export default function Insights() {
                                     <Image source={require('../assets/Rectangle.png')} style={styles.banner} />
                                 }
                             </View>
-                            <Text style={styles.desTitle}>{data.description}</Text>
+                            <View style={styles.cardContent}>
+                                <Text style={styles.cardName}>{data.title}</Text>
+                                <Text style={styles.desTitle}>{data.description}</Text>
+                            </View>
                             {/* <Text style={styles.desText}>{data.title}</Text> */}
                             <View style={styles.imageStyle}>
                                 <View style={styles.optionIcon}>
                                     <Text style={styles.desText}>{data?.likesCount} </Text>
-                                    {data?.isLiked == true ?
-                                        <Text>❤️</Text>
-                                        :
-                                        <Image source={require('../assets/heart.png')} />
-                                    }
+                                    <Image source={require('../assets/heart.png')} />
                                 </View>
                                 <View style={styles.optionIcon}>
                                     <Text style={styles.desText}>{data?.commentsCount} </Text>
@@ -123,17 +124,18 @@ export default function Insights() {
                                     <Text style={styles.desText}> </Text>
                                     <Image source={require('../assets/sendIcon.png')} />
                                 </View> */}
-
-
                             </View>
                             <View style={styles.secondaryButton1}>
                                 <TouchableOpacity style={styles.secondaryButton} onPress={() => likeBlogFunc(data)}>
+                                    <Image source={require('../assets/heart-w.png')} style={styles.smallicon} />
                                     <Text style={styles.optionButton}>Like</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.secondaryButton} onPress={() => toggleModal(data?._id)} >
+                                    <Image source={require('../assets/message-text-w.png')} style={styles.smallicon} />
                                     <Text style={styles.optionButton}>Comments</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.secondaryButton}>
+                                    <Image source={require('../assets/send-w.png')} style={styles.smallicon} />
                                     <Text style={styles.optionButton}>Share</Text>
                                 </TouchableOpacity>
                             </View>
@@ -162,6 +164,9 @@ export default function Insights() {
     )
 }
 const styles = StyleSheet.create({
+    scrollcontainer:{
+        paddingHorizontal: 16,
+    },
     input: {
         height: 50,
         borderColor: '#fff',
@@ -177,57 +182,64 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 15,
-        borderRadius: 5,
-        marginBottom: 15,
+        padding: 16,
+        gap: 12,
     },
     optionIcon: {
-        margin: 20,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     secondaryButton: {
+        flex: 1,
         backgroundColor: '#0A142A',
-        padding: 15,
+        padding: 5,
+        borderRadius: 5,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 37,
+        gap: 6,
     },
     banner: {
         width: '100%',
-        height: 180
+        height: 225,
     },
+    cardContent: {
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+    }, 
     optionButton: {
-        fontSize: 15,
-        color: '#fff'
+        fontSize: 13,
+        color: '#fff',
     },
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#0A142A',
     },
     buttonStyle: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
     },
     primaryButton: {
         backgroundColor: '#ffff',
-        padding: 15,
         borderRadius: 30,
         alignItems: 'center',
-        marginBottom: 15,
-        marginTop: 15,
-        width: '48%'
+        width: '48%',
+        height: 32,
     },
     selected: {
         backgroundColor: '#20C3D3',
-        padding: 15,
         borderRadius: 30,
         alignItems: 'center',
-        marginBottom: 15,
-        marginTop: 15,
-        width: '48%'
+        width: '48%',
+        height: 32,
     },
-
     buttonText: {
         color: '#000',
-        fontSize: 16,
+        fontSize: 14,
+        lineHeight: 32,
     },
     textStyle: {
         justifyContent: 'flex-start',
@@ -236,13 +248,13 @@ const styles = StyleSheet.create({
     imageStyle: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        alignItems: 'flex-end'
+        paddingHorizontal: 16,
+        gap: 24,
     },
     cardMain: {
         with: '100%',
         flexDirection: 'column',  // Horizontal layout
         alignItems: 'end',
-        padding: 10,
         backgroundColor: '#232C3F',
         borderRadius: 8,
         marginTop: 20,
@@ -251,19 +263,21 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         shadowOffset: { width: 0, height: 2 },
         elevation: 2,  // For Android shadow,
-        marginRight: 10,
-        marginLeft: 10
     },
     cardContainer: {
-        flexDirection: 'row',  // Horizontal layout
-        alignItems: 'center',  // Center content vertically
-        width: '52%'
+        width: 44,
+        height: 44,
+        marginRight: 14,
+    },
+    cardHeader: {
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        flexDirection: 'row',
     },
     cardImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,  // Circular image
-        marginRight: 10,
+        width: 44,
+        height: 44,
+        borderRadius: 30,  // Circular image
     },
     cardText: {
         fontSize: 16,
@@ -274,14 +288,17 @@ const styles = StyleSheet.create({
         color: '#868686'
     },
     cardName: {
-        fontSize: 16,
-        color: '#20C3D3'
+        fontSize: 17,
+        lineHeight: 24,
+        color: '#20C3D3',
+        marginBottom: 12,
     },
     desTitle: {
-        fontSize: 17,
-        color: '#20C3D3'
+        fontSize: 13,
+        lineHeight: 15,
+        color: '#fff'
     },
     desText: {
-        color: '#fff'
+        color: '#6C727F'
     }
 });

@@ -65,7 +65,7 @@ export default function MigraineLog() {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView  style={styles.wrapper}>
 
                 <View style={styles.formWrap}>
                     {!migraineLogs[0]?.endDate ?
@@ -75,7 +75,7 @@ export default function MigraineLog() {
                                 // rules={{ required: 'Select your date of birth' }}
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text style={styles.label}>End Time*</Text>
+                                        <Text style={styles.inputlabel}>End Time*</Text>
                                         <Text style={styles.label}>{details?.endTime}</Text>
                                         <Button title="Open" onPress={() => setOpenEndTime(true)} />
                                         {endTime &&
@@ -106,7 +106,7 @@ export default function MigraineLog() {
                                 // rules={{ required: 'Select your date of birth' }}
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text style={styles.label}>End Date*</Text>
+                                        <Text style={styles.inputlabel}>End Date*</Text>
                                         <Text style={styles.label}>{details?.endDate}</Text>
                                         <Button title="Open" onPress={() => setOpenEndDate(true)} />
                                         {openEndDate &&
@@ -140,9 +140,14 @@ export default function MigraineLog() {
                                 // rules={{ required: 'Select your date of birth' }}
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text style={styles.label}>Start Time*</Text>
-                                        <Text style={styles.label}>{details?.start_time}</Text>
-                                        <Button title="Open" onPress={() => setOpen(true)} />
+                                        <Text style={styles.inputlabel}>Start Time*</Text>
+                                        <View style={styles.dateblock}>
+                                            <Text style={styles.datetime}>{details?.start_time}</Text>
+                                            {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
+                                            <TouchableOpacity onPress={() => setOpen(true)} style={styles.button}>
+                                                <Image source={require('../assets/clock.png')} style={styles.image} />
+                                            </TouchableOpacity>
+                                        </View>
                                         {open &&
                                             <DatePicker
                                                 modal
@@ -171,9 +176,14 @@ export default function MigraineLog() {
                                 // rules={{ required: 'Select your date of birth' }}
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text style={styles.label}>Start date*</Text>
-                                        <Text style={styles.label}>{details?.start_date}</Text>
-                                        <Button title="Open" onPress={() => setOpenDate(true)} />
+                                        <Text style={styles.inputlabel}>Start date*</Text>
+                                        <View style={styles.dateblock}>
+                                            <Text style={styles.datetime}>{details?.start_date}</Text>
+                                            {/* <Button title="Open" onPress={() => setOpenDate(true)} /> */}
+                                            <TouchableOpacity onPress={() => setOpenDate(true)} style={styles.button}>
+                                                <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                            </TouchableOpacity>
+                                        </View>
                                         {openDate &&
                                             <DatePicker
                                                 modal
@@ -206,7 +216,7 @@ export default function MigraineLog() {
             <TouchableOpacity style={styles.arrowButton}
                 onPress={() => onGoForward()}
             >
-                <Image style={styles.arrowStyle} source={require('../assets/right-arrow.jpg')} />
+                <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
             </TouchableOpacity>
             <Footer />
         </View >
@@ -219,17 +229,25 @@ const styles = StyleSheet.create({
         backgroundColor: '#0A142A',
     },
     arrowStyle: {
-        fontSize: 20,
-        height: 50,
-        width: 50
+        height: 24,
+        width: 24,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+    },
+    wrapper: {
+        paddingHorizontal: 16,
     },
     arrowButton: {
-        alignItems: 'flex-end',
-        padding: 20
+        height: 54,
+        width: 54,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+        padding: 15,
+        margin: 16,
+        marginLeft: 'auto',
     },
 
     formWrap: {
-        padding: 10,
         marginBottom: 100,
     },
     input: {
@@ -279,4 +297,27 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
     },
+
+    inputlabel: {
+        fontSize: 24,
+        fontWeight: '200',
+        color: '#fff',
+        marginBottom: 24,
+    },
+    dateblock: {
+        flexDirection: 'row',
+        backgroundColor: '#232C3F',
+        borderRadius: 4,
+        height: 100,
+        alignItems: 'center',
+        paddingHorizontal: 24,
+        justifyContent: 'space-between',
+        marginBottom: 24,
+    },
+    datetime: {
+        fontSize: 40,
+        fontWeight: '200',
+        color: '#fff',
+    },
+
 })

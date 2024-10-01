@@ -23,7 +23,6 @@ const Login = () => {
         <View style={styles.container}>
             {/* <Text style={styles.logo}>LOGO</Text> */}
             <Text style={styles.topLabel}>Welcome back</Text>
-
             <View style={styles.formWrap}>
 
                 <Controller
@@ -98,21 +97,23 @@ const Login = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        paddingLeft: 35,
-        paddingRight: 35,
+        justifyContent: 'flex-start',
+        paddingHorizontal: 24,
+        width: '100%',
         backgroundColor: '#0A142A',
+        paddingTop: 80,
     },
 
     topLabel: {
         color: '#fff',
-        marginBottom: 10,
-        fontSize: 25
+        marginBottom: 32,
+        fontSize: 24,
     },
     label: {
         color: '#fff',
         marginBottom: 10,
-        fontSize: 15
+        fontSize: 14,
+        opacity: 0.3,
     },
 
     formWrap: {
@@ -122,13 +123,14 @@ const styles = StyleSheet.create({
     input: {
         height: 50,
         borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 5,
+        borderWidth: 0,
+        borderRadius: 6,
         paddingHorizontal: 10,
-        marginBottom: 15,
+        marginBottom: 24,
         color: '#fff',
         placeholderTextColor: "#fff",
         backgroundColor: '#232C3F',
+        height: 54,
     },
     isInvalid: {
         borderColor: 'red',
@@ -139,15 +141,16 @@ const styles = StyleSheet.create({
     },
     linkText: {
         color: '#fff',
-        textAlign: 'left',
-        marginBottom: 15,
+        textAlign: 'right',
+        paddingBottom: 24,
     },
     primaryButton: {
-        backgroundColor: '#ffff',
-        padding: 15,
-        borderRadius: 5,
+        width: '100%',
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
         alignItems: 'center',
-        marginBottom: 15,
+        marginBottom: 40,
+        height: 54,
     },
     secondaryButton: {
         backgroundColor: 'transparent',
@@ -161,22 +164,25 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000',
         fontSize: 16,
+        lineHeight: 54,
     },
     skipText: {
         alignItems: 'center',
     },
     footer: {
         position: 'absolute',
-        bottom: 10,
-        left: 0,
-        right: 0,
-        paddingLeft: 35,
-        paddingRight: 35,
-
+        bottom: 0,
+        left: 24,
+        right: 24,
+        width: '100%',
+        paddingBottom: 40,
+        marginTop: 'auto',
     },
     footertext: {
         textAlign: 'center',
         color: '#fff',
+        fontSize: 16,
+        margin: 0,
     },
 });
 

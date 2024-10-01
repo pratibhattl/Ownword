@@ -121,10 +121,14 @@ export default function EditProfile() {
                         {/* <View style={{display: 'flex', flexDirection:'row',width: '100%'}}>  */}
 
                         <Text style={styles.label}>Select Date of Birth*</Text>
-                        <Text style={styles.label}>
-                            {String(userDetails?.dob)}
-                        </Text>
-                        <Button title="Open" onPress={() => setShowDatePicker(true)} />
+                        <View style={styles.datepicker}>
+                            <Text style={styles.datevalue}>
+                                {String(userDetails?.dob)}
+                            </Text>
+                            <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.button}>
+                                <Image source={require('../assets/calendar.png')} style={styles.image} />
+                            </TouchableOpacity>
+                        </View>
                         {/* {errors.dob && <Text style={styles.errorText}>{errors.dob.message}</Text>} */}
                         {showDatePicker && (
 
@@ -365,8 +369,8 @@ const styles = StyleSheet.create({
     container1: {
         flex: 1,
         justifyContent: 'center',
-        paddingLeft: 35,
-        paddingRight: 35,
+        paddingLeft: 24,
+        paddingRight: 24,
         paddingTop: 35,
         backgroundColor: '#0A142A',
     },
@@ -382,11 +386,9 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
     pickerContainer: {
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 5,
         marginBottom: 15,
         justifyContent: 'center',
+        borderRadius: 3,
     },
     picker: {
         color: '#fff',
@@ -416,15 +418,25 @@ const styles = StyleSheet.create({
         // paddingBottom: 100
     },
     input: {
-        height: 50,
         borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 5,
+        borderWidth: 0,
+        borderRadius: 3,
         paddingHorizontal: 10,
-        marginBottom: 15,
+        marginBottom: 24,
         color: '#fff',
         placeholderTextColor: "#fff",
         backgroundColor: '#232C3F',
+        height: 54,
+    },
+    datepicker: {
+        backgroundColor: '#232C3F',
+        height: 54,
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+        borderRadius: 3,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 24,
     },
     isInvalid: {
         borderColor: 'red',
@@ -439,11 +451,12 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     primaryButton: {
-        backgroundColor: '#ffff',
-        padding: 15,
-        borderRadius: 5,
+        width: '100%',
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
         alignItems: 'center',
-        marginBottom: 15,
+        marginBottom: 40,
+        height: 54,
     },
     secondaryButton: {
         backgroundColor: 'transparent',
@@ -457,6 +470,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000',
         fontSize: 16,
+        lineHeight: 54,
     },
     skipText: {
         alignItems: 'center',
@@ -473,6 +487,10 @@ const styles = StyleSheet.create({
     footertext: {
         textAlign: 'center',
         color: '#fff',
+    },
+    datevalue: {
+        color: '#fff',
+        fontSize: 16,
     },
 
 });

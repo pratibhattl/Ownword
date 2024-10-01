@@ -113,9 +113,8 @@ const ChangePassword = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        paddingLeft: 35,
-        paddingRight: 35,
+        paddingLeft: 24,
+        paddingRight: 24,
         backgroundColor: '#0A142A',
     },
 
@@ -127,7 +126,8 @@ const styles = StyleSheet.create({
     label: {
         color: '#fff',
         marginBottom: 10,
-        fontSize: 15
+        fontSize: 14,
+        opacity: 0.3,
     },
 
     formWrap: {
@@ -135,14 +135,15 @@ const styles = StyleSheet.create({
         // paddingBottom: 100
     },
     input: {
-        height: 50,
         borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 5,
+        borderWidth: 0,
+        borderRadius: 3,
         paddingHorizontal: 10,
-        marginBottom: 15,
+        marginBottom: 24,
         color: '#fff',
         placeholderTextColor: "#fff",
+        backgroundColor: '#232C3F',
+        height: 54,
     },
     isInvalid: {
         borderColor: 'red',
@@ -157,11 +158,12 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     primaryButton: {
-        backgroundColor: '#ffff',
-        padding: 15,
-        borderRadius: 5,
+        width: '100%',
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
         alignItems: 'center',
-        marginBottom: 15,
+        marginBottom: 40,
+        height: 54,
     },
     secondaryButton: {
         backgroundColor: 'transparent',
@@ -175,6 +177,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000',
         fontSize: 16,
+        lineHeight: 54,
     },
     skipText: {
         alignItems: 'center',

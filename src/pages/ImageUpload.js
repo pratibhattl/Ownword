@@ -55,10 +55,11 @@ export default function ImageUpload() {
 
     return (
         <View style={styles.container}>
-            <ScrollView >
+            <ScrollView style={styles.wrapper}>
                 <View style={styles.container1}>
                     <TouchableOpacity style={styles.dottedBox} onPress={handleFilePicker}>
-                        <Text style={styles.text}>Tap to Upload File</Text>
+                        <Image source={require('../assets/edit-g.png')} style={styles.smallicon} />
+                        <Text style={styles.text}>Upload Picture</Text>
                     </TouchableOpacity>
                     {/* {fileResponse && (
                         <View style={styles.fileInfo}>
@@ -67,7 +68,9 @@ export default function ImageUpload() {
                         </View>
                     )} */}
                 </View>
+                
                 <FlatList
+                    style={styles.flatview}
                     data={imageList}
                     keyExtractor={(item) => item._id}
                     numColumns={2} // Change this value to display the images in a grid format
@@ -77,6 +80,7 @@ export default function ImageUpload() {
                         </View>
                     )}
                 />
+                
             </ScrollView>
             <Footer />
         </View>
@@ -88,7 +92,9 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#0A142A'
     },
-
+    container1: {
+        padding: 16,
+    },
     container1: {
         flex: 1,
         justifyContent: 'center',
@@ -97,17 +103,19 @@ const styles = StyleSheet.create({
     },
     dottedBox: {
         width: '100%',
-        height: 100,
+        height: 90,
         borderWidth: 2,
         borderColor: '#AEAEAE',
         borderStyle: 'dashed',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
+        backgroundColor: '#232C3F',
+        gap: 17,
     },
     text: {
-        fontSize: 16,
-        color: '#fff',
+        fontSize: 15,
+        color: '#AEAEAE',
+        lineHeight: 22,
     },
     fileInfo: {
         marginTop: 20,
@@ -115,13 +123,17 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flex: 1,
-        margin: 10,
         alignItems: 'flex-start',
     },
+    flatview: {
+        paddingHorizontal: 8,
+        paddingVertical: 0,
+    },
     image: {
-        width: Dimensions.get('window').width / 2 - 30, // Dynamic width for grid layout
+        width: Dimensions.get('window').width / 2 - 24, // Dynamic width for grid layout
         height: 150,
-        borderRadius: 10,
+        marginVertical: 8,
+        marginHorizontal: 8,
     },
     imageTitle: {
         marginTop: 8,

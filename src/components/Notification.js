@@ -31,17 +31,17 @@ export default function Notification() {
 
     return (
         <View style={styles.container}>
-            <ScrollView >
+            <ScrollView style={styles.wrapper}>
                 {notificationArr?.length > 0 && notificationArr?.map((data) => {
                     return (
                         <View style={styles.cardMain}>
-                            <View style={styles.cardContainer}><Image source={data.imageUrl} style={styles.cardImage} />
-                                <Text style={styles.cardName}>{data.name}</Text>
-                                <Text>{" "}</Text>
-                                <Text style={styles.cardText}>{data.title}</Text>
-                            </View>
-                            <View style={styles.textStyle}>
-                                <Text style={styles.dateStyle} >{data.date}</Text>
+                            <Image source={data.imageUrl} style={styles.cardImage} />
+                            <View style={styles.cardContainer}>
+                                <Text style={styles.cardName}>{data.name}{" "}<Text style={styles.cardText}>{data.title}</Text></Text>
+
+                                <View style={styles.textStyle}>
+                                    <Text style={styles.dateStyle} >{data.date}</Text>
+                                </View>
                             </View>
                         </View>
                     )
@@ -57,30 +57,23 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#0A142A'
     },
+    wrapper: {
+        paddingHorizontal: 16,
+    },
     textStyle: {
         justifyContent: 'end',
         alignItems: 'flex-end'
     },
     cardMain: {
-        with: '100%',
-        flexDirection: 'column',
-        alignItems: 'end',
+        width: '100%',
+        flexDirection: 'row',
         padding: 10,
         backgroundColor: '#232C3F',
-        borderRadius: 8,
-        marginTop: 20,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2, 
-        marginRight: 10,
-        marginLeft: 10
     },
     cardContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '52%'
+        flexDirection: 'column',
+        flex: 1,
+        paddingTop: 8,
     },
     cardImage: {
         width: 50,
@@ -89,15 +82,16 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     cardText: {
-        fontSize: 16,
+        fontSize: 14,
+        lineHeight: 17,
         color: '#fff',
     },
     dateStyle: {
-        fontSize: 16,
+        fontSize: 11,
         color: '#868686'
     },
     cardName: {
-        fontSize: 16,
+        fontSize: 17,
         color: '#20C3D3'
     }
 });

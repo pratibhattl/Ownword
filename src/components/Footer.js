@@ -18,7 +18,11 @@ const Footer = () => {
   return (
     <View style={styles.footerContainer}>
       <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Home')}>
-        <Image source={require('../assets/home.png')} />
+        {routeName == 'Home' ?
+          <Image source={require('../assets/home-1.png')} />
+          :
+          <Image source={require('../assets/home.png')} />
+        }
         <Text style={routeName == 'Home' ? styles.selectedIconText : styles.iconText}>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Insights')}>
@@ -67,7 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#232C3F',
     borderTopWidth: 1,
     borderColor: '#ddd',
-    marginTop: 20
   },
   iconButton: {
     alignItems: 'center',

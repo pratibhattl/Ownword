@@ -13,7 +13,7 @@ export default function Settings() {
     return (
         <View style={styles.container}>
             <ScrollView >
-                <Text style={styles.textStyle}> {"Settings"}</Text>
+                <Text style={styles.textStyle}>{"Settings"}</Text>
 
                 <View style={styles.container1}>
                     {/* Dark Mode Toggle */}
@@ -46,27 +46,30 @@ export default function Settings() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-         backgroundColor: '#0A142A'
+        backgroundColor: '#0A142A',
     },
     textStyle: {
-        fontSize: 25,
-        color: '#fff'
+        fontSize: 24,
+        color: '#fff',
+        fontWeight: '300',
+        marginBottom: 16,
+        paddingHorizontal: 16,
     },
     container1: {
         flex: 1,
-        padding: 20,
         // backgroundColor: '#fff',
       },
       settingRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 10,
+        paddingVertical: 16,
+        paddingHorizontal: 16,
         // borderBottomWidth: 1,
         // borderBottomColor: '#fff',
       },
       settingLabel: {
         fontSize: 16,
-        color: '#fff'
+        color: '#6C727F'
       },
 });

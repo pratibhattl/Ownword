@@ -29,7 +29,7 @@ if (isLoading) {
 
     return (
         <View style={styles.container}>
-            <ScrollView >
+            <ScrollView style={styles.wrapper}>
                 {foramList?.length > 0 && foramList?.map((data) => {
                     return (
                         <View style={styles.cardMain}>
@@ -52,38 +52,35 @@ if (isLoading) {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#0A142A',
     },
     textStyle: {
-       color: '#fff',
-        fontSize: 20
-
+        color: '#fff',
+        fontSize: 20,
+        fontWeight: '300',
+        lineHeight: 28,
+    },
+    wrapper: {
+        paddingHorizontal: 16,
     },
     cardMain: {
         with: '100%',
         flexDirection: 'column',
-        alignItems: 'end',
-        padding: 10,
-        backgroundColor: '#232C3F',
-        borderRadius: 8,
-        marginTop: 20,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
-        marginRight: 10,
-        marginLeft: 10
+        borderBottomWidth: 1,
+        borderBottomColor: '#232C3F',
+        paddingBottom: 24,
+        marginBottom: 24,
     },
     cardContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '80%'
     },
-   
     cardText: {
-        fontSize: 16,
-        color: '#fff',
+        fontSize: 14,
+        lineHeight: 24,
+        color: '#8DCAFC',
+        fontWeight: '300',
     },
    
    

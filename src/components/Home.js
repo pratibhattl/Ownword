@@ -61,13 +61,13 @@ export default function Home() {
     }
     return (
         <View style={styles.container}>
-            <ScrollView >
+            <ScrollView style={styles.scrollcontainer}>
                 {/* <View style={styles.container}> */}
                 <View style={styles.dailyTracker}>
-                    <Pressable onPress={() => navigation.navigate('MigraineLog')}>
+                    <Pressable  style={styles.dailyTrack} onPress={() => navigation.navigate('MigraineLog')}>
                         <View style={styles.titleStyle}>
                             <Text style={styles.title}>Track every day and see what could cause attacks</Text>
-                            <Text style={styles.subtitle}>Daily Tracker ⚡</Text>
+                            <Text style={styles.subtitle}>Daily Tracker <Image source={require('../assets/zapIcon.png')} /></Text>
                         </View>
                     </Pressable>
                     <View style={styles.imageStye}>
@@ -134,13 +134,15 @@ export default function Home() {
                                         :
                                         <Image source={require('../assets/Rectangle.png')} style={styles.image1} />
                                     }
-                                    <Text style={styles.title1}>{item.title}</Text>
-                                    <Text style={styles.title1}>{item.description}</Text>
-                                    <View style={styles.iconsContainer}>
-                                        {/* Add icons for likes, shares, etc. */}
-                                        <Text style={styles.iconText}>❤️ {item?.likeCount}</Text>
-                                        <Text style={styles.iconText}>💬 {item?.commentCount}</Text>
-                                        {/* <Text style={styles.iconText}>🔄 5</Text> */}
+                                    <View style={styles.cardContent}>
+                                        <Text style={styles.title1}>{item.title}</Text>
+                                        {/* <Text style={styles.title1}>{item.description}</Text> */}
+                                        <View style={styles.iconsContainer}>
+                                            {/* Add icons for likes, shares, etc. */}
+                                            <Text style={styles.iconText}>{item?.likeCount} <Image source={require('../assets/heart.png')} style={styles.blogicon} /></Text>
+                                            <Text style={styles.iconText}>{item?.commentCount} <Image source={require('../assets/message-text.png')} style={styles.blogicon} /></Text>
+                                            <Text style={styles.iconText}>5 <Image source={require('../assets/sendIcon.png')} style={styles.blogicon} /></Text>
+                                        </View>
                                     </View>
                                 </View>
                             )}
@@ -157,9 +159,9 @@ export default function Home() {
                                     <Text style={styles.title1}>{item.title}</Text>
                                     <View style={styles.iconsContainer}>
                                         {/* Add icons for likes, shares, etc. */}
-                                        <Text style={styles.iconText}>❤️ 10</Text>
-                                        <Text style={styles.iconText}>💬 15</Text>
-                                        <Text style={styles.iconText}>🔄 5</Text>
+                                        <Text style={styles.iconText}>10 <Image source={require('../assets/heart.png')} style={styles.blogicon} /></Text>
+                                        <Text style={styles.iconText}>15 <Image source={require('../assets/message-text.png')} style={styles.blogicon} /></Text>
+                                        <Text style={styles.iconText}>5 <Image source={require('../assets/sendIcon.png')} style={styles.blogicon} /></Text>
                                     </View>
                                 </View>
                             )}
@@ -173,37 +175,47 @@ export default function Home() {
     )
 }
 const styles = StyleSheet.create({
+    scrollcontainer:{
+        paddingHorizontal: 16,
+    },
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#0A142A',
     },
+
     textStyle: {
         fontSize: 25,
         color: '#fff'
     },
-
     dailyTracker: {
         width: '100%',
-        alignItems: 'center',
-        margin: 10,
+        alignItems: 'flex-end',
         backgroundColor: '#232C3F',
         flex: 1,
         display: 'flex',
-        padding: 20,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderRadius: 4,
+        paddingRight: 7,
+        marginBottom: 16,
+    },
+    dailyTrack: {
+        flex: 1,
     },
     title: {
         color: 'white',
-        fontSize: 16,
-        textAlign: 'center',
+        fontSize: 12,
+        marginBottom: 23,
+        maxWidth: 160,
     },
     imageStye: {
         marginRight: 70,
-        width: '50%',
+        textAlign: 'right',
     },
     titleStyle: {
-        width: '70%',
-        marginEnd: 20
+        flex: 1,
+        paddingTop: 24,
+        paddingLeft: 16,
+        paddingBottom: 16,
     },
     subtitle: {
         color: '#00e6e6',
@@ -213,19 +225,21 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         marginTop: 10,
+        marginLeft: 'auto',
     },
     grid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
+        gap: 16,
     },
     card: {
+        width: '100%',
+        maxWidth: '30%',
         backgroundColor: '#232C3F',
-        width: '30%',
-        marginVertical: 10,
         padding: 10,
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 4,
     },
     icon: {
         width: 50,
@@ -234,23 +248,18 @@ const styles = StyleSheet.create({
     },
     cardText: {
         color: 'white',
-        fontSize: 12,
+        fontSize: 14,
     },
     cardMain: {
         with: '100%',
         flexDirection: 'column',
         alignItems: 'end',
-        padding: 10,
-        backgroundColor: '#232C3F',
-        borderRadius: 8,
-        marginTop: 20,
+        paddingVertical: 16,
         shadowColor: '#000',
         shadowOpacity: 0.1,
         shadowRadius: 5,
         shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
-        marginRight: 10,
-        marginLeft: 10
+        elevation: 0,
     },
     cardContainer: {
         flexDirection: 'row',
@@ -258,10 +267,10 @@ const styles = StyleSheet.create({
         width: '52%'
     },
     cardImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 8,
-        marginRight: 10,
+        width: 100,
+        height: 100,
+        borderRadius: 12,
+        marginRight: 12,
     },
     cardText1: {
         fontSize: 16,
@@ -269,30 +278,41 @@ const styles = StyleSheet.create({
     },
     card1: {
         backgroundColor: '#232C3F',
-        borderRadius: 10,
-        marginRight: 10,
+        borderRadius: 4,
+        marginRight: 16,
         width: screenWidth * 0.6, // Adjust card width relative to screen size
+    },
+    cardContent: {
         padding: 10,
     },
     image1: {
         width: '100%',
-        height: 120,
-        borderRadius: 10,
+        height: 140,
+        objectFit: 'cover',
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
+    },
+    blogicon: {
+        width: 12,
+        height: 12,
+        objectFit: 'scale-down',
+        marginLeft: 6,
     },
     title1: {
-        color: 'white',
-        fontSize: 14,
-        marginVertical: 10,
+        color: '#20C3D3',
+        fontSize: 10,
+        marginBottom: 6,
     },
     iconsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
     },
     iconText: {
-        color: '#a0a0a0',
-        fontSize: 12,
+        color: '#6C727F',
+        fontSize: 10,
+        marginRight: 12,
     },
     listStyle: {
-        margin: 10
+        marginBottom: 16,
     }
 });

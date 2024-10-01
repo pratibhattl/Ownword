@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#213057',
+        backgroundColor: '#0A142A',
         padding: 10,
         elevation: 4, // Adds shadow on Android
     },
