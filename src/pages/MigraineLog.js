@@ -4,12 +4,13 @@ import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { getMigraineLogApi ,updateNewTrigger} from '../apiService/MigraineLogApi';
+import { getMigraineLogApi, updateNewTrigger } from '../apiService/MigraineLogApi';
 import { getData } from '../helper';
 import Moment from 'moment';
 import { Button } from 'react-native';
 import DatePicker from 'react-native-date-picker'
 import { mergeData } from '../helper';
+import { useIsFocused } from '@react-navigation/native';
 export default function MigraineLog() {
 
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -24,16 +25,11 @@ export default function MigraineLog() {
     const [startTime, setStartTime] = useState(new Date())
     const [endTime, setEndTime] = useState(new Date())
     const [openEndTime, setOpenEndTime] = useState(false)
-
-
     const [openEndDate, setOpenEndDate] = useState(false)
     const [details, setDetails] = useState({})
-
+    const isFocused = useIsFocused();
     const navigation = useNavigation();
-    const onSubmit = (data) => {
-        setSubmitted(true);
-        // createWaterIntakeApi(token,data, setIntakeList, setIsLoading)
-    };
+
     useEffect(() => {
         getData('token').then((token) => {
             setToken(token);
@@ -41,17 +37,18 @@ export default function MigraineLog() {
     }, [])
 
     useEffect(() => {
-        getMigraineLogApi(token, setMigraineLogs, setIsLoading)
-    }, [token])
+        if (isFocused) {
+            getMigraineLogApi(token, setMigraineLogs, setIsLoading)
+        }
+    }, [token, isFocused])
 
     const onGoForward = () => {
-        if(!migraineLogs[0]?.endDate){
-
-            let id= migraineLogs[0]?._id
-            updateNewTrigger(token, details,id, setIsLoading,navigation)
-        }else{
-        navigation.navigate('PainArea');
-        mergeData('migrainLog', details);
+        if (!migraineLogs[0]?.endDate) {
+            let id = migraineLogs[0]?._id
+            updateNewTrigger(token, details, id, setIsLoading, navigation)
+        } else {
+            navigation.navigate('PainArea');
+            mergeData('migrainLog', details);
         }
     }
 
@@ -65,8 +62,7 @@ export default function MigraineLog() {
 
     return (
         <View style={styles.container}>
-            <ScrollView  style={styles.wrapper}>
-
+            <ScrollView style={styles.wrapper}>
                 <View style={styles.formWrap}>
                     {!migraineLogs[0]?.endDate ?
                         <>
@@ -213,11 +209,15 @@ export default function MigraineLog() {
                 </View>
 
             </ScrollView>
-            <TouchableOpacity style={styles.arrowButton}
-                onPress={() => onGoForward()}
-            >
+            {!migraineLogs[0]?.endDate &&
+                <TouchableOpacity style={styles.skipButton} onPress={() => navigation.navigate("Home")}  >
+                    <Text style={{ color: "#fff" }}>Skip</Text>
+                </TouchableOpacity>
+            }
+            <TouchableOpacity style={styles.arrowButton} onPress={() => onGoForward()}>
                 <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
             </TouchableOpacity>
+
             <Footer />
         </View >
     )
@@ -227,6 +227,15 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         backgroundColor: '#0A142A',
+    },
+    skipButton: {
+        height: 54,
+        width: 60,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+        padding: 15,
+        margin: 16,
+        marginLeft: 'auto',
     },
     arrowStyle: {
         height: 24,

@@ -15,3 +15,4 @@ run npm devtools
 npm i react-native-date-picker
 npm install moment --save
 npm i react-native-modal
+npm install @react-native-community/slider

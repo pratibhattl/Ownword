@@ -78,7 +78,7 @@ export const addNewTrigger = (token, details, setIsLoading,navigation) => {
         .then(function (response) {
             setIsLoading(false)
             alert("Log added successfully")
-            navigation.navigate("Home")
+            navigation.navigate("MigraineLog")
         })
         .catch(function (error) {
             setIsLoading(false)
@@ -98,6 +98,8 @@ export const updateNewTrigger = (token, details,id, setIsLoading,navigation) => 
         }
     })
         .then(function (response) {
+            console.log(response?.data,"respo");
+            
             setIsLoading(false)
             alert("Log updated successfully")
             navigation.navigate("Home")

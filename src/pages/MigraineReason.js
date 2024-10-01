@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 import { getData } from '../helper'
 import LoadingScreen from '../components/LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
-import { getMigraineReasonApi,addNewTrigger } from '../apiService/MigraineLogApi'
+import { getMigraineReasonApi, addNewTrigger } from '../apiService/MigraineLogApi'
 export default function MigraineReason() {
     const [isLoading, setIsLoading] = React.useState(false);
     const [migraineReason, setMigraineReason] = React.useState([]);
@@ -16,7 +16,7 @@ export default function MigraineReason() {
         getData('migrainLog').then((data) => {
             setDetails(data);
         });
-        
+
     }, [])
 
     useEffect(() => {
@@ -47,8 +47,8 @@ export default function MigraineReason() {
         })
     }
 
-    const onSubmit=()=>{
-        addNewTrigger(token, details, setIsLoading,navigation)
+    const onSubmit = () => {
+        addNewTrigger(token, details, setIsLoading, navigation)
     }
 
 
@@ -71,10 +71,13 @@ export default function MigraineReason() {
                     })}
                 </View>
 
-                <TouchableOpacity style={styles.secondoryButton} onPress={()=> onSubmit()} >
+                {/* <TouchableOpacity style={styles.secondoryButton}  >
                     <Text style={styles.buttonText}>Add new trigger</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </ScrollView>
+            <TouchableOpacity style={styles.arrowButton} onPress={() => onSubmit()} >
+                <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
+            </TouchableOpacity>
             <Footer />
         </View>
     )
@@ -87,6 +90,15 @@ const styles = StyleSheet.create({
     textStyle: {
         fontSize: 25,
         color: '#fff'
+    },
+    arrowButton: {
+        height: 54,
+        width: 54,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+        padding: 15,
+        margin: 16,
+        marginLeft: 'auto',
     },
     secondoryButton: {
         // width: '30%',
