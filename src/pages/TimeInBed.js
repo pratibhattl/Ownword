@@ -51,7 +51,7 @@ export default function TimeInBed() {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView style={styles.wrapper}>
 
                 <View style={styles.formWrap}>
 
@@ -61,9 +61,14 @@ export default function TimeInBed() {
                         defaultValue={String(Moment(inBedStartTime).format('HH:MMA'))}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Start Bed Time*</Text>
-                                <Text style={styles.label}>{String(Moment(inBedStartTime).format('HH:MM A'))}</Text>
-                                <Button title="Open" onPress={() => setShowStartBedTime(true)} />
+                                <Text style={styles.inputlabel}>Start Bed Time*</Text>
+                                <View style={styles.dateblock}>
+                                    <Text style={styles.datetime}>{String(Moment(inBedStartTime).format('HH:MM A'))}</Text>
+                                    {/* <Button title="Open" onPress={() => setShowStartBedTime(true)} /> */}
+                                    <TouchableOpacity onPress={() => setShowStartBedTime(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                </View>
                                 {errors.inBedStartTime && <Text style={styles.errorText}>{errors.inBedStartTime.message}</Text>}
                                 {showStartBedTime && (
 
@@ -92,9 +97,14 @@ export default function TimeInBed() {
                         defaultValue={String(Moment(inBedStartDate).format('DD/MM/YYYY'))}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Start Bed Date*</Text>
-                                <Text style={styles.label}>{String(Moment(inBedStartDate).format('DD/MM/YYYY'))}</Text>
-                                <Button title="Open" onPress={() => setShowinBedStartDate(true)} />
+                                <Text style={styles.inputlabel}>Start Bed Date*</Text>
+                                <View style={styles.dateblock}>
+                                    <Text style={styles.datetime}>{String(Moment(inBedStartDate).format('DD/MM/YYYY'))}</Text>
+                                    {/* <Button title="Open" onPress={() => setShowinBedStartDate(true)} /> */}
+                                    <TouchableOpacity onPress={() => setShowinBedStartDate(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                </View>
                                 {errors.inBedStartDate && <Text style={styles.errorText}>{errors.inBedStartDate.message}</Text>}
                                 {showinBedStartDate && (
 
@@ -123,9 +133,14 @@ export default function TimeInBed() {
                         rules={{ required: 'Select start time' }}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Start Asleep Time*</Text>
-                                <Text style={styles.label}>{String(Moment(asleepStartTime).format('HH:MM A'))}</Text>
-                                <Button title="Open" onPress={() => setShowasleepStartTime(true)} />
+                                <Text style={styles.inputlabel}>Start Asleep Time*</Text>
+                                <View style={styles.dateblock}>
+                                    <Text style={styles.datetime}>{String(Moment(asleepStartTime).format('HH:MM A'))}</Text>
+                                    {/* <Button title="Open" onPress={() => setShowasleepStartTime(true)} /> */}
+                                    <TouchableOpacity onPress={() => setShowasleepStartTime(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                </View>
                                 {errors.asleepStartTime && <Text style={styles.errorText}>{errors.asleepStartTime.message}</Text>}
                                 {showasleepStartTime && (
                                     <DatePicker
@@ -152,9 +167,14 @@ export default function TimeInBed() {
                         rules={{ required: 'Select start date' }}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Start Asleep Date*</Text>
-                                <Text style={styles.label}>{String(Moment(asleepStartDate).format('DD/MM/YYYY'))}</Text>
-                                <Button title="Open" onPress={() => setShowasleepStartDate(true)} />
+                                <Text style={styles.inputlabel}>Start Asleep Date*</Text>
+                                <View style={styles.dateblock}>
+                                    <Text style={styles.datetime}>{String(Moment(asleepStartDate).format('DD/MM/YYYY'))}</Text>
+                                    {/* <Button title="Open" onPress={() => setShowasleepStartDate(true)} /> */}
+                                <TouchableOpacity onPress={() => setShowasleepStartDate(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                </View>
                                 {errors.asleepStartDate && <Text style={styles.errorText}>{errors.asleepStartDate.message}</Text>}
                                 {showasleepStartDate && (
 
@@ -179,11 +199,11 @@ export default function TimeInBed() {
                     />
 
                 </View>
-                <TouchableOpacity style={styles.arrowButton} onPress={handleSubmit(onSubmit)} >
-                    <Image style={styles.arrowStyle} source={require('../assets/right-arrow.jpg')} />
-                </TouchableOpacity>
+                
             </ScrollView>
-
+            <TouchableOpacity style={styles.arrowButton} onPress={handleSubmit(onSubmit)} >
+                    <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
+                </TouchableOpacity>
             <Footer />
         </View >
     )
@@ -195,19 +215,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#0A142A',
     },
     arrowStyle: {
-        fontSize: 20,
-        height: 50,
-        width: 50
+        height: 24,
+        width: 24,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+    },
+    wrapper: {
+        paddingHorizontal: 16,
     },
     arrowButton: {
-        alignItems: 'flex-end',
-        padding: 20
+        height: 54,
+        width: 54,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+        padding: 15,
+        margin: 16,
+        marginLeft: 'auto',
     },
 
-    formWrap: {
-        padding: 10,
-        marginBottom: 100,
-    },
     input: {
         // width: '60%',
         height: 50,
@@ -254,5 +279,26 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000',
         fontSize: 16,
+    },
+    dateblock: {
+        flexDirection: 'row',
+        backgroundColor: '#232C3F',
+        borderRadius: 4,
+        height: 100,
+        alignItems: 'center',
+        paddingHorizontal: 24,
+        justifyContent: 'space-between',
+        marginBottom: 24,
+    },
+    datetime: {
+        fontSize: 40,
+        fontWeight: '200',
+        color: '#fff',
+    },
+    inputlabel: {
+        fontSize: 24,
+        fontWeight: '200',
+        color: '#fff',
+        marginBottom: 24,
     },
 })

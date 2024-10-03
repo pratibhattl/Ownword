@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
@@ -51,7 +51,7 @@ export default function Menstrual() {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView style={styles.wrapper}>
 
                 <View style={styles.formWrap}>
                     {menstrualList[0]?.endMonth == ""?
@@ -61,9 +61,14 @@ export default function Menstrual() {
                                 rules={{ required: 'Select end date' }}
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text style={styles.label}>Select end date*</Text>
-                                        <Text style={styles.label}>{String(Moment(endDate).format('DD/MM/YYYY'))}</Text>
-                                        <Button title="Open" onPress={() => setShowEndDatePicker(true)} />
+                                        <Text style={styles.inputlabel}>Select end date*</Text>
+                                        <View style={styles.dateblock}>
+                                        <Text style={styles.datetime}>{String(Moment(endDate).format('DD/MM/YYYY'))}</Text>
+                                        {/* <Button title="Open" onPress={() => setShowEndDatePicker(true)} /> */}
+                                        <TouchableOpacity onPress={() => setShowEndDatePicker(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                        </View>
                                         {showEndDatePicker && (
                                             <DatePicker
                                                 modal
@@ -94,10 +99,14 @@ export default function Menstrual() {
                                 rules={{ required: 'Select start date' }}
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text style={styles.label}>Select start date*</Text>
-                                        <Text style={styles.label}>{String(Moment(startDate).format('DD/MM/YYYY'))}</Text>
-                                        <Button title="Open" onPress={() => setShowDatePicker(true)} />
-
+                                        <Text style={styles.inputlabel}>Select start date*</Text>
+                                        <View style={styles.dateblock}>
+                                        <Text style={styles.datetime}>{String(Moment(startDate).format('DD/MM/YYYY'))}</Text>
+                                        {/* <Button title="Open" onPress={() => setShowDatePicker(true)} /> */}
+                                        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                        </View>
                                         {showDatePicker && (
 
                                             <DatePicker
@@ -141,9 +150,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#0A142A',
     },
 
-    formWrap: {
-        padding: 10,
-        marginBottom: 100,
+    wrapper: {
+        paddingHorizontal: 16,
     },
     input: {
         // width: '60%',
@@ -191,5 +199,26 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000',
         fontSize: 16,
+    },
+    dateblock: {
+        flexDirection: 'row',
+        backgroundColor: '#232C3F',
+        borderRadius: 4,
+        height: 100,
+        alignItems: 'center',
+        paddingHorizontal: 24,
+        justifyContent: 'space-between',
+        marginBottom: 24,
+    },
+    datetime: {
+        fontSize: 40,
+        fontWeight: '200',
+        color: '#fff',
+    },
+    inputlabel: {
+        fontSize: 24,
+        fontWeight: '200',
+        color: '#fff',
+        marginBottom: 24,
     },
 })

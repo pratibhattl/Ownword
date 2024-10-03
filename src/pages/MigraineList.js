@@ -33,6 +33,7 @@ export default function MigraineList() {
                     migraineList?.map((x) => {
                         return (
                             <>
+                            <View style={styles.summarywrapper}>
                                 <View style={styles.summary}>
                                     <View style={styles.summaryleft}>
                                         <View style={styles.summarytext}>
@@ -62,35 +63,40 @@ export default function MigraineList() {
                                 {x?.painPosition?.length > 0 &&
                                     <View style={styles.painpoints}>
                                         <Text style={styles.pheading}>Pain Points</Text>
+                                        <View style={styles.databox}>
                                         {x?.painPosition?.map((item) => {
                                             return (
                                                 <>
-                                                    <View style={styles.summarytext}>
+                                                    <View style={styles.databoxitem}>
                                                         <Image source={{ uri: item?.image }} />
-                                                        <Text style={styles.summarydata}>{item?.positionName}</Text>
+                                                        <Text style={styles.databoxitemtitle}>{item?.positionName}</Text>
                                                     </View>
 
                                                     {/* <Text>{item?.title}</Text> */}
                                                 </>
                                             )
                                         })}
+                                        </View>
                                     </View>
                                 }
                                 {x?.painReason?.length > 0 &&
                                     <View style={styles.painpoints}>
                                         <Text style={styles.pheading}>Pain Reasons</Text>
+                                        <View style={styles.databox}>
                                         {x?.painReason?.map((item) => {
                                             return (
                                                 <>
-                                                    <View style={styles.summarytext}>
+                                                    <View style={styles.databoxitem}>
                                                         <Image source={{ uri: item?.image }} />
-                                                        <Text style={styles.summarydata}>{item?.title}</Text>
+                                                        <Text style={styles.databoxitemtitle}>{item?.title}</Text>
                                                     </View>
                                                 </>
                                             )
                                         })}
+                                        </View>
                                     </View>
                                 }
+                                </View>
                             </>)
                     })}
             </ScrollView>
@@ -107,12 +113,19 @@ const styles = StyleSheet.create({
     wrapper: {
         paddingHorizontal: 16,
     },
-    summary: {
+    summarywrapper: {
+        display:'flex',
         backgroundColor: '#232C3F',
         paddingTop: 16,
         borderRadius: 4,
-        flexDirection: 'row',
+        flexDirection: 'column',
         paddingBottom: 0,
+        marginBottom: 24,
+        flexWrap: 'wrap',
+    },
+    summary: {
+        width: '100%',
+        flexDirection: 'row',
         marginBottom: 24,
     },
     summaryleft: {
@@ -136,17 +149,29 @@ const styles = StyleSheet.create({
         fontWeight: '200',
     },
     painpoints: {
-        backgroundColor: '#232C3F',
-        paddingTop: 16,
-        borderRadius: 4,
-        flexDirection: 'row',
-        paddingBottom: 0,
-        marginBottom: 24,
+        flexDirection: 'column',
         paddingHorizontal: 16,
+        marginBottom: 16,
     },
     pheading: {
         color: '#fff',
         fontSize: 20,
         fontWeight: '200',
+        marginBottom: 16,
+    },
+    databox: {
+        flexDirection: 'row',
+        gap: 16,
+    },
+    databoxitem: {
+        backgroundColor: '#0A142A',
+        padding: 10,
+        borderRadius: 4,
+        width: '33%',
+    },
+    databoxitemtitle: {
+        fontSize: 12,
+        textAlign: 'center',
+        color: '#fff',
     },
 });

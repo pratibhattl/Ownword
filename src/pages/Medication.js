@@ -100,13 +100,17 @@ export default function Medication() {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView style={styles.wrapper}>
                 <View style={styles.formWrap}>
                     <View>
-                        <Text style={styles.label}>Start Time*</Text>
-                        <Text style={styles.label}>{details?.start_time}</Text>
-                        <Button title="Open" onPress={() => setOpen(true)} />
-
+                        <Text style={styles.inputlabel}>Start Time*</Text>
+                        <View style={styles.dateblock}>
+                            <Text style={styles.datetime}>{details?.start_time}</Text>
+                        {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
+                            <TouchableOpacity onPress={() => setOpen(true)} style={styles.button}>
+                                <Image source={require('../assets/clock.png')} style={styles.image} />
+                            </TouchableOpacity>
+                        </View>
                         {open &&
                             <DatePicker
                                 modal
@@ -129,7 +133,6 @@ export default function Medication() {
                     {!details?.start_time && details?.start_time == '' &&
                         <Text style={styles.errorText}>{'Please enter start time'}</Text>}
 
-                    <Text style={styles.label}>Medicine name*</Text>
                     <TextInput
                         name='medicine_name'
                         style={styles.input}
@@ -139,7 +142,9 @@ export default function Medication() {
                         })}
                         // value={details?.name ? String(details?.name) : null}
                         keyboardType="name"
+                        placeholder='Medicine name'
                         autoCapitalize="none"
+                        placeholderTextColor='#fff'
                     />
                     {!details?.medicine_name && details?.medicine_name == '' &&
                         <Text style={styles.errorText}>{'Please enter medicine name'}</Text>}
@@ -176,21 +181,26 @@ export default function Medication() {
                             <Picker.Item label={'after food'} value={'after food'} />
                         </Picker>
                     </View>
-                    <TouchableOpacity style={styles.secondoryButton} onPress={() => onSubmit()}>
+                    <TouchableOpacity style={styles.primaryButton} onPress={() => onSubmit()}>
                         <Text style={styles.buttonText}>Add Medicine</Text>
                     </TouchableOpacity>
                     {medicationList?.map((x) => {
                         return (
-                            <View style={styles.cardMain}>
-                                <Pressable >
-                                    <View style={styles.cardContainer}><Image source={require('../assets/donationIcon.png')}
+                            <View style={styles.medbox}>
+                                <Pressable style={styles.cardMain}>
+                                    <View style={styles.cardContainer}>
+                                        <Image source={require('../assets/Frame4.png')}
                                         style={styles.cardImage} />
-                                        <Text style={styles.cardText}>{x.medicine_name}</Text>
                                     </View>
-                                    <View >
-                                        <Text style={styles.cardText}>{x.medicine_time}</Text>
-                                        <Text style={styles.cardText}>{x.start_time}</Text>
-                                        <Text style={styles.cardText}>{x.end_time}</Text>
+                                    <View style={styles.cardContent}>
+                                        <Text style={styles.medicine_name}>{x.medicine_name}</Text>
+                                        <View style={styles.medicine_timewrap}>
+                                            <View style={styles.medicine_timewrap}>
+                                                <Text style={styles.medicine_time}>{x.start_time}</Text><Text style={styles.medicine_time}> - </Text><Text style={styles.medicine_time}>{x.end_time}</Text>
+                                            </View>
+                                            <Text style={styles.medicine_time}>{x.medicine_time}</Text>
+                                        </View>
+                                        
                                     </View>
                                 </Pressable>
                             </View>
@@ -210,32 +220,30 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#0A142A',
     },
+    wrapper: {
+        paddingHorizontal: 16,
+    },
+    medbox: {
+        marginBottom: 16,
+    },
     cardMain: {
-        with: '100%',
-        flexDirection: 'column',
-        alignItems: 'end',
-        padding: 10,
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'flex-start',
         backgroundColor: '#232C3F',
-        borderRadius: 8,
-        marginTop: 20,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
-        marginRight: 10,
-        marginLeft: 10
+        borderRadius: 4,
+        padding: 16,
     },
     cardContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '52%'
+        width: 20,
+        marginRight: 10,
+    },
+    cardContent: {
+        flex: 1,
     },
     cardImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 8,
-        marginRight: 10,
+        width: 20,
+        height: 20,
     },
     cardText: {
         color: 'white',
@@ -245,18 +253,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#fff',
     },
-    formWrap: {
-        padding: 10,
-        marginBottom: 100,
-    },
     input: {
         // width: '60%',
-        height: 50,
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 5,
+        height: 44,
+        borderRadius: 4,
         paddingHorizontal: 10,
-        marginBottom: 15,
+        marginBottom: 16,
         color: '#fff',
         placeholderTextColor: "#fff",
         backgroundColor: '#232C3F',
@@ -283,6 +285,20 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontSize: 20
     },
+    primaryButton: {
+        width: '100%',
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+        paddingVertical: 10,
+        alignItems: 'center',
+        marginBottom: 40,
+        height: 44,
+    },
+    buttonText: {
+        color: '#000',
+        fontSize: 16,
+        lineHeight: 44,
+    },
     secondoryButton: {
         // width: '30%',
         backgroundColor: '#fff',
@@ -293,18 +309,52 @@ const styles = StyleSheet.create({
     },
     pickerContainer: {
         borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 15,
+        marginBottom: 16,
         justifyContent: 'center',
+        height: 44,
     },
     picker: {
         color: '#fff',
-        backgroundColor: '#232C3F'
-        // marginBottom: 15,
+        backgroundColor: '#232C3F',
+        marginBottom: 16,
+        borderRadius: 4,
+        height: 44,
     },
     buttonText: {
         color: '#000',
         fontSize: 16,
+    },
+    dateblock: {
+        flexDirection: 'row',
+        backgroundColor: '#232C3F',
+        borderRadius: 4,
+        height: 100,
+        alignItems: 'center',
+        paddingHorizontal: 24,
+        justifyContent: 'space-between',
+        marginBottom: 24,
+    },
+    datetime: {
+        fontSize: 40,
+        fontWeight: '200',
+        color: '#fff',
+    },
+    inputlabel: {
+        fontSize: 24,
+        fontWeight: '200',
+        color: '#fff',
+        marginBottom: 24,
+    },
+    medicine_name: {
+        fontSize: 16,
+        color: '#fff',
+    },
+    medicine_time: {
+        fontSize: 14,
+        color: '#6C727F',
+    },
+    medicine_timewrap: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 })

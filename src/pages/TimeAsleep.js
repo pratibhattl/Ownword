@@ -55,9 +55,14 @@ export default function TimeAsleep({ route }) {
                         defaultValue={String(Moment(asleepEndTime).format('HH:MM A'))}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Asleep End Time*</Text>
-                                <Text style={styles.label}>{String(Moment(asleepEndTime).format('HH:MM A'))}</Text>
-                                <Button title="Open" onPress={() => setShowasleepEndTime(true)} />
+                                <Text style={styles.inputlabel}>Asleep End Time*</Text>
+                                <View style={styles.dateblock}>
+                                <Text style={styles.datetime}>{String(Moment(asleepEndTime).format('HH:MM A'))}</Text>
+                                {/* <Button title="Open" onPress={() => setShowasleepEndTime(true)} /> */}
+                                <TouchableOpacity onPress={() => setShowasleepEndTime(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                    </View>
                                 {errors.asleepEndTime && <Text style={styles.errorText}>{errors.asleepEndTime.message}</Text>}
                                 {showasleepEndTime && (
                                     <DatePicker
@@ -85,9 +90,14 @@ export default function TimeAsleep({ route }) {
                         defaultValue={String(Moment(asleepEndDate).format('DD/MM/YYYY'))}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Asleep End Date*</Text>
-                                <Text style={styles.label}>{String(Moment(asleepEndDate).format('DD/MM/YYYY'))}</Text>
-                                <Button title="Open" onPress={() => setShowasleepEndDate(true)} />
+                                <Text style={styles.inputlabel}>Asleep End Date*</Text>
+                                <View style={styles.dateblock}>
+                                <Text style={styles.datetime}>{String(Moment(asleepEndDate).format('DD/MM/YYYY'))}</Text>
+                                {/* <Button title="Open" onPress={() => setShowasleepEndDate(true)} /> */}
+                                <TouchableOpacity onPress={() => setShowasleepEndDate(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                    </View>
                                 {errors.asleepEndDate && <Text style={styles.errorText}>{errors.asleepEndDate.message}</Text>}
                                 {showasleepEndDate && (
 
@@ -116,9 +126,14 @@ export default function TimeAsleep({ route }) {
                         defaultValue={String(Moment(inBedEndTime).format('HH:MMA'))}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Bed End time*</Text>
-                                <Text style={styles.label}>{String(Moment(inBedEndTime).format('HH:MM A'))}</Text>
-                                <Button title="Open" onPress={() => setShowinBedEndTime(true)} />
+                                <Text style={styles.inputlabel}>Bed End time*</Text>
+                                <View style={styles.dateblock}>
+                                <Text style={styles.datetime}>{String(Moment(inBedEndTime).format('HH:MM A'))}</Text>
+                                {/* <Button title="Open" onPress={() => setShowinBedEndTime(true)} /> */}
+                                <TouchableOpacity onPress={() => setShowinBedEndTime(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                    </View>
                                 {errors.inBedEndTime && <Text style={styles.errorText}>{errors.inBedEndTime.message}</Text>}
                                 {showinBedEndTime && (
 
@@ -147,9 +162,14 @@ export default function TimeAsleep({ route }) {
                         defaultValue={String(Moment(inBedEndDate).format('DD/MM/YYYY'))}
                         render={({ field: { onChange, value } }) => (
                             <>
-                                <Text style={styles.label}>Bed end date*</Text>
-                                <Text style={styles.label}>{String(Moment(inBedEndDate).format('DD/MM/YYYY'))}</Text>
-                                <Button title="Open" onPress={() => setShowinBedEndDate(true)} />
+                                <Text style={styles.inputlabel}>Bed end date*</Text>
+                                <View style={styles.dateblock}>
+                                <Text style={styles.datetime}>{String(Moment(inBedEndDate).format('DD/MM/YYYY'))}</Text>
+                                {/* <Button title="Open" onPress={() => setShowinBedEndDate(true)} /> */}
+                                <TouchableOpacity onPress={() => setShowinBedEndDate(true)} style={styles.button}>
+                                            <Image source={require('../assets/calendar.png')} style={styles.image} />
+                                        </TouchableOpacity>
+                                    </View>
                                 {errors.inBedEndDate && <Text style={styles.errorText}>{errors.inBedEndDate.message}</Text>}
                                 {showinBedEndDate && (
 
@@ -176,11 +196,11 @@ export default function TimeAsleep({ route }) {
 
 
                 </View>
-                <TouchableOpacity style={styles.arrowButton} onPress={handleSubmit(onSubmit)} >
-                    <Image style={styles.arrowStyle} source={require('../assets/right-arrow.jpg')} />
-                </TouchableOpacity>
+                
             </ScrollView>
-
+            <TouchableOpacity style={styles.arrowButton} onPress={handleSubmit(onSubmit)} >
+            <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
+                </TouchableOpacity>
             <Footer />
         </View >
     )
@@ -192,19 +212,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#0A142A',
     },
     arrowStyle: {
-        fontSize: 20,
-        height: 50,
-        width: 50
+        height: 24,
+        width: 24,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+    },
+    wrapper: {
+        paddingHorizontal: 16,
     },
     arrowButton: {
-        alignItems: 'flex-end',
-        padding: 20
+        height: 54,
+        width: 54,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+        padding: 15,
+        margin: 16,
+        marginLeft: 'auto',
     },
 
-    formWrap: {
-        padding: 10,
-        marginBottom: 100,
-    },
     input: {
         // width: '60%',
         height: 50,
@@ -251,5 +276,26 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000',
         fontSize: 16,
+    },
+    dateblock: {
+        flexDirection: 'row',
+        backgroundColor: '#232C3F',
+        borderRadius: 4,
+        height: 100,
+        alignItems: 'center',
+        paddingHorizontal: 24,
+        justifyContent: 'space-between',
+        marginBottom: 24,
+    },
+    datetime: {
+        fontSize: 40,
+        fontWeight: '200',
+        color: '#fff',
+    },
+    inputlabel: {
+        fontSize: 24,
+        fontWeight: '200',
+        color: '#fff',
+        marginBottom: 24,
     },
 })

@@ -49,7 +49,7 @@ export default function WaterIntake() {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView style={styles.wrapper}>
         {intakeList?.length > 0 &&
           intakeList?.map(x => {
             return (
@@ -99,23 +99,24 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#0A142A',
   },
+  wrapper: {
+    paddingHorizontal: 16,
+  },
 
   formWrap: {
-    padding: 10,
+    marginBottom: 16,
     display: 'flex',
     flexDirection: 'row',
     // marginBottom: 100,
     width: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    gap: 16,
   },
   input: {
-    width: '60%',
-    height: 50,
-    borderColor: '#fff',
-    borderWidth: 1,
-    borderRadius: 5,
+    flex: 1,
+    height: 44,
+    borderRadius: 4,
     paddingHorizontal: 10,
-    marginBottom: 15,
     color: '#fff',
     placeholderTextColor: "#fff",
     backgroundColor: '#232C3F',
@@ -133,17 +134,20 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   primaryButton: {
-    width: '30%',
+    paddingHorizontal: 26,
     backgroundColor: '#F14336',
-    padding: 15,
-    borderRadius: 5,
+    borderRadius: 4,
     alignItems: 'center',
-    marginBottom: 15,
+    height: 44,
+    color: '#fff',
+    width: 100,
+    lineHeight: 44,
   },
 
   buttonText: {
     color: '#fff',
     fontSize: 16,
+    lineHeight: 44,
   },
   skipText: {
     alignItems: 'center',
@@ -162,16 +166,17 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   secondoryButton: {
-    width: '30%',
+    paddingHorizontal: 26,
     backgroundColor: '#20C3D3',
-    padding: 15,
-    borderRadius: 5,
+    borderRadius: 4,
     alignItems: 'center',
-    marginBottom: 15,
+    height: 44,
+    lineHeight: 44,
+    width: 100,
   },
-
   buttonText: {
     color: '#000',
     fontSize: 16,
+    lineHeight: 44,
   },
 })

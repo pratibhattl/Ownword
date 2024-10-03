@@ -115,7 +115,20 @@ export default function Home() {
                                 <Image source={{ uri: String(donationData?.image) }} style={styles.cardImage} />
 
                             }
-                            <Text style={styles.cardText}>{donationData?.foundationName}</Text>
+                            {/* <Text style={styles.cardText}>{donationData?.foundationName}</Text> */}
+                            <View style={styles.donateContent}>
+                                <Text style={styles.cardText}>{donationData.title}</Text>
+                                <Text style={styles.founderText}>{donationData.foundationName}</Text>
+
+                                <View style={styles.progressbarwrapper}>
+                                    <View style={styles.progressbar}></View>
+                                </View>
+
+                                <View style={styles.donationmeta}>
+                                    <Text style={styles.targetAmount}>Target - {donationData.targetAmount} INR</Text>
+                                    <Text style={styles.duration}>9/16 Days Left</Text>
+                                </View>
+                            </View>
                             {/* <Text>{" "} </Text>
                             <Text style={styles.cardText}>{homePageData?.donationPost[0]?.description}</Text> */}
                         </View>
@@ -249,6 +262,7 @@ const styles = StyleSheet.create({
     cardText: {
         color: 'white',
         fontSize: 14,
+        textAlign: 'center',
     },
     cardMain: {
         with: '100%',
@@ -314,5 +328,50 @@ const styles = StyleSheet.create({
     },
     listStyle: {
         marginBottom: 16,
-    }
+    },
+    progressbarwrapper: {
+        backgroundColor: '#232C3F',
+        width: '100%',
+        height: 6,
+        borderRadius: 10,
+        marginVertical: 10,
+    },
+    progressbar: {
+        backgroundColor: '#20C3D3',
+        width: '30%',
+        height: 6,
+        borderRadius: 10,
+    },
+    donateContent: {
+        width: Dimensions.get('window').width - 144, // Dynamic width for grid layout
+    },
+    cardImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 12,
+        marginRight: 12,
+    },
+    cardText: {
+        fontSize: 14,
+        color: '#fff',
+        marginBottom: 10,
+    },
+    founderText: {
+        fontSize: 12,
+        color: '#20C3D3',
+        margin: 0,
+    },
+    donationmeta: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    targetAmount: {
+        color: '#fff',
+        fontSize: 11,
+    },
+    duration: {
+        color: '#EB7D26',
+        fontSize: 11,
+    },
 });

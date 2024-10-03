@@ -72,8 +72,13 @@ export default function MigraineLog() {
                                 render={({ field: { onChange, value } }) => (
                                     <>
                                         <Text style={styles.inputlabel}>End Time*</Text>
-                                        <Text style={styles.label}>{details?.endTime}</Text>
-                                        <Button title="Open" onPress={() => setOpenEndTime(true)} />
+                                        <View style={styles.dateblock}>
+                                        <Text style={styles.datetime}>{details?.endTime}</Text>
+                                        {/* <Button title="Open" onPress={() => setOpenEndTime(true)} /> */}
+                                        <TouchableOpacity onPress={() => setOpenEndTime(true)} style={styles.button}>
+                                                <Image source={require('../assets/clock.png')} style={styles.image} />
+                                            </TouchableOpacity>
+                                            </View>
                                         {endTime &&
                                             <DatePicker
                                                 modal
@@ -103,8 +108,13 @@ export default function MigraineLog() {
                                 render={({ field: { onChange, value } }) => (
                                     <>
                                         <Text style={styles.inputlabel}>End Date*</Text>
-                                        <Text style={styles.label}>{details?.endDate}</Text>
-                                        <Button title="Open" onPress={() => setOpenEndDate(true)} />
+                                        <View style={styles.dateblock}>
+                                        <Text style={styles.datetime}>{details?.endDate}</Text>
+                                        {/* <Button title="Open" onPress={() => setOpenEndDate(true)} /> */}
+                                        <TouchableOpacity onPress={() => setOpenEndDate(true)} style={styles.button}>
+                                                <Image source={require('../assets/clock.png')} style={styles.image} />
+                                            </TouchableOpacity>
+                                            </View>
                                         {openEndDate &&
                                             <DatePicker
                                                 modal
@@ -209,14 +219,17 @@ export default function MigraineLog() {
                 </View>
 
             </ScrollView>
+            <View style={styles.bottom_button}>
             {!migraineLogs[0]?.endDate &&
                 <TouchableOpacity style={styles.skipButton} onPress={() => navigation.navigate("Home")}  >
-                    <Text style={{ color: "#fff" }}>Skip</Text>
+                    <Text style={{ color: "#000" }}>Skip</Text>
                 </TouchableOpacity>
             }
             <TouchableOpacity style={styles.arrowButton} onPress={() => onGoForward()}>
                 <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
             </TouchableOpacity>
+            </View>
+            
 
             <Footer />
         </View >
@@ -233,9 +246,10 @@ const styles = StyleSheet.create({
         width: 60,
         backgroundColor: '#20C3D3',
         borderRadius: 6,
-        padding: 15,
+        padding: 16,
         margin: 16,
-        marginLeft: 'auto',
+        color: '#000',
+        marginRight: 'auto',
     },
     arrowStyle: {
         height: 24,
@@ -327,6 +341,10 @@ const styles = StyleSheet.create({
         fontSize: 40,
         fontWeight: '200',
         color: '#fff',
+    },
+    bottom_button: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 
 })
