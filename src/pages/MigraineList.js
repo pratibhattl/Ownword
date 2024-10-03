@@ -33,69 +33,81 @@ export default function MigraineList() {
                     migraineList?.map((x) => {
                         return (
                             <>
-                            <View style={styles.summarywrapper}>
-                                <View style={styles.summary}>
-                                    <View style={styles.summaryleft}>
-                                        <View style={styles.summarytext}>
-                                            <Text style={styles.summarylable}>Start Date:</Text>
-                                            <Text style={styles.summarydata}>{x?.startDate}</Text>
+                                <View style={styles.summarywrapper}>
+                                    <View style={styles.summary}>
+                                        <View style={styles.summaryleft}>
+                                            <View style={styles.summarytext}>
+                                                <Text style={styles.summarylable}>Start Date:</Text>
+                                                <Text style={styles.summarydata}>{x?.startDate}</Text>
+                                            </View>
+                                            <View style={styles.summarytext}>
+                                                <Text style={styles.summarylable}>Start Time:</Text>
+                                                <Text style={styles.summarydata}>{x?.startTime}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.summarytext}>
-                                            <Text style={styles.summarylable}>Start Time:</Text>
-                                            <Text style={styles.summarydata}>{x?.startTime}</Text>
+                                        <View style={styles.summaryright}>
+                                            <View style={styles.summarytext}>
+                                                <Text style={styles.summarylable}>End Date:</Text>
+                                                <Text style={styles.summarydata}>{x?.endDate}</Text>
+                                            </View>
+                                            <View style={styles.summarytext}>
+                                                <Text style={styles.summarylable}>End Time:</Text>
+                                                <Text style={styles.summarydata}>{x?.endTime}</Text>
+                                            </View>
+                                            <View style={styles.summarytext}>
+                                                <Text style={styles.summarylable}>Pain Scale:</Text>
+                                                <Text style={styles.summarydata}>{x?.painScale}</Text>
+                                            </View>
                                         </View>
                                     </View>
-                                    <View style={styles.summaryright}>
-                                        <View style={styles.summarytext}>
-                                            <Text style={styles.summarylable}>End Date:</Text>
-                                            <Text style={styles.summarydata}>{x?.endDate}</Text>
-                                        </View>
-                                        <View style={styles.summarytext}>
-                                            <Text style={styles.summarylable}>End Time:</Text>
-                                            <Text style={styles.summarydata}>{x?.endTime}</Text>
-                                        </View>
-                                        <View style={styles.summarytext}>
-                                            <Text style={styles.summarylable}>Pain Scale:</Text>
-                                            <Text style={styles.summarydata}>{x?.painScale}</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                                {x?.painPosition?.length > 0 &&
-                                    <View style={styles.painpoints}>
-                                        <Text style={styles.pheading}>Pain Points</Text>
-                                        <View style={styles.databox}>
-                                        {x?.painPosition?.map((item) => {
-                                            return (
-                                                <>
-                                                    <View style={styles.databoxitem}>
-                                                        <Image source={{ uri: item?.image }} />
-                                                        <Text style={styles.databoxitemtitle}>{item?.positionName}</Text>
-                                                    </View>
+                                    {x?.painPosition?.length > 0 &&
+                                        <View style={styles.painpoints}>
+                                            <Text style={styles.pheading}>Pain Points</Text>
+                                            <View style={styles.databox}>
+                                                {x?.painPosition?.map((item) => {
+                                                    return (
+                                                        <>
+                                                            <View style={styles.databoxitem}>
+                                                                {
+                                                                    item?.positionName === "Left Back Of Head (Lower)" ?
+                                                                        <Image style={{ height: 50, width: 50 }} source={require("../assets/left-back-head-lower.png")}  />
+                                                                        :
+                                                                        item?.positionName === "Left Back Of Head (Upper)" ?
+                                                                            <Image style={{ height: 50, width: 50 }} source={require("../assets/left-back-head-upper.png")}  />
+                                                                            :
+                                                                            item?.positionName === "Left Back Of Neck" ?
+                                                                                <Image style={{ height: 50, width: 50 }} source={require("../assets/left-back-neck.png")}  />
+                                                                                :
+                                                                                item?.positionName === "Between Eye" &&
+                                                                                <Image style={{ height: 50, width: 50 }} source={require("../assets/left-eye.png")} />
+                                                                }
+                                                                <Text style={styles.databoxitemtitle}>{item?.positionName}</Text>
+                                                            </View>
 
-                                                    {/* <Text>{item?.title}</Text> */}
-                                                </>
-                                            )
-                                        })}
+                                                            {/* <Text>{item?.title}</Text> */}
+                                                        </>
+                                                    )
+                                                })}
+                                            </View>
                                         </View>
-                                    </View>
-                                }
-                                {x?.painReason?.length > 0 &&
-                                    <View style={styles.painpoints}>
-                                        <Text style={styles.pheading}>Pain Reasons</Text>
-                                        <View style={styles.databox}>
-                                        {x?.painReason?.map((item) => {
-                                            return (
-                                                <>
-                                                    <View style={styles.databoxitem}>
-                                                        <Image source={{ uri: item?.image }} />
-                                                        <Text style={styles.databoxitemtitle}>{item?.title}</Text>
-                                                    </View>
-                                                </>
-                                            )
-                                        })}
+                                    }
+                                    {x?.painReason?.length > 0 &&
+                                        <View style={styles.painpoints}>
+                                            <Text style={styles.pheading}>Pain Reasons</Text>
+                                            <View style={styles.databox}>
+                                                {x?.painReason?.map((item) => {
+                                                    return (
+                                                        <>
+                                                            <View style={styles.databoxitem}>
+                                                                <Image style={{ height: 50, width: 50 }} source={{ uri: item.image }} />
+                                                                <Text style={styles.databoxitemtitle}>{item?.title}</Text>
+                                                            </View>
+                                                        </>
+                                                    )
+                                                })}
+                                            </View>
                                         </View>
-                                    </View>
-                                }
+                                    }
                                 </View>
                             </>)
                     })}
@@ -114,7 +126,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     summarywrapper: {
-        display:'flex',
+        display: 'flex',
         backgroundColor: '#232C3F',
         paddingTop: 16,
         borderRadius: 4,

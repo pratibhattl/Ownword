@@ -43,6 +43,33 @@ export default function Tracking() {
     //         }
     //     }
     // }, [details]);
+    const calculateDifference = (startDate, startTime, endDate, endTime) => {
+        // Ensure all values are defined before proceeding
+        if (!startDate || !startTime || !endDate || !endTime) {
+            return { hours: 0, minutes: 0 };  // Return zero if any value is missing
+        }
+    
+        // Convert date format from DD/MM/YYYY to MM/DD/YYYY for proper parsing
+        const formattedStartDate = startDate.split('/').reverse().join('/');
+        const formattedEndDate = endDate.split('/').reverse().join('/');
+    
+        // Create Date objects with corrected format
+        const startDateTime = new Date(`${formattedStartDate} ${startTime}`);
+        const endDateTime = new Date(`${formattedEndDate} ${endTime}`);
+    
+        if (isNaN(startDateTime) || isNaN(endDateTime)) {
+            return { hours: 0, minutes: 0 };  // Handle invalid date formats
+        }
+    
+        // Calculate the difference in milliseconds
+        const differenceMs = endDateTime - startDateTime;
+    
+        // Convert the difference to hours and minutes
+        const hours = Math.floor(differenceMs / (1000 * 60 * 60));
+        const minutes = Math.floor((differenceMs % (1000 * 60 * 60)) / (1000 * 60));
+    
+        return { hours, minutes };
+    }
     const data = {
         in_bed: {
             startTime: details?.sleep_tracker?.in_bed?.startTime,
@@ -76,33 +103,7 @@ export default function Tracking() {
     );
 
 
-    const calculateDifference = (startDate, startTime, endDate, endTime) => {
-        // Ensure all values are defined before proceeding
-        if (!startDate || !startTime || !endDate || !endTime) {
-            return { hours: 0, minutes: 0 };  // Return zero if any value is missing
-        }
-    
-        // Convert date format from DD/MM/YYYY to MM/DD/YYYY for proper parsing
-        const formattedStartDate = startDate.split('/').reverse().join('/');
-        const formattedEndDate = endDate.split('/').reverse().join('/');
-    
-        // Create Date objects with corrected format
-        const startDateTime = new Date(`${formattedStartDate} ${startTime}`);
-        const endDateTime = new Date(`${formattedEndDate} ${endTime}`);
-    
-        if (isNaN(startDateTime) || isNaN(endDateTime)) {
-            return { hours: 0, minutes: 0 };  // Handle invalid date formats
-        }
-    
-        // Calculate the difference in milliseconds
-        const differenceMs = endDateTime - startDateTime;
-    
-        // Convert the difference to hours and minutes
-        const hours = Math.floor(differenceMs / (1000 * 60 * 60));
-        const minutes = Math.floor((differenceMs % (1000 * 60 * 60)) / (1000 * 60));
-    
-        return { hours, minutes };
-    }
+  
 
     if (isLoading) {
         return <LoadingScreen />;

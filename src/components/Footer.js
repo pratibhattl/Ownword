@@ -33,7 +33,7 @@ const Footer = () => {
         }
         <Text style={routeName == 'Insights' ? styles.selectedIconText : styles.iconText}>Insights</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Tracking')}>
+      <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('MigraineList')}>
         {routeName == 'Tracking' ?
           <Image source={require('../assets/zap1.png')} />
           :
