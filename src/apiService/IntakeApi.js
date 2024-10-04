@@ -46,7 +46,6 @@ export const createWaterIntakeApi = (token, data,setIntakeList, setIsLoading) =>
 
 
 export const updateWaterIntakeApi = (token,id, setIntakeList, setIsLoading,navigation,removeData) => {
-    console.log(token,"token", id);
     let config = {
         method: 'put',
         maxBodyLength: Infinity,

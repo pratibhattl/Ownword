@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getSingleDonationApi } from '../apiService/DonationApi';
 import LoadingScreen from '../components/LoadingScreen';
 import { getData } from '../helper';
+import Slider from '@react-native-community/slider';
 
 export default function DonationDetails({ route }) {
     const { id } = route.params;
@@ -22,7 +23,39 @@ export default function DonationDetails({ route }) {
     useEffect(() => {
         getSingleDonationApi(token, id, setDonationDetails, setIsLoading)
     }, [token])
+    const [totalDays, setTotalDays] = useState(0)
+    const [leftDays, setLeftDays] = useState(0)
+    const [getPercentage, setGetPercentage] = useState(0);
 
+    const calculateDonationDetails = (donationDetails) => {
+        const today = new Date();
+        const totalMilliseconds = new Date(donationDetails?.endDate) - new Date(donationDetails?.startDate);
+        const totalDays = Math.ceil(totalMilliseconds / (1000 * 60 * 60 * 24));
+
+        // Days left (today to endDate)
+        const leftMilliseconds = new Date(donationDetails?.endDate) - today;
+        const leftDays = Math.ceil(leftMilliseconds / (1000 * 60 * 60 * 24));
+
+        // Ensure leftDays is not negative
+        const validLeftDays = leftDays > 0 ? leftDays : 0;
+
+        // Calculate percentage of target achieved
+        const target = donationDetails?.targetAmount;
+        const received = donationDetails?.receivedAmount;
+        const percentage = (received / target) * 100;
+        setTotalDays(totalDays);
+        setLeftDays(validLeftDays);
+        setGetPercentage(percentage);
+        return {
+            totalDays,
+            validLeftDays,
+            percentage,
+        };
+    };
+
+    useEffect(() => {
+        calculateDonationDetails(donationDetails)
+    }, [donationDetails])
 
 
 
@@ -42,12 +75,12 @@ export default function DonationDetails({ route }) {
                         <Image style={styles.imageHeight} source={{ uri: donationDetails?.image }} />
                         :
                         <Image source={require('../assets/donationIcon.png')} />
-                    }                    
+                    }
                 </View>
                 <Text style={styles.textStyle}>{donationDetails?.title}</Text>
                 <Text style={styles.daysStyle}>{donationDetails?.description} </Text>
-                <Text style={styles.duration}>9/16 Days Left</Text>
-                
+                <Text style={styles.duration}>{leftDays}/{totalDays} Days Left</Text>
+
                 <View style={styles.donationBlock}>
                     <View style={styles.donationhead}>
                         <Text style={styles.donationText}>Donation raised</Text>
@@ -55,10 +88,21 @@ export default function DonationDetails({ route }) {
                     </View>
 
                     <View style={styles.donationContext}>
-                        <View style={styles.progressbarwrapper}>
+                        {/* <View style={styles.progressbarwrapper}>
                             <View style={styles.progressbar}></View>
-                        </View>
-                        <Text style={styles.donationpercent}>30%</Text>
+                        </View> */}
+                       
+                        <Text style={styles.donationpercent}>{getPercentage}%</Text>
+                        <Slider
+                        style={styles.slider}
+                        minimumValue={0}
+                        maximumValue={100}
+                        step={1}  // Step value for whole numbers
+                        value={getPercentage}
+                        minimumTrackTintColor="#20C3D3"
+                        maximumTrackTintColor="gray"
+                        thumbTintColor="#20C3D3"
+                    />
                     </View>
                 </View>
                 <Text style={styles.campaignText}>Campaign by</Text>
@@ -69,13 +113,13 @@ export default function DonationDetails({ route }) {
                     </View>
 
                     <View style={styles.founderContent}>
-                        <Text style={styles.foundername}>Abah Mukmin Foundation</Text>
+                        <Text style={styles.foundername}>{donationDetails?.foundationName}</Text>
                         <View style={styles.verifiedbox}>
                             <Image source={require('../assets/verify.png')} />
                             <Text style={styles.verifiedText}>Verified User</Text>
-                        </View>    
+                        </View>
                     </View>
-                    
+
                     <Image source={require('../assets/shield.png')} />
                 </View>
             </ScrollView>
@@ -93,6 +137,10 @@ const styles = StyleSheet.create({
     },
     wrapper: {
         paddingHorizontal: 16,
+    },
+    slider: {
+        width: '90%',
+        height: 50,
     },
     progressbarwrapper: {
         backgroundColor: '#0A142A',
@@ -208,7 +256,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         marginBottom: 10,
     },
-    verifiedbox:{
+    verifiedbox: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,

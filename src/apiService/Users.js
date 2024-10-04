@@ -133,7 +133,6 @@ export const getStateApi = (token, country, setStateList) => {
 
 
 export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading) => {
-    console.log(token);
     
     setIsLoading(true)
     axios.get(`${API_URL}donation-post/home`, {
@@ -144,6 +143,7 @@ export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading
         }
     })
         .then(function (response) {
+            
             setIsLoading(false)
             let arr = response?.data?.blogs?.length > 0 ? response?.data?.blogs : []
             let obj = response?.data?.donationPost?.length > 0 ? response?.data?.donationPost[0] : {}
@@ -159,7 +159,7 @@ export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading
 
 
 export const refreshTokenApi = (token, id, setIsLoading) => {
-    setIsLoading(true)
+    // setIsLoading(true)
     axios.get(`${API_URL}check-token?userId=${id}`, {
         headers: {
             'x-access-token': token,

@@ -5,6 +5,7 @@ import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
 import { getInsightsApi, getBlogsApi, addLikeInsightApi, addLikeBlogsApi, addCommentBlogsApi } from '../apiService/InsightsApi'
 import Modal from "react-native-modal";
+import Moment from 'moment'
 export default function Insights() {
     const [selectedTab, setSelectedTab] = useState('Insight');
     const [token, setToken] = useState(null)
@@ -96,7 +97,7 @@ export default function Insights() {
                                 </View>
                                 <View style={styles.textStyle}>
                                     <Text style={styles.cardName}>Admin</Text>
-                                    <Text style={styles.dateStyle} >{data.createdAt}</Text>
+                                    <Text style={styles.dateStyle} >{Moment(data.createdAt).format("DD/MM/YYYY HH:MMA")}</Text>
                                 </View>
                             </View>
                             <View>

@@ -23,17 +23,18 @@ export const getDonationApi = (token,setDonationList, setIsLoading) => {
 
 
 
-export const getSingleDonationApi = (token,id,setDonationDetails, setIsLoading) => {
+export const getSingleDonationApi = (token, id, setDonationDetails, setIsLoading) => {    
     setIsLoading(true)
+    
     axios.get(`${API_URL}donation-post/${id}`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
-            'Custom-Header': 'CustomHeaderValue'
+            // 'Custom-Header': 'CustomHeaderValue'
         }
     })
         .then(function (response) {
-            console.log('response', response?.data?.result);
+            // console.log('response', response?.data);
             setIsLoading(false)
             setDonationDetails(response?.data?.result);
         })

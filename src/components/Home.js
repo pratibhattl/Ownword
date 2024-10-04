@@ -6,6 +6,8 @@ import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
 import { getHomeApi } from '../apiService/Users'
+import Slider from '@react-native-community/slider';
+
 const screenWidth = Dimensions.get('window').width;
 const notificationArr = {
     imageUrl: require('../assets/donationIcon.png'),
@@ -36,8 +38,8 @@ export default function Home() {
     const [homePageData, setHomePageData] = useState([]);
     const [donationData, setdonationData] = useState({})
     const [userDetails, setUserDetails] = useState({})
-
     const [token, setToken] = useState(null)
+
     useEffect(() => {
         const fetchToken = async () => {
             const storedToken = await getData('token');
@@ -54,6 +56,39 @@ export default function Home() {
         // refreshTokenApi(token, userDetails?._id, setIsLoading)
         getHomeApi(token, setHomePageData, setdonationData, setIsLoading)
     }, [token])
+    const [totalDays, setTotalDays] = useState(0)
+    const [leftDays, setLeftDays] = useState(0)
+    const [getPercentage, setGetPercentage] = useState(0);
+
+    const calculateDonationDetails = (donationDetails) => {
+        const today = new Date();
+        const totalMilliseconds = new Date(donationDetails?.endDate) - new Date(donationDetails?.startDate);
+        const totalDays = Math.ceil(totalMilliseconds / (1000 * 60 * 60 * 24));
+
+        // Days left (today to endDate)
+        const leftMilliseconds = new Date(donationDetails?.endDate) - today;
+        const leftDays = Math.ceil(leftMilliseconds / (1000 * 60 * 60 * 24));
+
+        // Ensure leftDays is not negative
+        const validLeftDays = leftDays > 0 ? leftDays : 0;
+
+        // Calculate percentage of target achieved
+        const target = donationDetails?.targetAmount;
+        const received = donationDetails?.receivedAmount;
+        const percentage = (received / target) * 100;
+        setTotalDays(totalDays);
+        setLeftDays(validLeftDays);
+        setGetPercentage(percentage);
+        return {
+            totalDays,
+            validLeftDays,
+            percentage,
+        };
+    };
+
+    useEffect(() => {
+        calculateDonationDetails(donationData)
+    }, [donationData])
 
 
     if (isLoading) {
@@ -64,7 +99,7 @@ export default function Home() {
             <ScrollView style={styles.scrollcontainer}>
                 {/* <View style={styles.container}> */}
                 <View style={styles.dailyTracker}>
-                    <Pressable  style={styles.dailyTrack} onPress={() => navigation.navigate('MigraineLog')}>
+                    <Pressable style={styles.dailyTrack} onPress={() => navigation.navigate('MigraineLog')}>
                         <View style={styles.titleStyle}>
                             <Text style={styles.title}>Track every day and see what could cause attacks</Text>
                             <Text style={styles.subtitle}>Daily Tracker <Image source={require('../assets/zapIcon.png')} /></Text>
@@ -107,7 +142,7 @@ export default function Home() {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.cardMain}>
-                    <Pressable onPress={() => navigation.navigate("DonationDetails",{id:donationData?._id })} >
+                    <Pressable onPress={() => navigation.navigate("DonationDetails", { id: donationData?._id })} >
                         <View style={styles.cardContainer}>
                             {donationData?.image == null ?
                                 <Image source={require('../assets/donationIcon.png')} style={styles.cardImage} />
@@ -119,14 +154,20 @@ export default function Home() {
                             <View style={styles.donateContent}>
                                 <Text style={styles.cardText}>{donationData.title}</Text>
                                 <Text style={styles.founderText}>{donationData.foundationName}</Text>
-
-                                <View style={styles.progressbarwrapper}>
-                                    <View style={styles.progressbar}></View>
-                                </View>
+                                <Slider
+                                    style={styles.slider}
+                                    minimumValue={0}
+                                    maximumValue={100}
+                                    step={1}  // Step value for whole numbers
+                                    value={getPercentage}
+                                    minimumTrackTintColor="#20C3D3"
+                                    maximumTrackTintColor="gray"
+                                    thumbTintColor="#20C3D3"
+                                />
 
                                 <View style={styles.donationmeta}>
                                     <Text style={styles.targetAmount}>Target - {donationData.targetAmount} INR</Text>
-                                    <Text style={styles.duration}>9/16 Days Left</Text>
+                                    <Text style={styles.duration}> {leftDays}/{totalDays} Days Left</Text>
                                 </View>
                             </View>
                             {/* <Text>{" "} </Text>
@@ -188,7 +229,7 @@ export default function Home() {
     )
 }
 const styles = StyleSheet.create({
-    scrollcontainer:{
+    scrollcontainer: {
         paddingHorizontal: 16,
     },
     container: {
