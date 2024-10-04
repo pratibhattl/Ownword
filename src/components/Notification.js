@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native'
 import Footer from '../components/Footer'
+import { getData } from '../helper'
+import { getNotificationApi } from '../apiService/Users';
+import LoadingScreen from './LoadingScreen';
+import Moment from 'moment';
 
 const notificationArr = [{
     imageUrl: require('../assets/Ellipse.png'),
@@ -28,19 +32,40 @@ const notificationArr = [{
 }
 ]
 export default function Notification() {
+    const [notificationList, setNotificationList] = useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [token, setToken] = useState(null)
+
+    useEffect(() => {
+        getData('token').then((token) => {
+            setToken(token);
+        });
+
+    }, []);
+    useEffect(() => {
+        getNotificationApi(token, setNotificationList, setIsLoading)
+
+    }, [token])
+
+
+    
+    if (isLoading) {
+        return <LoadingScreen />;
+    }
+
 
     return (
         <View style={styles.container}>
             <ScrollView style={styles.wrapper}>
-                {notificationArr?.length > 0 && notificationArr?.map((data) => {
+                {notificationList?.length > 0 && notificationList?.map((data) => {
                     return (
                         <View style={styles.cardMain}>
-                            <Image source={data.imageUrl} style={styles.cardImage} />
+                            <Image source={require('../assets/Ellipse.png')} style={styles.cardImage} />
                             <View style={styles.cardContainer}>
-                                <Text style={styles.cardName}>{data.name}{" "}<Text style={styles.cardText}>{data.title}</Text></Text>
+                                <Text style={styles.cardName}><Text style={styles.cardText}>{data.message}</Text></Text>
 
                                 <View style={styles.textStyle}>
-                                    <Text style={styles.dateStyle} >{data.date}</Text>
+                                    <Text style={styles.dateStyle} >{Moment(data.createdAt).format("DD/MM/YYYY")}</Text>
                                 </View>
                             </View>
                         </View>
@@ -78,7 +103,7 @@ const styles = StyleSheet.create({
     cardImage: {
         width: 50,
         height: 50,
-        borderRadius: 25, 
+        borderRadius: 25,
         marginRight: 10,
     },
     cardText: {

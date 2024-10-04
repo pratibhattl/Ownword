@@ -179,3 +179,23 @@ export const refreshTokenApi = (token, id, setIsLoading) => {
         });
 }
 
+
+export const getNotificationApi = (token,setNotificationList, setIsLoading) => {
+    setIsLoading(true)
+    axios.get(`${API_URL}notification/user?page=1&limit=10000`, {
+        headers: {
+            'x-access-token': token,
+            'Content-Type': 'application/json',
+            'Custom-Header': 'CustomHeaderValue'
+        }
+    })
+        .then(function (response) {
+            console.log('response', response?.data);
+            setIsLoading(false)
+            setNotificationList(response?.data?.lists);
+        })
+        .catch(function (error) {
+            setIsLoading(false)
+            console.log(error);
+        });
+}
