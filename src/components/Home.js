@@ -213,9 +213,9 @@ export default function Home() {
                                     <Text style={styles.title1}>{item.title}</Text>
                                     <View style={styles.iconsContainer}>
                                         {/* Add icons for likes, shares, etc. */}
-                                        <Text style={styles.iconText}>10 <Image source={require('../assets/heart.png')} style={styles.blogicon} /></Text>
-                                        <Text style={styles.iconText}>15 <Image source={require('../assets/message-text.png')} style={styles.blogicon} /></Text>
-                                        <Text style={styles.iconText}>5 <Image source={require('../assets/sendIcon.png')} style={styles.blogicon} /></Text>
+                                        <Text style={styles.iconText}>0 <Image source={require('../assets/heart.png')} style={styles.blogicon} /></Text>
+                                        <Text style={styles.iconText}>0 <Image source={require('../assets/message-text.png')} style={styles.blogicon} /></Text>
+                                        <Text style={styles.iconText}>0 <Image source={require('../assets/sendIcon.png')} style={styles.blogicon} /></Text>
                                     </View>
                                 </View>
                             )}
