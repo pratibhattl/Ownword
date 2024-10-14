@@ -222,7 +222,7 @@ export default function MigraineLog() {
 
             </ScrollView>
             <View style={styles.bottom_button}>
-            {!migraineLogs[0]?.endDate &&
+            {migraineLogs?.length > 0 && !migraineLogs[0]?.endDate &&
                 <TouchableOpacity style={styles.skipButton} onPress={() => navigation.navigate("Home")}  >
                     <Text style={{ color: "#000" }}>Skip</Text>
                 </TouchableOpacity>

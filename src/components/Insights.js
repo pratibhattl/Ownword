@@ -36,9 +36,9 @@ export default function Insights() {
         if (selectedTab == 'Insight') {
             getInsightsApi(token, setInsightsList, setIsLoading)
         } else if (selectedTab == 'Blog') {
-            getBlogsApi(token, setInsightsList, setIsLoading)
+            getBlogsApi(token, setInsightsList, setIsLoading,"")
         } else {
-            getInsightsApi(token, setInsightsList, setIsLoading)
+            getInsightsApi(token, setInsightsList, setIsLoading,"")
         }
     }, [token,selectedTab])
 

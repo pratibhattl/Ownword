@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 import { getData } from '../helper';
 import { getSingleFormApi ,addCommentApi} from '../apiService/ForamApi';
 import LoadingScreen from '../components/LoadingScreen';
+import moment from 'moment';
 
 export default function Chat({ route }) {
     const navigation = useNavigation();
@@ -61,7 +62,7 @@ const onSubmit=(data)=>{
                                 {/* <Text>{" "}</Text> */}
                                 <View style={styles.textStyle}>
                                     <Text style={styles.username} >Holly Harding</Text>
-                                    <Text style={styles.dateStyle} >{data.createdAt}</Text>
+                                    <Text style={styles.dateStyle} >{moment(data.createdAt).format("DD/MM/YYYY hh:mm A")}</Text>
                                 </View>
 
                                 <Text style={styles.chatName}>{data.comment}</Text>

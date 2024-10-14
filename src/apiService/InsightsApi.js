@@ -3,9 +3,12 @@ import { API_URL } from '@env';
 
 
 
-export const getInsightsApi = (token, setInsightsList, setIsLoading) => {
-
+export const getInsightsApi = (token, setInsightsList, setIsLoading,flag) => {
+if(flag == "Like"){
+    setIsLoading(false)
+}else{
     setIsLoading(true)
+}
     axios.get(`${API_URL}admins/get-insight`, {
         headers: {
             'x-access-token': token,
@@ -28,8 +31,12 @@ export const getInsightsApi = (token, setInsightsList, setIsLoading) => {
 }
 
 
-export const getBlogsApi = (token, setInsightsList, setIsLoading) => {
-    setIsLoading(true)
+export const getBlogsApi = (token, setInsightsList, setIsLoading,flag) => {
+    if(flag == "Like"){
+        setIsLoading(false)
+    }else{
+        setIsLoading(true)
+    }
     axios.get(`${API_URL}admins/get-blog`, {
         headers: {
             'x-access-token': token,
@@ -60,7 +67,7 @@ export const addLikeBlogsApi = (token, data, like, setInsightsList, setIsLoading
     })
         .then(function (response) {
             setIsLoading(false)
-            getBlogsApi(token, setInsightsList, setIsLoading)
+            getBlogsApi(token, setInsightsList, setIsLoading,"Like")
             if (like == true) {
                 alert("Post disliked !!")
 
@@ -94,7 +101,7 @@ export const addLikeInsightApi = (token, data, like, setInsightsList, setIsLoadi
                 alert("Post liked !!")
 
             }
-            getInsightsApi(token, setInsightsList, setIsLoading)
+            getInsightsApi(token, setInsightsList, setIsLoading,"Like")
         })
         .catch(function (error) {
             setIsLoading(false)
@@ -118,10 +125,10 @@ export const addCommentBlogsApi = (token, data, setInsightsList, setIsLoading, t
 
             toggleModal('')
             if (data?.reference_type == 'Blog') {
-                getBlogsApi(token, setInsightsList, setIsLoading)
+                getBlogsApi(token, setInsightsList, setIsLoading,"Like")
 
             } else {
-                getInsightsApi(token, setInsightsList, setIsLoading)
+                getInsightsApi(token, setInsightsList, setIsLoading,"Like")
             }
             alert("Commented successfully !!")
         })
