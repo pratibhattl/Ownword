@@ -43,9 +43,11 @@ export default function MigraineLog() {
     }, [token, isFocused])
 
     const onGoForward = () => {
-        if (!migraineLogs[0]?.endDate) {
+
+            if(!migraineLogs[0]?.endDate){
             let id = migraineLogs[0]?._id
             updateNewTrigger(token, details, id, setIsLoading, navigation)
+            
         } else {
             navigation.navigate('PainArea');
             mergeData('migrainLog', details);
@@ -64,7 +66,7 @@ export default function MigraineLog() {
         <View style={styles.container}>
             <ScrollView style={styles.wrapper}>
                 <View style={styles.formWrap}>
-                    {!migraineLogs[0]?.endDate ?
+                    {migraineLogs?.length > 0 && !migraineLogs[0]?.endDate ?
                         <>
                             <Controller
                                 control={control}

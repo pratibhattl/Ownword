@@ -27,7 +27,8 @@ export default function TimeInBed() {
     const [showinBedStartDate, setShowinBedStartDate] = useState(false);
     const navigation = useNavigation();
 
-    const onSubmit = (data) => {        
+    const onSubmit = (data) => {       
+         
         setSubmitted(true);
         addBedTimeApi(token, data, navigation, setIsLoading);
         reset();

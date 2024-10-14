@@ -60,11 +60,13 @@ export default function FoodIntake() {
         // setSubmitted(true);
 
         if (showText) {
-            createFoodIntakeApi(token, details, Alert, setIntakeList, setIsLoading)
+            createFoodIntakeApi(token, details, Alert, setIsLoading,setDetails)
             reset();
+            setShowText(false)
         } else {
-            createUserFoodIntakeApi(token, details, Alert, setIntakeList, setIsLoading)
+            createUserFoodIntakeApi(token, details, Alert, setIsLoading,setDetails)
             reset();
+            setShowText(false)
 
         }
     };

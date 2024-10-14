@@ -88,7 +88,7 @@ export const getFoodIntakeApi = (token, setIntakeList, setIsLoading) => {
 
 
 
-export const createFoodIntakeApi = (token,data,Alert, setIntakeList, setIsLoading) => {
+export const createFoodIntakeApi = (token,data,Alert, setIsLoading,setDetails) => {
     
     setIsLoading(true)
     axios.post(`${API_URL}intake/create-food-list`,data, {
@@ -101,7 +101,7 @@ export const createFoodIntakeApi = (token,data,Alert, setIntakeList, setIsLoadin
         .then(function (response) {                        
             setIsLoading(false)
             Alert.alert('Food intake log added')
-            // setIntakeList(response?.data?.result);
+            setDetails({});
         })
         .catch(function (error) {
             setIsLoading(false)
@@ -111,7 +111,7 @@ export const createFoodIntakeApi = (token,data,Alert, setIntakeList, setIsLoadin
 
 
 
-export const createUserFoodIntakeApi = (token,data,Alert, setIntakeList, setIsLoading) => {
+export const createUserFoodIntakeApi = (token,data,Alert, setIsLoading,setDetails) => {
     let body ={
         'foodId': data?.name
     }
@@ -127,7 +127,7 @@ export const createUserFoodIntakeApi = (token,data,Alert, setIntakeList, setIsLo
         .then(function (response) {                        
             setIsLoading(false)
             Alert.alert('Food intake log added')
-            // setIntakeList(response?.data?.result);
+            setDetails({})
         })
         .catch(function (error) {
             setIsLoading(false)
