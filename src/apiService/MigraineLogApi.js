@@ -54,7 +54,6 @@ export const getPositionApi = (token, setPositionList, setIsLoading) => {
         }
     })
         .then(function (response) {
-            console.log('responsesdfsfsdfsdf', response?.data);
             setIsLoading(false)
             setPositionList(response?.data?.lists);
         })
@@ -80,10 +79,10 @@ export const addNewTrigger = (token, details, setIsLoading,navigation) => {
             Alert.alert("Log added successfully")
             navigation.navigate("MigraineLog")
         })
-        .catch(function (error) {
+        .catch(function (error) {            
             setIsLoading(false)
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                Alert.alert(error?.response?.data?.error?.message?.message)
               }
         });
 }
@@ -99,7 +98,6 @@ export const updateNewTrigger = (token, details,id, setIsLoading,navigation) => 
         }
     })
         .then(function (response) {
-            console.log(response?.data,"respo");
             
             setIsLoading(false)
             Alert.alert("Log updated successfully")
@@ -107,6 +105,8 @@ export const updateNewTrigger = (token, details,id, setIsLoading,navigation) => 
         })
         .catch(function (error) {
             setIsLoading(false)
+            console.log(error?.response?.data,"respo");
+
             if (error.response) {
                 Alert.alert(error?.response?.data?.message)
               }

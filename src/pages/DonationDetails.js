@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import { getSingleDonationApi } from '../apiService/DonationApi';
 import LoadingScreen from '../components/LoadingScreen';
 import { getData } from '../helper';
-import Slider from '@react-native-community/slider';
 
 export default function DonationDetails({ route }) {
     const { id } = route.params;
@@ -88,21 +87,12 @@ export default function DonationDetails({ route }) {
                     </View>
 
                     <View style={styles.donationContext}>
-                        {/* <View style={styles.progressbarwrapper}>
-                            <View style={styles.progressbar}></View>
-                        </View> */}
+                        <View style={styles.progressbarwrapper}>
+                            <View style={[styles.progressbar,{width: `${getPercentage}%`}]}></View>
+                        </View>
                        
                         <Text style={styles.donationpercent}>{getPercentage}%</Text>
-                        <Slider
-                        style={styles.slider}
-                        minimumValue={0}
-                        maximumValue={100}
-                        step={1}  // Step value for whole numbers
-                        value={getPercentage}
-                        minimumTrackTintColor="#20C3D3"
-                        maximumTrackTintColor="gray"
-                        thumbTintColor="#20C3D3"
-                    />
+                     
                     </View>
                 </View>
                 <Text style={styles.campaignText}>Campaign by</Text>
@@ -149,9 +139,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         flex: 1,
     },
+   
     progressbar: {
         backgroundColor: '#20C3D3',
-        width: '30%',
         height: 10,
         borderRadius: 10,
     },

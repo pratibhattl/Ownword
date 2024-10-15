@@ -6,7 +6,6 @@ import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
 import { getHomeApi } from '../apiService/Users'
-import Slider from '@react-native-community/slider';
 
 const screenWidth = Dimensions.get('window').width;
 const notificationArr = {
@@ -154,19 +153,12 @@ export default function Home() {
                             <View style={styles.donateContent}>
                                 <Text style={styles.cardText}>{donationData.title}</Text>
                                 <Text style={styles.founderText}>{donationData.foundationName}</Text>
-                                <Slider
-                                    style={styles.slider}
-                                    minimumValue={0}
-                                    maximumValue={100}
-                                    step={1}  // Step value for whole numbers
-                                    value={getPercentage}
-                                    minimumTrackTintColor="#20C3D3"
-                                    maximumTrackTintColor="gray"
-                                    thumbTintColor="#20C3D3"
-                                />
-
+                               
+                                <View style={styles.progressbarwrapper}>
+                                    <View style={[styles.progressbar,{width: `${donationData.targetAmount}`}]}></View>
+                                </View>
                                 <View style={styles.donationmeta}>
-                                    <Text style={styles.targetAmount}>Target - {donationData.targetAmount} INR</Text>
+                                    <Text style={styles.targetAmount}>Target - {donationData?.targetAmount} INR</Text>
                                     <Text style={styles.duration}> {leftDays}/{totalDays} Days Left</Text>
                                 </View>
                             </View>
@@ -379,7 +371,6 @@ const styles = StyleSheet.create({
     },
     progressbar: {
         backgroundColor: '#20C3D3',
-        width: '30%',
         height: 6,
         borderRadius: 10,
     },

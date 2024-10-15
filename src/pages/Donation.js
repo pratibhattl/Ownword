@@ -66,9 +66,11 @@ export default function Donation() {
                                         <Text style={styles.cardText}>{data.title}</Text>
                                         <Text style={styles.founderText}>{data.foundationName}</Text>
 
-                                        {/* <View style={styles.progressbarwrapper}> */}
-                                            {/* <View style={styles.progressbar}></View> */}
-                                            <Slider
+                                        <View style={styles.progressbarwrapper}>
+                                            <View style={[styles.progressbar,{width: `${data?.targetAmount}`}]}></View>
+                                            
+                                        </View>
+                                        {/* <Slider
                                             style={styles.slider}
                                             minimumValue={0}
                                             maximumValue={100}
@@ -77,11 +79,9 @@ export default function Donation() {
                                             minimumTrackTintColor="#20C3D3"
                                             maximumTrackTintColor="gray"
                                             thumbTintColor="#20C3D3"
-                                        />
-                                        {/* </View> */}
-
+                                        /> */}
                                         <View style={styles.donationmeta}>
-                                        <Text style={styles.targetAmount}>Target - {data.targetAmount} INR</Text>
+                                        <Text style={styles.targetAmount}>Target - {data?.targetAmount} INR</Text>
                                         <Text style={styles.duration}>
                                             {validLeftDays}/{totalDays} Days Left
                                         </Text>
@@ -129,7 +129,6 @@ const styles = StyleSheet.create({
     },
     progressbar: {
         backgroundColor: '#20C3D3',
-        width: '30%',
         height: 6,
         borderRadius: 10,
     },
