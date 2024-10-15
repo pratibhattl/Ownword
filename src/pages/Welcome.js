@@ -13,10 +13,10 @@ export default function Welcome() {
                 <Text style={styles.textStyle}> The #1 Migraine and Headache Tracer </Text>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.primaryButton}  onPress={() => navigation.navigate(`Signup`)}>
+                <TouchableOpacity style={styles.primaryButton}  onPress={() => navigation.replace(`Signup`)}>
                     <Text style={styles.buttonText}>Sign up</Text>
                 </TouchableOpacity>
-                <Text style={styles.footertext} onPress={() => navigation.navigate(`Login`)}>Already have an Account? Login</Text>
+                <Text style={styles.footertext} onPress={() => navigation.replace(`Login`)}>Already have an Account? Login</Text>
             </View>
         </View>
     )
