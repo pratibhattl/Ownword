@@ -10,7 +10,7 @@ export default function Insights() {
     const [selectedTab, setSelectedTab] = useState('Insight');
     const [token, setToken] = useState(null)
     const [insightsList, setInsightsList] = useState([])
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
     const [userDetails, setUserDetails] = useState({})
     const [isModalVisible, setModalVisible] = useState(false);
     const [comment, setComment] = useState(null);
@@ -33,14 +33,17 @@ export default function Insights() {
 
 
     useEffect(() => {
+        getInsightsApi(token, setInsightsList, setIsLoading, "")
+    }, [token])
+
+
+    useEffect(() => {
         if (selectedTab == 'Insight') {
-            getInsightsApi(token, setInsightsList, setIsLoading)
+            getInsightsApi(token, setInsightsList, setIsLoading, "")
         } else if (selectedTab == 'Blog') {
-            getBlogsApi(token, setInsightsList, setIsLoading,"")
-        } else {
-            getInsightsApi(token, setInsightsList, setIsLoading,"")
-        }
-    }, [token,selectedTab])
+            getBlogsApi(token, setInsightsList, setIsLoading, "")
+        } 
+    }, [selectedTab])
 
 
     const likeBlogFunc = (details) => {
@@ -165,7 +168,7 @@ export default function Insights() {
     )
 }
 const styles = StyleSheet.create({
-    scrollcontainer:{
+    scrollcontainer: {
         paddingHorizontal: 16,
     },
     input: {
@@ -208,7 +211,7 @@ const styles = StyleSheet.create({
     cardContent: {
         paddingHorizontal: 16,
         paddingVertical: 16,
-    }, 
+    },
     optionButton: {
         fontSize: 13,
         color: '#fff',

@@ -8,7 +8,7 @@ export const userSignUpApi = (data, navigation) => {
       mergeData('userDetails', response?.data?.user);
       storeData('token', response?.data?.token)
 
-      navigation.navigate('Home')
+      navigation.replace('Home')
     })
     .catch(function (error) {
       console.log(error);
@@ -25,7 +25,7 @@ export const userLoginApi = (data, setIsLoading, navigation) => {
       mergeData('userDetails', response?.data?.user);
       storeData('token', response?.data?.token)
       setIsLoading(false);
-      navigation.navigate('Home')
+      navigation.replace('Home')
 
     })
     .catch(function (error) {

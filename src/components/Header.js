@@ -36,9 +36,11 @@ const Header = ({ title }) => {
 
     return (
         <View style={styles.headerContainer}>
+            {routeName !== 'Home' &&
             <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
                 <Image source={require('../assets/arrow-left.png')} />
             </TouchableOpacity>
+}
             {routeName !== 'Menu' &&
                 <TouchableOpacity style={styles.button} >
                     {userDetails?.profile_img ?

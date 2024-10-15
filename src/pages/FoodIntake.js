@@ -9,7 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import { getFoodIntakeApi, createFoodIntakeApi, createUserFoodIntakeApi } from '../apiService/IntakeApi';
 
 export default function FoodIntake() {
-    const { control, handleSubmit,reset, formState: { errors } } = useForm();
+    const { control, handleSubmit, reset, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [token, setToken] = useState(null)
     const [intakeList, setIntakeList] = useState([])
@@ -55,19 +55,34 @@ export default function FoodIntake() {
             caloryAmount: e,
         })
     }
-
     const onSubmit = () => {
         // setSubmitted(true);
+        if (details == null) {
+            Alert.alert("Please select a food !!")
+        }
+        else {
+            console.log(details, "detailssss");
+            if (showText) {
+                if (!details?.caloryAmount && !details?.fatAmount &&
+                    !details?.name && !details?.proteinAmount) {
+                    Alert.alert("Please enter all values !!")
+                }
+                else {
+                    createFoodIntakeApi(token, details, Alert, setIsLoading, setDetails)
+                    reset();
+                    setShowText(false)
+                }
+            }
 
-        if (showText) {
-            createFoodIntakeApi(token, details, Alert, setIsLoading,setDetails)
-            reset();
-            setShowText(false)
-        } else {
-            createUserFoodIntakeApi(token, details, Alert, setIsLoading,setDetails)
-            reset();
-            setShowText(false)
-
+            else {
+                if(details == {}){
+                    Alert.alert("Please select a food !!")
+                }else{
+                createUserFoodIntakeApi(token, details, Alert, setIsLoading, setDetails)
+                reset();
+                setShowText(false);
+                }
+            }
         }
     };
 
@@ -164,7 +179,7 @@ export default function FoodIntake() {
 
 
                 </View>
-               
+
             </ScrollView >
             <TouchableOpacity style={styles.secondoryButton} onPress={onSubmit}>
                 <Text style={styles.buttonText}>Submit</Text>

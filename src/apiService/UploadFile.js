@@ -51,10 +51,12 @@ export const imageUploadApi = (formData, token,setImageList, setIsLoading) => {
         }
     })
         .then(function (response) {
+            console.log(response,"responseeeeee");
+            
             getImageApi(token, setImageList, setIsLoading)
         })
         .catch(function (error) {
-            console.log(error);
+            console.log(error,"errrr");
         });
 }
 
@@ -72,3 +74,5 @@ export const prescriptionUploadApi = (formData, token,setImageList, setIsLoading
             console.log(error);
         });
 }
+
+

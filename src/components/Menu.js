@@ -20,7 +20,7 @@ export default function Menu() {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
-            navigation.navigate('Login')
+            navigation.replace('Login')
         }, 2000)
     }
 

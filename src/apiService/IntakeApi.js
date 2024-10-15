@@ -101,7 +101,7 @@ export const createFoodIntakeApi = (token,data,Alert, setIsLoading,setDetails) =
         .then(function (response) {                        
             setIsLoading(false)
             Alert.alert('Food intake log added')
-            setDetails({});
+            setDetails(null);
         })
         .catch(function (error) {
             setIsLoading(false)
@@ -127,7 +127,7 @@ export const createUserFoodIntakeApi = (token,data,Alert, setIsLoading,setDetail
         .then(function (response) {                        
             setIsLoading(false)
             Alert.alert('Food intake log added')
-            setDetails({})
+            setDetails(null)
         })
         .catch(function (error) {
             setIsLoading(false)

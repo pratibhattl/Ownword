@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
@@ -21,9 +21,13 @@ export default function WaterIntake() {
   const [isLoading, setIsLoading] = React.useState(false);
   const navigation = useNavigation();
   const onSubmit = (data) => {    
+    if(data?.amount !==""){
     setSubmitted(true);
     reset({ amount: '' });
     createWaterIntakeApi(token, data, setIntakeList, setIsLoading)
+    }else{
+      Alert.alert("Please enter water amount !!")
+    }
   };
   useEffect(() => {
     getData('token').then((token) => {

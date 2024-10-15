@@ -54,7 +54,7 @@ export default function Menstrual() {
             <ScrollView style={styles.wrapper}>
 
                 <View style={styles.formWrap}>
-                    {menstrualList[0]?.endMonth == ""?
+                    {menstrualList?.length > 0 && menstrualList[0]?.endMonth == ""?
                         <>
                             <Controller
                                 control={control}
