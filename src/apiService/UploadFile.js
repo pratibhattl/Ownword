@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '@env';
+import { Alert } from 'react-native';
 
 export const getImageApi = (token, setImageList, setIsLoading) => {
     setIsLoading(true)
@@ -44,6 +45,8 @@ export const getPrescriptionApi = (token, setImageList, setIsLoading) => {
 
 
 export const imageUploadApi = (formData, token,setImageList, setIsLoading) => {
+    console.log(formData, token,"sfsdfdsfdf");
+    
     axios.post(`${API_URL}prepscription/upload-normal-image`, formData, {
         headers: {
             'x-access-token': token,
@@ -51,12 +54,16 @@ export const imageUploadApi = (formData, token,setImageList, setIsLoading) => {
         }
     })
         .then(function (response) {
-            console.log(response,"responseeeeee");
-            
+            console.log(response,"response?.response");
             getImageApi(token, setImageList, setIsLoading)
         })
         .catch(function (error) {
-            console.log(error,"errrr");
+            console.log(error,"error?.response");
+            if (error?.response?.data) {
+                Alert.alert(error?.response?.data?.error?.message?.message)
+              }else{
+                Alert.alert("Network error")
+              }
         });
 }
 
@@ -71,7 +78,10 @@ export const prescriptionUploadApi = (formData, token,setImageList, setIsLoading
             getPrescriptionApi(token, setImageList, setIsLoading)
         })
         .catch(function (error) {
-            console.log(error);
+            if (error.response) {
+               
+                Alert.alert(error?.response?.data?.error?.message?.message)
+              }
         });
 }
 

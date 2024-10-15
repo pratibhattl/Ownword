@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '@env';
-
+import { Alert } from 'react-native';
 export const getWaterIntakeApi = (token, setIntakeList, setIsLoading) => {
     setIsLoading(true)
     axios.get(`${API_URL}intake/user-water-consumption-data`, {
@@ -32,12 +32,14 @@ export const createWaterIntakeApi = (token, data,setIntakeList, setIsLoading) =>
     })
         .then(function (response) {
             setIsLoading(false)
-            alert('water intake log added')
+            Alert.alert('water intake log added')
             getWaterIntakeApi(token, setIntakeList, setIsLoading)
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -57,11 +59,13 @@ export const updateWaterIntakeApi = (token,id, setIntakeList, setIsLoading,navig
       
       axios.request(config)
       .then((response) => {
-        alert('Log removed !!')
+        Alert.alert('Log removed !!')
         getWaterIntakeApi(token, setIntakeList, setIsLoading)
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response) {
+            Alert.alert(error?.response?.data?.message)
+          }
       });
     
 }
@@ -82,13 +86,12 @@ export const getFoodIntakeApi = (token, setIntakeList, setIsLoading) => {
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
         });
 }
 
 
 
-export const createFoodIntakeApi = (token,data,Alert, setIsLoading,setDetails) => {
+export const createFoodIntakeApi = (token,data, setIsLoading,setDetails) => {
     
     setIsLoading(true)
     axios.post(`${API_URL}intake/create-food-list`,data, {
@@ -105,13 +108,15 @@ export const createFoodIntakeApi = (token,data,Alert, setIsLoading,setDetails) =
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
 
 
-export const createUserFoodIntakeApi = (token,data,Alert, setIsLoading,setDetails) => {
+export const createUserFoodIntakeApi = (token,data,setIsLoading,setDetails) => {
     let body ={
         'foodId': data?.name
     }
@@ -131,6 +136,8 @@ export const createUserFoodIntakeApi = (token,data,Alert, setIsLoading,setDetail
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }

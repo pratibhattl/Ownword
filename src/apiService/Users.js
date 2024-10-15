@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { API_URL } from '@env';
 import { mergeData, storeData, removeData } from '../helper'
+import { Alert } from 'react-native';
 
 export const userDetailsApi = (id, token, setUserDetails, setIsLoading) => {
     setIsLoading(true)
@@ -38,10 +39,12 @@ export const changePasswordApi = (data, token, setMessage, navigation) => {
         .then(function (response) {
             navigation.navigate(-1)
             // setMessage("updated s")
-            alert('Password changed Successfully');
+            Alert.alert('Password changed Successfully');
         })
         .catch(function (error) {
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -52,10 +55,12 @@ export const sendOtpApi = (data, navigation) => {
         .then(function (response) {
             storeData('otp', response?.data?.otp_code)
             navigation.navigate('ResetPassword')
-            alert('Check your mail');
+            Alert.alert('Check your mail');
         })
         .catch(function (error) {
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -66,10 +71,12 @@ export const resetPasswordApi = (data, setMessage, navigation) => {
             // setMessage("updated s")
             navigation.navigate('Login')
             removeData('otp')
-            alert('Password changed Successfully');
+            Alert.alert('Password changed Successfully');
         })
         .catch(function (error) {
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -87,11 +94,13 @@ export const updateUserApi = (token, formData, navigation,setUserDetails, setIsL
             setIsLoading(false)
             // navigation.navigate('Menu')
             userDetailsApi(response?.data?.user?._id, token, setUserDetails, setIsLoading)
-            alert(' Profile Updated Successfully');
+            Alert.alert(' Profile Updated Successfully');
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 

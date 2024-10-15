@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '@env';
-
+import { Alert } from 'react-native';
 
 
 export const getInsightsApi = (token, setInsightsList, setIsLoading,flag) => {
@@ -24,7 +24,6 @@ if(flag == "Like"){
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
             setInsightsList([]);
             
         });
@@ -52,7 +51,7 @@ export const getBlogsApi = (token, setInsightsList, setIsLoading,flag) => {
         .catch(function (error) {
             setIsLoading(false)
             setInsightsList([]);
-            console.log(error);
+          
         });
 }
 
@@ -69,17 +68,19 @@ export const addLikeBlogsApi = (token, data, like, setInsightsList, setIsLoading
             setIsLoading(false)
             getBlogsApi(token, setInsightsList, setIsLoading,"Like")
             if (like == true) {
-                alert("Post disliked !!")
+                Alert.alert("Post disliked !!")
 
             } else {
-                alert("Post liked !!")
+                Alert.alert("Post liked !!")
 
             }
             // setInsightsList(response?.data?.data);
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -95,17 +96,19 @@ export const addLikeInsightApi = (token, data, like, setInsightsList, setIsLoadi
         .then(function (response) {
             setIsLoading(false)
             if (like == true) {
-                alert("Post disliked !!")
+                Alert.alert("Post disliked !!")
 
             } else {
-                alert("Post liked !!")
+                Alert.alert("Post liked !!")
 
             }
             getInsightsApi(token, setInsightsList, setIsLoading,"Like")
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -130,11 +133,13 @@ export const addCommentBlogsApi = (token, data, setInsightsList, setIsLoading, t
             } else {
                 getInsightsApi(token, setInsightsList, setIsLoading,"Like")
             }
-            alert("Commented successfully !!")
+            Alert.alert("Commented successfully !!")
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -149,14 +154,13 @@ export const getTrackingApi = (token, setDetails, setIsLoading) => {
         }
     })
         .then(function (response) {
-            console.log("sddsfseed", response?.data);
             setIsLoading(false)
             // let arr = response?.data?.data?.length > 0 ? response?.data?.data : []
             setDetails(response?.data?.infoData);
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+           
             setDetails({});
             
         });

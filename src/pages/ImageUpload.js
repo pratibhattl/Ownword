@@ -37,6 +37,8 @@ export default function ImageUpload() {
             });
             const formData = new FormData();
             formData.append('image', res[0])
+            console.log( res[0],"dsfsfsdf");
+            
             imageUploadApi(formData, token,setImageList, setIsLoading);
            
 

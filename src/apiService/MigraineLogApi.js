@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '@env';
+import { Alert } from 'react-native';
 
 export const getMigraineLogApi = (token, setMedicationList, setIsLoading) => {
     setIsLoading(true)
@@ -76,12 +77,14 @@ export const addNewTrigger = (token, details, setIsLoading,navigation) => {
     })
         .then(function (response) {
             setIsLoading(false)
-            alert("Log added successfully")
+            Alert.alert("Log added successfully")
             navigation.navigate("MigraineLog")
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -99,12 +102,14 @@ export const updateNewTrigger = (token, details,id, setIsLoading,navigation) => 
             console.log(response?.data,"respo");
             
             setIsLoading(false)
-            alert("Log updated successfully")
+            Alert.alert("Log updated successfully")
             navigation.navigate("Home")
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 

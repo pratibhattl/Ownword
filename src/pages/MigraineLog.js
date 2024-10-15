@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Image } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Image, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
@@ -44,13 +44,17 @@ export default function MigraineLog() {
 
     const onGoForward = () => {
 
-            if(!migraineLogs[0]?.endDate){
+        if (migraineLogs?.length > 0 && !migraineLogs[0]?.endDate) {
             let id = migraineLogs[0]?._id
             updateNewTrigger(token, details, id, setIsLoading, navigation)
-            
+
         } else {
-            navigation.navigate('PainArea');
-            mergeData('migrainLog', details);
+            if (!details?.start_date || !details?.start_time) {
+                Alert.alert("Please enter date and time !!!")
+            } else {
+                navigation.navigate('PainArea');
+                mergeData('migrainLog', details);
+            }
         }
     }
 
@@ -75,12 +79,12 @@ export default function MigraineLog() {
                                     <>
                                         <Text style={styles.inputlabel}>End Time*</Text>
                                         <View style={styles.dateblock}>
-                                        <Text style={styles.datetime}>{details?.endTime}</Text>
-                                        {/* <Button title="Open" onPress={() => setOpenEndTime(true)} /> */}
-                                        <TouchableOpacity onPress={() => setOpenEndTime(true)} style={styles.button}>
+                                            <Text style={styles.datetime}>{details?.endTime}</Text>
+                                            {/* <Button title="Open" onPress={() => setOpenEndTime(true)} /> */}
+                                            <TouchableOpacity onPress={() => setOpenEndTime(true)} style={styles.button}>
                                                 <Image source={require('../assets/clock.png')} style={styles.image} />
                                             </TouchableOpacity>
-                                            </View>
+                                        </View>
                                         {endTime &&
                                             <DatePicker
                                                 modal
@@ -111,12 +115,12 @@ export default function MigraineLog() {
                                     <>
                                         <Text style={styles.inputlabel}>End Date*</Text>
                                         <View style={styles.dateblock}>
-                                        <Text style={styles.datetime}>{details?.endDate}</Text>
-                                        {/* <Button title="Open" onPress={() => setOpenEndDate(true)} /> */}
-                                        <TouchableOpacity onPress={() => setOpenEndDate(true)} style={styles.button}>
+                                            <Text style={styles.datetime}>{details?.endDate}</Text>
+                                            {/* <Button title="Open" onPress={() => setOpenEndDate(true)} /> */}
+                                            <TouchableOpacity onPress={() => setOpenEndDate(true)} style={styles.button}>
                                                 <Image source={require('../assets/clock.png')} style={styles.image} />
                                             </TouchableOpacity>
-                                            </View>
+                                        </View>
                                         {openEndDate &&
                                             <DatePicker
                                                 modal
@@ -222,16 +226,16 @@ export default function MigraineLog() {
 
             </ScrollView>
             <View style={styles.bottom_button}>
-            {migraineLogs?.length > 0 && !migraineLogs[0]?.endDate &&
-                <TouchableOpacity style={styles.skipButton} onPress={() => navigation.navigate("Home")}  >
-                    <Text style={{ color: "#000" }}>Skip</Text>
+                {migraineLogs?.length > 0 && !migraineLogs[0]?.endDate &&
+                    <TouchableOpacity style={styles.skipButton} onPress={() => navigation.navigate("Home")}  >
+                        <Text style={{ color: "#000" }}>Skip</Text>
+                    </TouchableOpacity>
+                }
+                <TouchableOpacity style={styles.arrowButton} onPress={() => onGoForward()}>
+                    <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
                 </TouchableOpacity>
-            }
-            <TouchableOpacity style={styles.arrowButton} onPress={() => onGoForward()}>
-                <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
-            </TouchableOpacity>
             </View>
-            
+
 
             <Footer />
         </View >

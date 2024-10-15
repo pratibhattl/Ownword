@@ -20,7 +20,7 @@ export const getMedicationApi = (token, setMedicationList, setIsLoading) => {
             console.log(error);
         });
 }
-export const addMedicineApi = (token, details, Alert, setMedicationList, setIsLoading) => {
+export const addMedicineApi = (token, details,setDetails, Alert, setMedicationList, setIsLoading) => {
     axios.post(`${API_URL}medicine-reminder/add`,details, {
         headers: {
             'x-access-token': token,
@@ -31,9 +31,12 @@ export const addMedicineApi = (token, details, Alert, setMedicationList, setIsLo
         .then(function (response) {
             Alert.alert("Medicine added successfully")
             getMedicationApi(token, setMedicationList, setIsLoading);
+            setDetails(null)
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }

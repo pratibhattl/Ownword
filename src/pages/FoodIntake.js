@@ -68,7 +68,7 @@ export default function FoodIntake() {
                     Alert.alert("Please enter all values !!")
                 }
                 else {
-                    createFoodIntakeApi(token, details, Alert, setIsLoading, setDetails)
+                    createFoodIntakeApi(token, details, setIsLoading, setDetails)
                     reset();
                     setShowText(false)
                 }
@@ -78,7 +78,7 @@ export default function FoodIntake() {
                 if(details == {}){
                     Alert.alert("Please select a food !!")
                 }else{
-                createUserFoodIntakeApi(token, details, Alert, setIsLoading, setDetails)
+                createUserFoodIntakeApi(token, details, setIsLoading, setDetails)
                 reset();
                 setShowText(false);
                 }

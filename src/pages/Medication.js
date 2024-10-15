@@ -67,7 +67,7 @@ export default function Medication() {
     const [medicationList, setMedicationList] = useState([])
     const [isLoading, setIsLoading] = React.useState(false);
     const [details, setDetails] = useState(null);
-    const [timeValue, setTimeValue] = useState( new Date())
+    const [timeValue, setTimeValue] = useState(new Date())
     const [open, setOpen] = useState(false)
 
 
@@ -86,9 +86,12 @@ export default function Medication() {
 
 
     const onSubmit = () => {
-
-        addMedicineApi(token, details, Alert, setMedicationList, setIsLoading)
-
+        if (details == null || !details?.days || !details?.medicine_name || 
+            !details?.medicine_time || !details?.start_time) {
+            Alert.alert("Please enter all values !!!")
+        } else {
+            addMedicineApi(token, details,setDetails, Alert, setMedicationList, setIsLoading)
+        }
     };
 
 
@@ -106,7 +109,7 @@ export default function Medication() {
                         <Text style={styles.inputlabel}>Start Time*</Text>
                         <View style={styles.dateblock}>
                             <Text style={styles.datetime}>{details?.start_time}</Text>
-                        {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
+                            {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
                             <TouchableOpacity onPress={() => setOpen(true)} style={styles.button}>
                                 <Image source={require('../assets/clock.png')} style={styles.image} />
                             </TouchableOpacity>
@@ -118,7 +121,7 @@ export default function Medication() {
                                 open={open}
                                 date={timeValue}
                                 onConfirm={(date) => {
-                                    setOpen(false)                                    
+                                    setOpen(false)
                                     setDetails({
                                         ...details,
                                         start_time: Moment(date).format("HH:MMA")
@@ -190,7 +193,7 @@ export default function Medication() {
                                 <Pressable style={styles.cardMain}>
                                     <View style={styles.cardContainer}>
                                         <Image source={require('../assets/Frame4.png')}
-                                        style={styles.cardImage} />
+                                            style={styles.cardImage} />
                                     </View>
                                     <View style={styles.cardContent}>
                                         <Text style={styles.medicine_name}>{x.medicine_name}</Text>
@@ -200,7 +203,7 @@ export default function Medication() {
                                             </View>
                                             <Text style={styles.medicine_time}>{x.medicine_time}</Text>
                                         </View>
-                                        
+
                                     </View>
                                 </Pressable>
                             </View>

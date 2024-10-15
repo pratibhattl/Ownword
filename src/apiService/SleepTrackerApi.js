@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '@env';
+import { Alert } from 'react-native';
 
 export const getTimeInBedApi = (token, setBedTimeList, setIsLoading, navigation) => {
     setIsLoading(true)
@@ -42,12 +43,14 @@ export const addBedTimeApi = (token, data, navigation, setIsLoading) => {
             console.log('response', response?.data);
             setIsLoading(false)
             navigation.navigate('TimeAsleep');
-            alert("Log added successfully !!")
+            Alert.alert("Log added successfully !!")
 
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 
@@ -67,12 +70,14 @@ export const updateBedTimeApi = (token, data, setIsLoading, navigation) => {
             console.log('response', response?.data);
             setIsLoading(false)
             navigation.navigate('TimeInBed');
-            alert("time updated successfully !!")
+            Alert.alert("time updated successfully !!")
 
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+              }
         });
 }
 

@@ -4,7 +4,8 @@ import Footer from '../components/Footer'
 import { getData } from '../helper'
 import LoadingScreen from '../components/LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
-import { getMigraineReasonApi, addNewTrigger } from '../apiService/MigraineLogApi'
+import { getMigraineReasonApi, addNewTrigger } from '../apiService/MigraineLogApi';
+import { Alert } from 'react-native'
 export default function MigraineReason() {
     const [isLoading, setIsLoading] = React.useState(false);
     const [migraineReason, setMigraineReason] = React.useState([]);
@@ -48,7 +49,11 @@ export default function MigraineReason() {
     }
 
     const onSubmit = () => {
+        if (!details?.painReason?.length > 0) {
+            Alert.alert("Please select Pain reason !!")
+        }else{
         addNewTrigger(token, details, setIsLoading, navigation)
+    }
     }
 
 

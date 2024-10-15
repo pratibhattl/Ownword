@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '@env';
+import { Alert } from 'react-native';
 
 export const getMenstrualApi = (token, setMenstrualList, setIsLoading) => {
     setIsLoading(true)
@@ -33,13 +34,15 @@ export const addMenstrualApi = (token, details, setMenstrualList, setIsLoading) 
         }
     })
         .then(function (response) {
-            console.log('response', response?.data);
-            alert("Menstrual cycle added")
+            
+            Alert.alert("Menstrual cycle added")
             getMenstrualApi(token, setMenstrualList, setIsLoading);
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.error?.message?.message)
+              }
         });
 }
 
@@ -57,11 +60,13 @@ export const updateMenstrualApi = (token, details,id, setMenstrualList, setIsLoa
     })
         .then(function (response) {
             console.log('response', response?.data);
-            alert("Menstrual cycle updated")
+            Alert.alert("Menstrual cycle updated")
             getMenstrualApi(token, setMenstrualList, setIsLoading);
         })
         .catch(function (error) {
             setIsLoading(false)
-            console.log(error);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.error?.message?.message)
+              }
         });
 }

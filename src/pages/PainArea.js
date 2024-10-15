@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Text, TextInput } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Text, TextInput, Alert } from 'react-native';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
@@ -25,7 +25,7 @@ export default function PainArea() {
     const [painArea, setPainArea] = useState([])
     const [positionList, setPositionList] = useState([])
     const [details, setDetails] = useState(null)
-   
+
     useEffect(() => {
         getData('token').then((token) => {
             setToken(token);
@@ -59,8 +59,16 @@ export default function PainArea() {
 
 
     const onGoForward = () => {
-        navigation.navigate('MigraineReason');
-        mergeData('migrainLog', details);
+
+        if (!details?.painPosition?.length > 0) {
+            Alert.alert("Please select Pain position !!")
+        }else if(!details?.painScale){
+            Alert.alert("Please select Pain scale lavel !!")
+        }
+         else {
+            navigation.navigate('MigraineReason');
+            mergeData('migrainLog', details);
+        }
     }
 
 
@@ -120,19 +128,19 @@ export default function PainArea() {
                     {positionList?.map((x) => {
                         return (
                             <TouchableOpacity style={[painArea?.includes(x?._id) ? styles.card1 : styles.card]} onPress={() => onSelectReason(x?._id)}>
-                               {
-                                x?.positionName ==="Left Back Of Head (Lower)" ?
-                                <Image source={require("../assets/left-back-head-lower.png")} style={styles.icon} />
-                                :
-                                x?.positionName ==="Left Back Of Head (Upper)" ?
-                                <Image source={require("../assets/left-back-head-upper.png")} style={styles.icon} />
-                                :
-                                x?.positionName ==="Left Back Of Neck" ?
-                                <Image source={require("../assets/left-back-neck.png")} style={styles.icon} />
-                                :
-                                x?.positionName === "Between Eye" &&
-                                <Image source={require("../assets/left-eye.png")} style={styles.icon} />
-                               }
+                                {
+                                    x?.positionName === "Left Back Of Head (Lower)" ?
+                                        <Image source={require("../assets/left-back-head-lower.png")} style={styles.icon} />
+                                        :
+                                        x?.positionName === "Left Back Of Head (Upper)" ?
+                                            <Image source={require("../assets/left-back-head-upper.png")} style={styles.icon} />
+                                            :
+                                            x?.positionName === "Left Back Of Neck" ?
+                                                <Image source={require("../assets/left-back-neck.png")} style={styles.icon} />
+                                                :
+                                                x?.positionName === "Between Eye" &&
+                                                <Image source={require("../assets/left-eye.png")} style={styles.icon} />
+                                }
                                 <Text style={styles.cardText}>{x?.positionName}</Text>
                             </TouchableOpacity>
                         )
