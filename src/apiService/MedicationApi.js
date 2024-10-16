@@ -11,7 +11,6 @@ export const getMedicationApi = (token, setMedicationList, setIsLoading) => {
         }
     })
         .then(function (response) {
-            // console.log('response', response?.data);
             setIsLoading(false)
             setMedicationList(response?.data?.result);
         })
@@ -34,9 +33,9 @@ export const addMedicineApi = (token, details,setDetails, Alert, setMedicationLi
             setDetails(null)
         })
         .catch(function (error) {
-            setIsLoading(false)
+            setIsLoading(false)            
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                Alert.alert(error?.response?.data?.error?.message)
               }
         });
 }

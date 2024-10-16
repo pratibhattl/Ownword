@@ -34,16 +34,20 @@ import MigraineReason from './src/pages/MigraineReason';
 import Foram from './src/pages/Foram';
 import Chat from './src/pages/Chat';
 import MigraineList from './src/pages/MigraineList';
+import { useAuth } from './src/Context/AppContext';
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [token, setToken] = React.useState(null);
-
+  const {isLoggedin,setToken,setUserDetails} = useAuth();
   useEffect(() => {
     getData('token').then((token) => {
-      setToken(token);
+        setToken(token);
     });
-  }, [])
+    getData('userDetails').then((data) => {
+        setUserDetails(data);
+    });
+}, []);
+  
 
 
   return (
@@ -54,8 +58,8 @@ function App() {
           return <Header title={title} />;  // Pass the title to Header component
         }
       })}>
-        {/* {!token ?
-          <> */}
+        {!isLoggedin ?
+          <>
             <Stack.Screen
               name="Welcome"
               component={Welcome}
@@ -81,9 +85,9 @@ function App() {
               component={ResetPassword}
               options={{ headerShown: false }}
             />
-          {/* </>
+          </>
           :
-          <> */}
+          <>
             <Stack.Screen
               name="Home"
               component={Home}
@@ -207,8 +211,8 @@ function App() {
             component={MigraineList}
             options={{ headerShown: true, title: 'Onward - Migraine Logs' }}
             />
-          {/* </>
-        } */}
+          </>
+        }
       </Stack.Navigator>
       {/* <Footer /> */}
     </NavigationContainer>

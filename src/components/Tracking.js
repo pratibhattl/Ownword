@@ -1,25 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, StyleSheet, Image } from 'react-native'
 import Footer from '../components/Footer'
-import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
 import { getTrackingApi } from '../apiService/InsightsApi'
-
+import { useAuth } from '../Context/AppContext'
 
 export default function Tracking() {
     const [details, setDetails] = useState({});
-    const [token, setToken] = useState(null)
     const [isLoading, setIsLoading] = React.useState(false);
-    const [userDetails, setUserDetails] = useState({})
-
-    useEffect(() => {
-        getData('token').then((token) => {
-            setToken(token);
-        });
-        getData('userDetails').then((data) => {
-            setUserDetails(data);
-        });
-    }, []);
+    
+    const {userDetails,token}= useAuth();
 
     useEffect(() => {
         getTrackingApi(token, setDetails, setIsLoading)

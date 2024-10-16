@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, ScrollView, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, Pressable } from 'react-native'
 import Footer from '../components/Footer'
-import { refreshTokenApi } from '../apiService/Users'
 import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
 import { getHomeApi } from '../apiService/Users'
-
+import { useAuth } from '../Context/AppContext'
 const screenWidth = Dimensions.get('window').width;
 const notificationArr = {
     imageUrl: require('../assets/donationIcon.png'),
@@ -36,23 +35,10 @@ export default function Home() {
     const navigation = useNavigation();
     const [homePageData, setHomePageData] = useState([]);
     const [donationData, setdonationData] = useState({})
-    const [userDetails, setUserDetails] = useState({})
-    const [token, setToken] = useState(null)
+    const {token} = useAuth();
+
 
     useEffect(() => {
-        const fetchToken = async () => {
-            const storedToken = await getData('token');
-            setToken(storedToken);
-            setIsLoading(false);
-        };
-        getData('userDetails').then((data) => {
-            setUserDetails(data);
-        });
-        fetchToken();
-    }, []);
-
-    useEffect(() => {
-        // refreshTokenApi(token, userDetails?._id, setIsLoading)
         getHomeApi(token, setHomePageData, setdonationData, setIsLoading)
     }, [token])
     const [totalDays, setTotalDays] = useState(0)

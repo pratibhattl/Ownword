@@ -1,18 +1,41 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { userSignUpApi } from '../apiService/AuthApi';
+import { useAuth } from '../Context/AppContext';
+import { mergeData,storeData } from '../helper';
 
 const Signup = () => {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const navigation = useNavigation();
-    const onSubmit = (data) => {
+    const [isLoading,setIsLoading] = useState(false);
+    const { setUserDetails, setToken, setIsLoggedin } = useAuth();
+
+    const onSubmit = async (data) => {
         setSubmitted(true);
-        userSignUpApi(data, navigation)
-        // Alert.alert('Login Successful', `Welcome ${data.email}!`);
+        try {
+            const response = await userSignUpApi(data, setIsLoading);
+            setIsLoading(false);
+            
+            if (response?.data?.status == 201) {
+                mergeData('userDetails', response?.data?.user);
+                storeData('token', response?.data?.token)
+                setUserDetails(response?.data?.user)
+                setToken(response?.data?.token)
+                setIsLoggedin(true);
+                navigation.replace('Home');
+            }
+        } catch (error) {
+            setIsLoading(false);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+            }
+            throw error;
+        }
     };
+
 
     return (
         <View style={styles.container}>
@@ -34,7 +57,7 @@ const Signup = () => {
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
-                                // secureTextEntry
+                            // secureTextEntry
                             />
                             {submitted && errors.name && (
                                 <Text style={styles.errorText}>{errors.name.message}</Text>

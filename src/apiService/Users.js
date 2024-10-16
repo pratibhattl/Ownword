@@ -1,29 +1,24 @@
 import axios from 'axios'
 import { API_URL } from '@env';
-import { mergeData, storeData, removeData } from '../helper'
+import { storeData, removeData } from '../helper'
 import { Alert } from 'react-native';
 
-export const userDetailsApi = (id, token, setUserDetails, setIsLoading) => {
+export const userDetailsApi = (id, token, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}users/${id}`, {
-        headers: {
-            'x-access-token': token,
-            'Content-Type': 'application/json',
-            'Custom-Header': 'CustomHeaderValue'
-        }
-    })
-        .then(function (response) {
-            // console.log(response?.data ,"dgdfgfdgdfgdgdg");
-            setTimeout(() => {
-                setIsLoading(false)
-
-            }, 1000)
-            setUserDetails(response?.data?.user);
+    try {
+        const response = axios.get(`${API_URL}users/${id}`, {
+            headers: {
+                'x-access-token': token,
+                'Content-Type': 'application/json',
+                'Custom-Header': 'CustomHeaderValue'
+            }
         })
-        .catch(function (error) {
-            setIsLoading(false)
-            console.log(error);
-        });
+        return response;
+    } catch (error) {
+        setIsLoading(false)
+        console.log(error);
+        throw error;
+    }
 }
 
 
@@ -44,7 +39,7 @@ export const changePasswordApi = (data, token, setMessage, navigation) => {
         .catch(function (error) {
             if (error.response) {
                 Alert.alert(error?.response?.data?.message)
-              }
+            }
         });
 }
 
@@ -60,7 +55,7 @@ export const sendOtpApi = (data, navigation) => {
         .catch(function (error) {
             if (error.response) {
                 Alert.alert(error?.response?.data?.message)
-              }
+            }
         });
 }
 
@@ -76,32 +71,26 @@ export const resetPasswordApi = (data, setMessage, navigation) => {
         .catch(function (error) {
             if (error.response) {
                 Alert.alert(error?.response?.data?.message)
-              }
+            }
         });
 }
 
 
-export const updateUserApi = (token, formData, navigation,setUserDetails, setIsLoading) => {
+export const updateUserApi = (token, formData, setIsLoading) => {
     setIsLoading(true)
-    axios.put(`${API_URL}users/update-profile`, formData, {
-        headers: {
-            'x-access-token': token,
-            'Content-Type': 'multipart/form-data'
-        }
-    })
-        .then(function (response) {
-            mergeData('userDetails', response?.data?.user);
-            setIsLoading(false)
-            // navigation.navigate('Menu')
-            userDetailsApi(response?.data?.user?._id, token, setUserDetails, setIsLoading)
-            Alert.alert(' Profile Updated Successfully');
+    try {
+        const response = axios.put(`${API_URL}users/update-profile`, formData, {
+            headers: {
+                'x-access-token': token,
+                'Content-Type': 'multipart/form-data'
+            }
         })
-        .catch(function (error) {
-            setIsLoading(false)
-            if (error.response) {
-                Alert.alert(error?.response?.data?.message)
-              }
-        });
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
 }
 
 export const getCountryApi = (token, setCountryList) => {
@@ -142,7 +131,7 @@ export const getStateApi = (token, country, setStateList) => {
 
 
 export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading) => {
-    
+
     setIsLoading(true)
     axios.get(`${API_URL}donation-post/home`, {
         headers: {
@@ -152,11 +141,11 @@ export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading
         }
     })
         .then(function (response) {
-            
+
             setIsLoading(false)
             let arr = response?.data?.blogs?.length > 0 ? response?.data?.blogs : []
             let obj = response?.data?.donationPost?.length > 0 ? response?.data?.donationPost[0] : {}
-            
+
             setHomePageData(arr);
             setdonationData(obj)
         })
@@ -167,29 +156,25 @@ export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading
 }
 
 
-export const refreshTokenApi = (token, id, setIsLoading) => {
-    // setIsLoading(true)
-    axios.get(`${API_URL}check-token?userId=${id}`, {
-        headers: {
-            'x-access-token': token,
-            'Content-Type': 'application/json',
-            'Custom-Header': 'CustomHeaderValue'
-        }
-    })
-        .then(function (response) {
-            // console.log(response?.data?.token, "Token refresh api");
-            storeData('token', response?.data?.token)
-            setIsLoading(false)
+export const refreshTokenApi = (token, id) => {
 
+    try {
+        const response = axios.get(`${API_URL}check-token?userId=${id}`, {
+            headers: {
+                'x-access-token': token,
+                'Content-Type': 'application/json',
+                'Custom-Header': 'CustomHeaderValue'
+            }
         })
-        .catch(function (error) {
-            // console.log(error, "erorrrrrrr");
-            setIsLoading(false)
-        });
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
 
 
-export const getNotificationApi = (token,setNotificationList, setIsLoading) => {
+export const getNotificationApi = (token, setNotificationList, setIsLoading) => {
     setIsLoading(true)
     axios.get(`${API_URL}notification/user?page=1&limit=10000`, {
         headers: {

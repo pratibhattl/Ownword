@@ -1,55 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker'; // For Gender Picker
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import Footer from '../components/Footer'
-import { getData } from '../helper';
+import { getData, mergeData } from '../helper';
 import { userDetailsApi, getCountryApi, getStateApi, updateUserApi } from "../apiService/Users"
 import DocumentPicker from 'react-native-document-picker';
 import { Button } from 'react-native'
 import DatePicker from 'react-native-date-picker'
 import Moment from 'moment';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
+import { useAuth } from '../Context/AppContext';
 // import edit from "../assets/edit.png"
 export default function EditProfile() {
-    const { control, handleSubmit, formState: { errors } } = useForm();
-    const [submitted, setSubmitted] = useState(false);
+    const { control, formState: { errors } } = useForm();
     const [fileResponse, setFileResponse] = useState({});
     const [showDatePicker, setShowDatePicker] = useState(false)
     const navigation = useNavigation();
-    const [userDetails, setUserDetails] = useState({})
-    const [token, setToken] = useState(null)
     const [address, setAddress] = useState(null)
     const [countryList, setCountryList] = useState([])
     const [stateList, setStateList] = useState([])
     const [dob, setDob] = useState(new Date())
     const [isLoading, setIsLoading] = React.useState(false);
     const isFocused = useIsFocused();
+    const { setUserDetails, userDetails, setToken, token } = useAuth()
+
     useEffect(() => {
         getData('userDetails').then((data) => {
-            setUserDetails(data);
             setAddress(data?.address?.address)
             onCountrySelect(data?.address?.country)
         });
-        getData('token').then((token) => {
-            setToken(token);
-        });
+
     }, [])
 
     useEffect(() => {
         if (isFocused) {
-            userDetailsApi(userDetails?._id, token, setUserDetails,setIsLoading)
+            userDetailsApi(userDetails?._id, token, setUserDetails, setIsLoading)
             getCountryApi(token, setCountryList)
         }
-      }, [isFocused]);
-  
+    }, [isFocused]);
+
 
     const onCountrySelect = (country) => {
         getStateApi(token, country, setStateList)
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         var formData = new FormData();
         formData.append('image', userDetails?.profile_img)
         formData.append('name', userDetails?.name)
@@ -62,8 +59,22 @@ export default function EditProfile() {
         formData.append('state', userDetails?.state ? userDetails?.state : userDetails?.address?.state)
         formData.append('country', userDetails?.country ? userDetails?.country : userDetails?.address?.country)
         formData.append('pincode', userDetails?.pincode ? userDetails?.pincode : userDetails?.address?.pincode)
-        
-        updateUserApi(token, formData, navigation,setUserDetails,setIsLoading);  // Ensure updateUserApi is defined
+        try {
+            const response = await updateUserApi(token, formData, setIsLoading);
+            console.log(response?.data, "update");
+            if(response?.data?.status == 200){
+            mergeData('userDetails', response?.data?.user);
+            setIsLoading(false)
+            Alert.alert(' Profile Updated Successfully');
+            userDetailsApi(response?.data?.user?._id, token, setIsLoading)
+            }
+        } catch (error) {
+            setIsLoading(false);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+            }
+            throw error;
+        }
     };
 
     const handleFilePicker = async () => {
@@ -87,7 +98,7 @@ export default function EditProfile() {
     };
 
 
-    
+
 
     return (
         <View style={styles.container}>

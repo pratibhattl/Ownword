@@ -1,44 +1,47 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Image } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, Image, Alert } from 'react-native'
 import Footer from './Footer'
 import { useNavigation } from '@react-navigation/native';
-import { getData, removeData } from '../helper';
+import { removeData } from '../helper';
 import LoadingScreen from './LoadingScreen';
 import { userDetailsApi } from '../apiService/Users';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
+import { useAuth } from '../Context/AppContext';
 
 export default function Menu() {
     const navigation = useNavigation();
-    const [userDetails, setUserDetails] = useState({})
-    const [token, setToken] = useState(null)
+    const { setIsLoggedin, setToken, token, setUserDetails, userDetails } = useAuth();
     const [isLoading, setIsLoading] = React.useState(false);
     const isFocused = useIsFocused();
-
     const logout = () => {
         removeData('userDetails')
         removeData('token')
+        setToken('')
+        setUserDetails({})
         setIsLoading(true);
+        setIsLoggedin(false);
         setTimeout(() => {
             setIsLoading(false);
             navigation.replace('Login')
         }, 2000)
     }
 
-
-    useEffect(() => {
-        getData('userDetails').then((data) => {
-            setUserDetails(data);
-        });
-        getData('token').then((token) => {
-            setToken(token);
-        });
-
-    }, [])
     useEffect(() => {
         if (isFocused) {
-            userDetailsApi(userDetails?._id, token, setUserDetails,setIsLoading)
+            try {
+                const response = userDetailsApi(userDetails?._id, token, setIsLoading)
+                setIsLoading(false)
+                setUserDetails(response?.data?.user);
+
+            } catch (error) {
+                setIsLoading(false);
+                if (error.response) {
+                    Alert.alert(error?.response?.data?.message)
+                }
+                throw error;
+            }
         }
-      }, [isFocused]);
+    }, [isFocused]);
 
 
 

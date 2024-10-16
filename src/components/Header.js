@@ -1,46 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useNavigationState } from '@react-navigation/native';
-import { getData, getMultiple } from '../helper';
+import { getData, storeData } from '../helper';
 import { refreshTokenApi } from '../apiService/Users';
-import LoadingScreen from './LoadingScreen';
+import { useAuth } from '../Context/AppContext';
 const Header = ({ title }) => {
     const [isLoading, setIsLoading] = React.useState(false);
-
+    const { token, userDetails } = useAuth();
     const navigation = useNavigation();
-    const [userDetails, setUserDetails] = useState({})
-    const [token, setToken] = useState(null)
     const routeName = useNavigationState((state) => {
         const index = state.index;
         return state.routes[index].name;
     });
-
+    
+    const refreshTokenFun =async () => {
+        try {
+            const response =await refreshTokenApi(token, userDetails?._id);
+            storeData('token', response?.data?.token)
+        } catch (error) {
+            setIsLoading(false);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.message)
+            }
+            throw error;
+        }
+    }
+    
     useEffect(() => {
-        getData('userDetails').then((data) => {
-            setUserDetails(data);
-        });
-        getData('token').then((token) => {
-            setToken(token);
-        });
-
-    }, [])
-    useEffect(()=>{
-        refreshTokenApi(token,userDetails?._id,setIsLoading)
-    },[token])
-
-    // if (isLoading) {
-    //     return <LoadingScreen />;
-    // }
+        refreshTokenFun()
+    }, [token,userDetails]);
 
 
     return (
         <View style={styles.headerContainer}>
             {routeName !== 'Home' &&
-            <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-                <Image source={require('../assets/arrow-left.png')} />
-            </TouchableOpacity>
-}
+                <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+                    <Image source={require('../assets/arrow-left.png')} />
+                </TouchableOpacity>
+            }
             {routeName !== 'Menu' &&
                 <TouchableOpacity style={styles.button} >
                     {userDetails?.profile_img ?

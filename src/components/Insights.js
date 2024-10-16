@@ -1,36 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, TextInput, Button } from 'react-native'
 import Footer from '../components/Footer'
-import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
 import { getInsightsApi, getBlogsApi, addLikeInsightApi, addLikeBlogsApi, addCommentBlogsApi } from '../apiService/InsightsApi'
 import Modal from "react-native-modal";
 import Moment from 'moment'
+import { useAuth } from '../Context/AppContext'
 export default function Insights() {
     const [selectedTab, setSelectedTab] = useState('Insight');
-    const [token, setToken] = useState(null)
     const [insightsList, setInsightsList] = useState([])
     const [isLoading, setIsLoading] = React.useState(true);
-    const [userDetails, setUserDetails] = useState({})
     const [isModalVisible, setModalVisible] = useState(false);
     const [comment, setComment] = useState(null);
     const [commentId, setCommentId] = useState(null);
+    const {userDetails,token}= useAuth();
 
     const toggleModal = (id) => {
         setModalVisible(!isModalVisible);
         setCommentId(id)
     };
-    useEffect(() => {
-        getData('token').then((token) => {
-            setToken(token);
-        });
-        getData('userDetails').then((data) => {
-            setUserDetails(data);
-        });
-    }, []);
-
-    // console.log(insightsList, "insightsListinsightsList");
-
+ 
 
     useEffect(() => {
         getInsightsApi(token, setInsightsList, setIsLoading, "")

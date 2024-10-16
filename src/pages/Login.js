@@ -4,14 +4,34 @@ import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { userLoginApi } from '../apiService/AuthApi';
 import LoadingScreen from '../components/LoadingScreen';
+import { useAuth } from '../Context/AppContext';
+import { storeData,mergeData } from '../helper';
 const Login = () => {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const navigation = useNavigation();
-    const onSubmit = (data) => {
+    const { setIsLoggedin, setToken, setUserDetails } = useAuth()
+    const onSubmit = async (data) => {
         setSubmitted(true);
-        userLoginApi(data, setIsLoading, navigation)
+        try{
+        const response = await userLoginApi(data, setIsLoading);
+        setIsLoading(false);
+        if(response?.data?.status == 200){
+        mergeData('userDetails', response?.data?.user);
+        storeData('token', response?.data?.token);
+        setUserDetails(response?.data?.user)
+        setToken(response?.data?.token)
+        setIsLoggedin(true);
+        navigation.replace('Home');
+        }
+        }catch (error) {
+            setIsLoading(false);
+             if (error.response) {
+            Alert.alert(error?.response?.data?.message)
+          } 
+            throw error;
+          }
     };
 
     if (isLoading) {
