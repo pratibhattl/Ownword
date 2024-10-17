@@ -13,8 +13,7 @@ import { mergeData } from '../helper';
 import { useIsFocused } from '@react-navigation/native';
 export default function MigraineLog() {
 
-    const { control, handleSubmit, formState: { errors } } = useForm();
-    const [submitted, setSubmitted] = useState(false);
+    const { control, formState: { errors } } = useForm();
     const [token, setToken] = useState(null)
     const [migraineLogs, setMigraineLogs] = useState([])
     const [isLoading, setIsLoading] = React.useState(false);
@@ -43,11 +42,9 @@ export default function MigraineLog() {
     }, [token, isFocused])
 
     const onGoForward = () => {
-
         if (migraineLogs?.length > 0 && !migraineLogs[0]?.endDate) {
             let id = migraineLogs[0]?._id
             updateNewTrigger(token, details, id, setIsLoading, navigation)
-
         } else {
             if (!details?.start_date || !details?.start_time) {
                 Alert.alert("Please enter date and time !!!")

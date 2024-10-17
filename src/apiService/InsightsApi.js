@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_URL } from '@env';
+import { API_URL_DEV } from '@env';
 import { Alert } from 'react-native';
 
 
@@ -9,7 +9,7 @@ if(flag == "Like"){
 }else{
     setIsLoading(true)
 }
-    axios.get(`${API_URL}admins/get-insight`, {
+    axios.get(`${API_URL_DEV}admins/get-insight`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const getBlogsApi = (token, setInsightsList, setIsLoading,flag) => {
     }else{
         setIsLoading(true)
     }
-    axios.get(`${API_URL}admins/get-blog`, {
+    axios.get(`${API_URL_DEV}admins/get-blog`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export const getBlogsApi = (token, setInsightsList, setIsLoading,flag) => {
 
 
 export const addLikeBlogsApi = (token, data, like, setInsightsList, setIsLoading) => {
-    axios.post(`${API_URL}admins/blog-like`, data, {
+    axios.post(`${API_URL_DEV}admins/blog-like`, data, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export const addLikeBlogsApi = (token, data, like, setInsightsList, setIsLoading
 
 export const addLikeInsightApi = (token, data, like, setInsightsList, setIsLoading) => {
 
-    axios.post(`${API_URL}admins/add-insight-like`, data, {
+    axios.post(`${API_URL_DEV}admins/add-insight-like`, data, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export const addLikeInsightApi = (token, data, like, setInsightsList, setIsLoadi
 
 export const addCommentBlogsApi = (token, data, setInsightsList, setIsLoading, toggleModal) => {
     let url = data?.reference_type == 'Blog' ? 'blog-comment' : 'add-insight-comment';
-    axios.post(`${API_URL}admins/${url}`, data, {
+    axios.post(`${API_URL_DEV}admins/${url}`, data, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ export const addCommentBlogsApi = (token, data, setInsightsList, setIsLoading, t
 export const getTrackingApi = (token, setDetails, setIsLoading) => {
 
     setIsLoading(true)
-    axios.get(`${API_URL}analytics`, {
+    axios.get(`${API_URL_DEV}analytics`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',

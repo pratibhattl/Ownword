@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { API_URL } from '@env';
+import { API_URL_DEV } from '@env';
 import { Alert } from 'react-native';
 
 export const getMenstrualApi = (token, setMenstrualList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}menstrual-cycle/user-list?page=1&limit=1000`, {
+    axios.get(`${API_URL_DEV}menstrual-cycle/user-list?page=1&limit=1000`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export const addMenstrualApi = (token, details, setMenstrualList, setIsLoading) 
         startDate: details.startDate
     }
         
-    axios.post(`${API_URL}menstrual-cycle/create`,body, {
+    axios.post(`${API_URL_DEV}menstrual-cycle/create`,body, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const updateMenstrualApi = (token, details,id, setMenstrualList, setIsLoa
         endDate: details.endDate
     }
     
-    axios.put(`${API_URL}menstrual-cycle/update-end-date/${id}`,body, {
+    axios.put(`${API_URL_DEV}menstrual-cycle/update-end-date/${id}`,body, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',

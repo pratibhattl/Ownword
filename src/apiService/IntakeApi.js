@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { API_URL } from '@env';
+import { API_URL_DEV } from '@env';
 import { Alert } from 'react-native';
 export const getWaterIntakeApi = (token, setIntakeList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}intake/user-water-consumption-data`, {
+    axios.get(`${API_URL_DEV}intake/user-water-consumption-data`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export const getWaterIntakeApi = (token, setIntakeList, setIsLoading) => {
 
 export const createWaterIntakeApi = (token, data,setIntakeList, setIsLoading) => {
     setIsLoading(true)
-    axios.post(`${API_URL}intake/create-water-consumption`, data,{
+    axios.post(`${API_URL_DEV}intake/create-water-consumption`, data,{
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const updateWaterIntakeApi = (token,id, setIntakeList, setIsLoading,navig
     let config = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: `${API_URL}intake/update-water-consumption-data/${id}`,
+        url: `${API_URL_DEV}intake/update-water-consumption-data/${id}`,
         headers: { 
           'x-access-token': token
         }
@@ -73,7 +73,7 @@ export const updateWaterIntakeApi = (token,id, setIntakeList, setIsLoading,navig
 
 export const getFoodIntakeApi = (token, setIntakeList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}intake/food-list`, {
+    axios.get(`${API_URL_DEV}intake/food-list`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export const getFoodIntakeApi = (token, setIntakeList, setIsLoading) => {
 export const createFoodIntakeApi = (token,data, setIsLoading,setDetails) => {
     
     setIsLoading(true)
-    axios.post(`${API_URL}intake/create-food-list`,data, {
+    axios.post(`${API_URL_DEV}intake/create-food-list`,data, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ export const createUserFoodIntakeApi = (token,data,setIsLoading,setDetails) => {
     }
     
     setIsLoading(true)
-    axios.post(`${API_URL}intake/create-user-food-consumption`,body, {
+    axios.post(`${API_URL_DEV}intake/create-user-food-consumption`,body, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',

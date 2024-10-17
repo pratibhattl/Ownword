@@ -25,21 +25,41 @@ export default function EditProfile() {
     const [isLoading, setIsLoading] = React.useState(false);
     const isFocused = useIsFocused();
     const { setUserDetails, userDetails, setToken, token } = useAuth()
-
+    const [details, setDetails] = useState({})
     useEffect(() => {
-        getData('userDetails').then((data) => {
+        getData('userDetails').then((data) => {            
             setAddress(data?.address?.address)
             onCountrySelect(data?.address?.country)
+            setDetails(data);
+            setUserDetails(data)
         });
 
     }, [])
+    const getUserDetailsFunc = async () => {
+        try {
+            const response = await userDetailsApi(details?._id, token, setIsLoading)
+            setIsLoading(false);
+            if (response?.data?.status == 200) {
+                mergeData('userDetails', response?.data?.user);
+                setDetails(response?.data?.user);
+                setUserDetails(response?.data?.user)
+            }
+        }
+        catch (error) {
+            setIsLoading(false);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.error?.message)
+            }
+            throw error;
+        }
+    }
 
     useEffect(() => {
-        if (isFocused) {
-            userDetailsApi(userDetails?._id, token, setUserDetails, setIsLoading)
-            getCountryApi(token, setCountryList)
+        if (isFocused, details?._id) {
+            getUserDetailsFunc();
+            getCountryApi(token, setCountryList);
         }
-    }, [isFocused]);
+    }, [isFocused, details?._id]);
 
 
     const onCountrySelect = (country) => {
@@ -48,30 +68,30 @@ export default function EditProfile() {
 
     const onSubmit = async () => {
         var formData = new FormData();
-        formData.append('image', userDetails?.profile_img)
-        formData.append('name', userDetails?.name)
-        formData.append('email', userDetails?.email)
-        formData.append('phone', userDetails?.phone)
-        formData.append('gender', userDetails?.gender)
-        formData.append('dob', userDetails?.dob)
+        formData.append('image', details?.profile_img)
+        formData.append('name', details?.name)
+        formData.append('email', details?.email)
+        formData.append('phone', details?.phone)
+        formData.append('gender', details?.gender)
+        formData.append('dob', details?.dob)
         formData.append('address', address)
-        formData.append('location', userDetails?.location ? userDetails?.location : userDetails?.address?.location)
-        formData.append('state', userDetails?.state ? userDetails?.state : userDetails?.address?.state)
-        formData.append('country', userDetails?.country ? userDetails?.country : userDetails?.address?.country)
-        formData.append('pincode', userDetails?.pincode ? userDetails?.pincode : userDetails?.address?.pincode)
+        formData.append('location', details?.location ? details?.location : details?.address?.location)
+        formData.append('state', details?.state ? details?.state : details?.address?.state)
+        formData.append('country', details?.country ? details?.country : details?.address?.country)
+        formData.append('pincode', details?.pincode ? details?.pincode : details?.address?.pincode)
         try {
-            const response = await updateUserApi(token, formData, setIsLoading);
-            console.log(response?.data, "update");
-            if(response?.data?.status == 200){
-            mergeData('userDetails', response?.data?.user);
+            const response = await updateUserApi(token, formData, setIsLoading);            
             setIsLoading(false)
-            Alert.alert(' Profile Updated Successfully');
-            userDetailsApi(response?.data?.user?._id, token, setIsLoading)
+            if (response?.data?.status == 200) {
+                mergeData('userDetails', response?.data?.user);
+                setUserDetails(response?.data?.user);
+                getUserDetailsFunc()
+                Alert.alert(' Profile Updated Successfully');
             }
         } catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                Alert.alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
@@ -84,8 +104,8 @@ export default function EditProfile() {
             });
             setFileResponse(res[0]);
 
-            setUserDetails({
-                ...userDetails,
+            setDetails({
+                ...details,
                 profile_img: res[0]
             })
         } catch (err) {
@@ -99,7 +119,6 @@ export default function EditProfile() {
 
 
 
-
     return (
         <View style={styles.container}>
             <ScrollView >
@@ -110,7 +129,7 @@ export default function EditProfile() {
                             {fileResponse?.uri ?
                                 <Image style={styles.imageStyle} source={{ uri: fileResponse?.uri }} />
                                 :
-                                <Image style={styles.imageStyle} source={{ uri: String(userDetails?.profile_img) }} />
+                                <Image style={styles.imageStyle} source={{ uri: String(details?.profile_img) }} />
                             }
                         </TouchableOpacity>
                     </View>
@@ -121,11 +140,11 @@ export default function EditProfile() {
                             style={styles.input}
                             // style={[styles.input, submitted && errors.name ? styles.isInvalid : null]}
                             // placeholder="Password*"
-                            onChangeText={(e) => setUserDetails({
-                                ...userDetails,
-                                name: e ? e : userDetails?.name
+                            onChangeText={(e) => setDetails({
+                                ...details,
+                                name: e ? e : details?.name
                             })}
-                            defaultValue={userDetails?.name}
+                            defaultValue={details?.name}
 
                         />
 
@@ -134,7 +153,7 @@ export default function EditProfile() {
                         <Text style={styles.label}>Select Date of Birth*</Text>
                         <View style={styles.datepicker}>
                             <Text style={styles.datevalue}>
-                                {String(userDetails?.dob)}
+                                {details?.dob ? String(details?.dob) : ''}
                             </Text>
                             <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.button}>
                                 <Image source={require('../assets/calendar.png')} style={styles.image} />
@@ -150,8 +169,8 @@ export default function EditProfile() {
                                 date={dob}
                                 onConfirm={(date) => {
                                     setDob(date)
-                                    setUserDetails({
-                                        ...userDetails,
+                                    setDetails({
+                                        ...details,
                                         dob: Moment(date).format('DD/MM/YYYY')
                                     })
                                     setShowDatePicker(false)
@@ -164,7 +183,7 @@ export default function EditProfile() {
 
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.gender}
+                            defaultValue={details?.gender}
                             rules={{ required: 'Select your country' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
@@ -174,12 +193,12 @@ export default function EditProfile() {
                                         style={styles.pickerContainer}
                                     >
                                         <Picker
-                                            selectedValue={value ? value : userDetails?.gender}
+                                            selectedValue={value ? value : details?.gender}
                                             onValueChange={(itemValue) => {
                                                 onChange(itemValue);
-                                                setUserDetails({
-                                                    ...userDetails,
-                                                    gender: itemValue ? itemValue : userDetails?.gender
+                                                setDetails({
+                                                    ...details,
+                                                    gender: itemValue ? itemValue : details?.gender
                                                 })
                                             }}
                                             style={styles.picker}
@@ -200,11 +219,11 @@ export default function EditProfile() {
                             style={styles.input}
                             // style={[styles.input, submitted && errors.email ? styles.isInvalid : null]}
                             // placeholder="Password*"
-                            onChangeText={(e) => setUserDetails({
-                                ...userDetails,
-                                email: e ? e : userDetails?.email
+                            onChangeText={(e) => setDetails({
+                                ...details,
+                                email: e ? e : details?.email
                             })}
-                            defaultValue={userDetails?.email}
+                            defaultValue={details?.email}
 
                         />
                         {/* {submitted && errors.email && (
@@ -217,11 +236,11 @@ export default function EditProfile() {
                             style={styles.input}
                             // style={[styles.input, submitted && errors.phone ? styles.isInvalid : null]}
                             // placeholder="Password*"
-                            onChangeText={(e) => setUserDetails({
-                                ...userDetails,
-                                phone: e ? e : userDetails?.phone
+                            onChangeText={(e) => setDetails({
+                                ...details,
+                                phone: e ? e : details?.phone
                             })}
-                            defaultValue={userDetails?.phone}
+                            defaultValue={details?.phone}
 
                         />
                         {/* {submitted && errors.phone && (
@@ -248,11 +267,11 @@ export default function EditProfile() {
                             // style={[styles.input, submitted && errors.location ? styles.isInvalid : null]}
                             // placeholder="Password*"
                             style={styles.input}
-                            onChangeText={(e) => setUserDetails({
-                                ...userDetails,
-                                location: e ? e : userDetails?.location
+                            onChangeText={(e) => setDetails({
+                                ...details,
+                                location: e ? e : details?.location
                             })}
-                            defaultValue={userDetails?.address?.location}
+                            defaultValue={details?.address?.location}
 
                         />
                         {/* {submitted && errors.location && (
@@ -261,7 +280,7 @@ export default function EditProfile() {
 
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.address?.country}
+                            defaultValue={details?.address?.country}
                             rules={{ required: 'Select your country' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
@@ -271,13 +290,13 @@ export default function EditProfile() {
                                         style={styles.pickerContainer}
                                     >
                                         <Picker
-                                            selectedValue={value ? value : userDetails?.address?.country}
+                                            selectedValue={value ? value : details?.address?.country}
                                             onValueChange={(itemValue) => {
                                                 onChange(itemValue);
                                                 onCountrySelect(itemValue);
-                                                setUserDetails({
-                                                    ...userDetails,
-                                                    country: itemValue ? itemValue : userDetails?.country
+                                                setDetails({
+                                                    ...details,
+                                                    country: itemValue ? itemValue : details?.country
                                                 })
                                             }}
                                             style={styles.picker}
@@ -298,7 +317,7 @@ export default function EditProfile() {
                         />
                         <Controller
                             control={control}
-                            defaultValue={userDetails?.address?.state}
+                            defaultValue={details?.address?.state}
                             rules={{ required: 'Select your state' }}
                             render={({ field: { onChange, value } }) => (
                                 <>
@@ -308,12 +327,12 @@ export default function EditProfile() {
                                         style={styles.pickerContainer}
                                     >
                                         <Picker
-                                            selectedValue={value ? value : userDetails?.address?.state}
+                                            selectedValue={value ? value : details?.address?.state}
                                             onValueChange={(itemValue) => {
                                                 onChange(itemValue);
-                                                setUserDetails({
-                                                    ...userDetails,
-                                                    state: itemValue ? itemValue : userDetails?.state
+                                                setDetails({
+                                                    ...details,
+                                                    state: itemValue ? itemValue : details?.state
                                                 })
                                             }
                                             }
@@ -339,11 +358,11 @@ export default function EditProfile() {
                             // style={[styles.input, submitted && errors.pincode ? styles.isInvalid : null]}
                             // placeholder="Password*"
                             style={styles.input}
-                            onChangeText={(e) => setUserDetails({
-                                ...userDetails,
-                                pincode: e ? e : userDetails?.pincode
+                            onChangeText={(e) => setDetails({
+                                ...details,
+                                pincode: e ? e : details?.pincode
                             })}
-                            defaultValue={userDetails?.address?.pincode}
+                            defaultValue={details?.address?.pincode}
 
                         />
                         {/* {submitted && errors.pincode && (

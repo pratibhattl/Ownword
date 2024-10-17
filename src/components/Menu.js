@@ -7,12 +7,14 @@ import LoadingScreen from './LoadingScreen';
 import { userDetailsApi } from '../apiService/Users';
 import { useIsFocused } from '@react-navigation/native';
 import { useAuth } from '../Context/AppContext';
+import { getData } from '../helper';
 
 export default function Menu() {
     const navigation = useNavigation();
     const { setIsLoggedin, setToken, token, setUserDetails, userDetails } = useAuth();
     const [isLoading, setIsLoading] = React.useState(false);
     const isFocused = useIsFocused();
+    const [details, setDetails] = useState({})
     const logout = () => {
         removeData('userDetails')
         removeData('token')
@@ -22,24 +24,29 @@ export default function Menu() {
         setIsLoggedin(false);
         setTimeout(() => {
             setIsLoading(false);
-            navigation.replace('Login')
+            navigation.replace('Welcome')
         }, 2000)
+    }
+    const getUserDetailsFunc = async () => {
+        try {
+            const response = await userDetailsApi(userDetails?._id, token, setIsLoading)
+            setIsLoading(false);
+            if (response?.data?.status == 200) {
+                setDetails(response?.data?.user)
+            }
+        }
+        catch (error) {
+            setIsLoading(false);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.error?.message)
+            }
+            throw error;
+        }
     }
 
     useEffect(() => {
         if (isFocused) {
-            try {
-                const response = userDetailsApi(userDetails?._id, token, setIsLoading)
-                setIsLoading(false)
-                setUserDetails(response?.data?.user);
-
-            } catch (error) {
-                setIsLoading(false);
-                if (error.response) {
-                    Alert.alert(error?.response?.data?.message)
-                }
-                throw error;
-            }
+            getUserDetailsFunc()
         }
     }, [isFocused]);
 
@@ -54,14 +61,14 @@ export default function Menu() {
         <View style={styles.container}>
             <ScrollView >
                 <View style={styles.container1}>
-                    {userDetails?.profile_img ?
-                        <Image style={styles.profileImage} source={{ uri: String(userDetails?.profile_img) }} />
+                    {details?.profile_img ?
+                        <Image style={styles.profileImage} source={{ uri: String(details?.profile_img) }} />
                         :
                         <Image source={require('../assets/Ellipse.png')} style={styles.profileImage} />
                     }
 
-                    <Text style={styles.textStyle}> {userDetails?.name}</Text>
-                    <Text style={styles.text}> {userDetails?.email}</Text>
+                    <Text style={styles.textStyle}> {details?.name}</Text>
+                    <Text style={styles.text}> {details?.email}</Text>
                 </View>
                 <View style={styles.menuStyle}>
                     <Image source={require('../assets/image2.png')} />

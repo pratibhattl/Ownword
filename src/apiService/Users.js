@@ -1,12 +1,12 @@
 import axios from 'axios'
-import { API_URL } from '@env';
+import { API_URL_DEV } from '@env';
 import { storeData, removeData } from '../helper'
 import { Alert } from 'react-native';
 
 export const userDetailsApi = (id, token, setIsLoading) => {
     setIsLoading(true)
     try {
-        const response = axios.get(`${API_URL}users/${id}`, {
+        const response = axios.get(`${API_URL_DEV}users/${id}`, {
             headers: {
                 'x-access-token': token,
                 'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export const userDetailsApi = (id, token, setIsLoading) => {
 
 export const changePasswordApi = (data, token, setMessage, navigation) => {
 
-    axios.put(`${API_URL}users/edit-password`, data, {
+    axios.put(`${API_URL_DEV}users/edit-password`, data, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export const changePasswordApi = (data, token, setMessage, navigation) => {
         })
         .catch(function (error) {
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                Alert.alert(error?.response?.data?.error?.message)
             }
         });
 }
@@ -46,7 +46,7 @@ export const changePasswordApi = (data, token, setMessage, navigation) => {
 
 export const sendOtpApi = (data, navigation) => {
 
-    axios.post(`${API_URL}users/serach-email-user`, data)
+    axios.post(`${API_URL_DEV}users/serach-email-user`, data)
         .then(function (response) {
             storeData('otp', response?.data?.otp_code)
             navigation.navigate('ResetPassword')
@@ -54,14 +54,14 @@ export const sendOtpApi = (data, navigation) => {
         })
         .catch(function (error) {
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                Alert.alert(error?.response?.data?.error?.message)
             }
         });
 }
 
 export const resetPasswordApi = (data, setMessage, navigation) => {
 
-    axios.post(`${API_URL}users/reset-password`, data)
+    axios.post(`${API_URL_DEV}users/reset-password`, data)
         .then(function (response) {
             // setMessage("updated s")
             navigation.navigate('Login')
@@ -70,7 +70,7 @@ export const resetPasswordApi = (data, setMessage, navigation) => {
         })
         .catch(function (error) {
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                Alert.alert(error?.response?.data?.error?.message)
             }
         });
 }
@@ -79,7 +79,7 @@ export const resetPasswordApi = (data, setMessage, navigation) => {
 export const updateUserApi = (token, formData, setIsLoading) => {
     setIsLoading(true)
     try {
-        const response = axios.put(`${API_URL}users/update-profile`, formData, {
+        const response = axios.put(`${API_URL_DEV}users/update-profile`, formData, {
             headers: {
                 'x-access-token': token,
                 'Content-Type': 'multipart/form-data'
@@ -87,6 +87,7 @@ export const updateUserApi = (token, formData, setIsLoading) => {
         })
         return response;
     } catch (error) {
+        setIsLoading(false)
         console.log(error);
         throw error;
     }
@@ -95,7 +96,7 @@ export const updateUserApi = (token, formData, setIsLoading) => {
 
 export const getCountryApi = (token, setCountryList) => {
 
-    axios.get(`${API_URL}country/get-country`, {
+    axios.get(`${API_URL_DEV}country/get-country`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -113,7 +114,7 @@ export const getCountryApi = (token, setCountryList) => {
 
 export const getStateApi = (token, country, setStateList) => {
 
-    axios.get(`${API_URL}country/get-states?country=${country}`, {
+    axios.get(`${API_URL_DEV}country/get-states?country=${country}`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -133,7 +134,7 @@ export const getStateApi = (token, country, setStateList) => {
 export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading) => {
 
     setIsLoading(true)
-    axios.get(`${API_URL}donation-post/home`, {
+    axios.get(`${API_URL_DEV}donation-post/home`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -159,7 +160,7 @@ export const getHomeApi = (token, setHomePageData, setdonationData, setIsLoading
 export const refreshTokenApi = (token, id) => {
 
     try {
-        const response = axios.get(`${API_URL}check-token?userId=${id}`, {
+        const response = axios.get(`${API_URL_DEV}check-token?userId=${id}`, {
             headers: {
                 'x-access-token': token,
                 'Content-Type': 'application/json',
@@ -176,7 +177,7 @@ export const refreshTokenApi = (token, id) => {
 
 export const getNotificationApi = (token, setNotificationList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}notification/user?page=1&limit=10000`, {
+    axios.get(`${API_URL_DEV}notification/user?page=1&limit=10000`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',

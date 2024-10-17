@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { API_URL } from '@env';
+import { API_URL_DEV } from '@env';
 import { Alert } from 'react-native';
 
 export const getImageApi = (token, setImageList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}prepscription/get-normal-image?page=1&limit=1000`, {
+    axios.get(`${API_URL_DEV}prepscription/get-normal-image?page=1&limit=1000`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export const getImageApi = (token, setImageList, setIsLoading) => {
 
 export const getPrescriptionApi = (token, setImageList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}prepscription/prepscription-list?page=1&limit=1000`, {
+    axios.get(`${API_URL_DEV}prepscription/prepscription-list?page=1&limit=1000`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export const getPrescriptionApi = (token, setImageList, setIsLoading) => {
 export const imageUploadApi = (formData, token,setImageList, setIsLoading) => {
     console.log(formData, token,"sfsdfdsfdf");
     
-    axios.post(`${API_URL}prepscription/upload-normal-image`, formData, {
+    axios.post(`${API_URL_DEV}prepscription/upload-normal-image`, formData, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'multipart/form-data'
@@ -68,7 +68,7 @@ export const imageUploadApi = (formData, token,setImageList, setIsLoading) => {
 }
 
 export const prescriptionUploadApi = (formData, token,setImageList, setIsLoading) => {
-    axios.post(`${API_URL}prepscription/upload-prepscription`, formData, {
+    axios.post(`${API_URL_DEV}prepscription/upload-prepscription`, formData, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'multipart/form-data'

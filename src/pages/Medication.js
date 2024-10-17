@@ -70,9 +70,6 @@ export default function Medication() {
     const [timeValue, setTimeValue] = useState(new Date())
     const [open, setOpen] = useState(false)
 
-
-    const navigation = useNavigation();
-
     useEffect(() => {
         getData('token').then((token) => {
             setToken(token);
@@ -89,11 +86,11 @@ export default function Medication() {
         if (details == null || !details?.days || !details?.medicine_name || 
             !details?.medicine_time || !details?.start_time) {
             Alert.alert("Please enter all values !!!")
-        } else {
+        } else {            
             addMedicineApi(token, details,setDetails, Alert, setMedicationList, setIsLoading)
         }
     };
-
+    
 
 
     if (isLoading) {
@@ -124,7 +121,7 @@ export default function Medication() {
                                     setOpen(false)
                                     setDetails({
                                         ...details,
-                                        start_time: Moment(date).format("HH:MMA")
+                                        start_time: Moment(date).format("hh:MM A")
                                     })
                                 }}
                                 onCancel={() => {
@@ -179,7 +176,6 @@ export default function Medication() {
                             style={styles.picker}
                         >
                             <Picker.Item label="Select time" value={details?.medicine_time} />
-
                             <Picker.Item label={'before food'} value={'before food'} />
                             <Picker.Item label={'after food'} value={'after food'} />
                         </Picker>

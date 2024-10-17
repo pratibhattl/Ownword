@@ -25,13 +25,16 @@ export default function PainArea() {
     const [painArea, setPainArea] = useState([])
     const [positionList, setPositionList] = useState([])
     const [details, setDetails] = useState(null)
+    const [logDetails, setLogDetails] = useState(null)
+
+
 
     useEffect(() => {
         getData('token').then((token) => {
             setToken(token);
         });
         getData('migrainLog').then((data) => {
-            setDetails(data);
+            setLogDetails(data);
         });
 
     }, [])
@@ -59,15 +62,19 @@ export default function PainArea() {
 
 
     const onGoForward = () => {
-
+        let data ={
+            ...logDetails,
+            details
+        }
         if (!details?.painPosition?.length > 0) {
             Alert.alert("Please select Pain position !!")
-        }else if(!details?.painScale){
+        }
+        if(!details?.painScale){
             Alert.alert("Please select Pain scale lavel !!")
         }
          else {
             navigation.navigate('MigraineReason');
-            mergeData('migrainLog', details);
+            mergeData('migrainLog', data);
         }
     }
 
@@ -114,7 +121,8 @@ export default function PainArea() {
                         step={1}  // Step value for whole numbers
                         value={painLevel}
                         onValueChange={(value) => {
-                            setPainLevel(value), setDetails({
+                            setPainLevel(value), 
+                            setDetails({
                                 ...details,
                                 painScale: value
                             })
@@ -139,7 +147,7 @@ export default function PainArea() {
                                                 <Image source={require("../assets/left-back-neck.png")} style={styles.icon} />
                                                 :
                                                 x?.positionName === "Between Eye" &&
-                                                <Image source={require("../assets/left-eye.png")} style={styles.icon} />
+                                                <Image source={require("../assets/between-eye.png")} style={styles.icon} />
                                 }
                                 <Text style={styles.cardText}>{x?.positionName}</Text>
                             </TouchableOpacity>

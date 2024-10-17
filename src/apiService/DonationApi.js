@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { API_URL } from '@env';
+import { API_URL_DEV } from '@env';
 
 export const getDonationApi = (token,setDonationList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL}donation-post/list?page=1&limit=1000`, {
+    axios.get(`${API_URL_DEV}donation-post/list?page=1&limit=1000`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export const getDonationApi = (token,setDonationList, setIsLoading) => {
 export const getSingleDonationApi = (token, id, setDonationDetails, setIsLoading) => {    
     setIsLoading(true)
     
-    axios.get(`${API_URL}donation-post/${id}`, {
+    axios.get(`${API_URL_DEV}donation-post/${id}`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',

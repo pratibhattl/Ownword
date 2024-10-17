@@ -70,16 +70,16 @@ export default function MigraineList() {
                                                             <View style={styles.databoxitem}>
                                                                 {
                                                                     item?.positionName === "Left Back Of Head (Lower)" ?
-                                                                        <Image style={{ height: 50, width: 50 }} source={require("../assets/left-back-head-lower.png")}  />
+                                                                        <Image style={styles.imageStyle} source={require("../assets/left-back-head-lower.png")}  />
                                                                         :
                                                                         item?.positionName === "Left Back Of Head (Upper)" ?
-                                                                            <Image style={{ height: 50, width: 50 }} source={require("../assets/left-back-head-upper.png")}  />
+                                                                            <Image style={styles.imageStyle} source={require("../assets/left-back-head-upper.png")}  />
                                                                             :
                                                                             item?.positionName === "Left Back Of Neck" ?
-                                                                                <Image style={{ height: 50, width: 50 }} source={require("../assets/left-back-neck.png")}  />
+                                                                                <Image style={styles.imageStyle} source={require("../assets/left-back-neck.png")}  />
                                                                                 :
                                                                                 item?.positionName === "Between Eye" &&
-                                                                                <Image style={{ height: 50, width: 50 }} source={require("../assets/left-eye.png")} />
+                                                                                <Image style={styles.imageStyle} source={require("../assets/between-eye.png")} />
                                                                 }
                                                                 <Text style={styles.databoxitemtitle}>{item?.positionName}</Text>
                                                             </View>
@@ -99,7 +99,7 @@ export default function MigraineList() {
                                                     return (
                                                         <>
                                                             <View style={styles.databoxitem}>
-                                                                <Image style={{ height: 50, width: 50 }} source={{ uri: item.image }} />
+                                                                <Image style={styles.imageStyle} source={{ uri: item.image }} />
                                                                 <Text style={styles.databoxitemtitle}>{item?.title}</Text>
                                                             </View>
                                                         </>
@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#0A142A'
     },
+    imageStyle:{ height: 50, width: 50 ,marginHorizontal: 'auto'},
     wrapper: {
         paddingHorizontal: 16,
     },
@@ -180,6 +181,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 4,
         width: '33%',
+        textAlign: 'center'
     },
     databoxitemtitle: {
         fontSize: 12,
