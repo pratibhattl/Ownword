@@ -141,7 +141,7 @@ export default function Home() {
                                 <Text style={styles.founderText}>{donationData.foundationName}</Text>
                                
                                 <View style={styles.progressbarwrapper}>
-                                    <View style={[styles.progressbar,{width: `${donationData.targetAmount}`}]}></View>
+                                    <View style={[styles.progressbar,{width: `${donationData.receivedAmount}%`}]}></View>
                                 </View>
                                 <View style={styles.donationmeta}>
                                     <Text style={styles.targetAmount}>Target - {donationData?.targetAmount} INR</Text>

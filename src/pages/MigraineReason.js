@@ -65,7 +65,6 @@ export default function MigraineReason() {
 
     const handleSave =async (title, imageUri) => {
         // Handle save action
-        console.log(title, imageUri,"data");
         var formData = new FormData();
         formData.append('image', imageUri)
         formData.append('title', title)
@@ -81,7 +80,6 @@ export default function MigraineReason() {
     
         } catch (error) {
             setIsLoading(false);
-            console.log(error?.response?.data,"error?.response?.data");
 
             if (error.response) {
                 Alert.alert(error?.response?.data?.error?.message)

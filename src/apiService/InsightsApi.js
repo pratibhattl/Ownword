@@ -9,7 +9,7 @@ if(flag == "Like"){
 }else{
     setIsLoading(true)
 }
-    axios.get(`${API_URL_DEV}admins/get-insight`, {
+    axios.get(`${API_URL_DEV}admins/get-insight?filter=true`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const getBlogsApi = (token, setInsightsList, setIsLoading,flag) => {
     }else{
         setIsLoading(true)
     }
-    axios.get(`${API_URL_DEV}admins/get-blog`, {
+    axios.get(`${API_URL_DEV}admins/get-blog?filter=true`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
