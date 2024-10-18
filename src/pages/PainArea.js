@@ -1,20 +1,38 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Text, TextInput, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button, Text, TextInput, Alert } from 'react-native';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { getData } from '../helper';
-import { getPositionApi } from '../apiService/MigraineLogApi';
+import { getPositionApi, addNewPosition } from '../apiService/MigraineLogApi';
 import { mergeData } from '../helper';
 import Slider from '@react-native-community/slider';
-import leftBackHeadUpper from "../assets/left-back-head-upper.png"
-import leftBackHeadLower from "../assets/left-back-head-lower.png"
-import leftBackNeck from "../assets/left-back-neck.png"
-import leftCheek from "../assets/left-cheek.png"
-import leftEye from "../assets/left-eye.png"
-import leftFrontkHead from "../assets/left-front-head.png"
-// import leftTemple from "../assets/left-temple"
+import Modal from 'react-native-modal';
+const SweetAlert = ({ isVisible, onCancel, onSave }) => {
+    const [positionName, setPositionName] = useState('');
 
+    const handleSave = () => {
+        onSave(positionName);
+    };
+
+    return (
+        <Modal isVisible={isVisible}>
+            <View style={styles.alertContainer}>
+                <Text style={styles.label2}>Enter new pain area</Text>
+                <TextInput
+                    style={styles.input2}
+                    placeholder="Enter new pain area name here"
+                    value={positionName}
+                    onChangeText={setPositionName}
+                />
+                <View style={styles.buttonContainer}>
+                    <Button title="Cancel" onPress={onCancel} color="#f44336" />
+                    <Button title="Save" onPress={handleSave} color="#4CAF50" />
+                </View>
+            </View>
+        </Modal>
+    );
+};
 
 export default function PainArea() {
     const [painLevel, setPainLevel] = useState(0);
@@ -62,22 +80,52 @@ export default function PainArea() {
 
 
     const onGoForward = () => {
-        let data ={
+        let data = {
             ...logDetails,
             details
         }
         if (!details?.painPosition?.length > 0) {
             Alert.alert("Please select Pain position !!")
         }
-        if(!details?.painScale){
+        else if (!details?.painScale) {
             Alert.alert("Please select Pain scale lavel !!")
         }
-         else {
+        else {
             navigation.navigate('MigraineReason');
             mergeData('migrainLog', data);
         }
     }
+    const [isModalVisible, setModalVisible] = useState(false);
 
+    const handleSave = async (positionName) => {
+        // Handle save action
+        let body = {
+            "positionName": positionName
+        }
+
+        try {
+            const response = await addNewPosition(token, body, setIsLoading);
+            setIsLoading(false);
+
+            if (response?.data?.result) {
+                setModalVisible(false);
+                Alert.alert(response?.data?.message)
+                getPositionApi(token, setPositionList, setIsLoading)
+            }
+
+        } catch (error) {
+            setIsLoading(false);
+            if (error.response) {
+                Alert.alert(error?.response?.data?.error?.message)
+            }
+            throw error;
+        }
+    };
+
+    const handleCancel = () => {
+        // Handle cancel action
+        setModalVisible(false);
+    };
 
     if (isLoading) {
         return <LoadingScreen />;
@@ -87,32 +135,7 @@ export default function PainArea() {
     return (
         <View style={styles.container}>
             <ScrollView style={styles.wrapper}>
-
                 <View style={styles.formWrap}>
-                    {/* <Text style={styles.label}>Area of Pain</Text> */}
-
-                    {/* <View style={styles.buttonStyle}>
-                        <TouchableOpacity style={styles.secondoryButton} onPress={() => setSelectedData('FrontPain')}>
-                            <Text style={styles.buttonText}>{"Front pain"} </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <TouchableOpacity style={styles.secondoryButton} onPress={() => setSelectedData('BackPain')}>
-                            <Text style={styles.buttonText}> {"Back pain"} </Text>
-                        </TouchableOpacity>
-                    </View> */}
-                    {/* <Text style={styles.label}>Pain Scale*</Text> */}
-                    {/* <TextInput
-                        name='painScale'
-                        style={styles.input}
-                        onChangeText={(e) => {console.log(e), setDetails({
-                            ...details,
-                            painScale: e
-                        })}}
-                        keyboardType="name"
-                        autoCapitalize="none"
-                    /> */}
-
                     <Text style={styles.label}>Select Your Pain Level: {painLevel}</Text>
                     <Slider
                         style={styles.slider}
@@ -121,11 +144,11 @@ export default function PainArea() {
                         step={1}  // Step value for whole numbers
                         value={painLevel}
                         onValueChange={(value) => {
-                            setPainLevel(value), 
-                            setDetails({
-                                ...details,
-                                painScale: value
-                            })
+                            setPainLevel(value),
+                                setDetails({
+                                    ...details,
+                                    painScale: value
+                                })
                         }}
                         minimumTrackTintColor="red"
                         maximumTrackTintColor="gray"
@@ -137,23 +160,53 @@ export default function PainArea() {
                         return (
                             <TouchableOpacity style={[painArea?.includes(x?._id) ? styles.card1 : styles.card]} onPress={() => onSelectReason(x?._id)}>
                                 {
-                                    x?.positionName === "Left Back Of Head (Lower)" ?
+                                    x?.positionName == "Left Back Of Head (Lower)" ?
                                         <Image source={require("../assets/left-back-head-lower.png")} style={styles.icon} />
-                                        :
-                                        x?.positionName === "Left Back Of Head (Upper)" ?
+                                        : x?.positionName == "Left Back Of Head (Upper)" ?
                                             <Image source={require("../assets/left-back-head-upper.png")} style={styles.icon} />
-                                            :
-                                            x?.positionName === "Left Back Of Neck" ?
+                                            : x?.positionName == "Left Back Of Neck" ?
                                                 <Image source={require("../assets/left-back-neck.png")} style={styles.icon} />
-                                                :
-                                                x?.positionName === "Between Eye" &&
-                                                <Image source={require("../assets/between-eye.png")} style={styles.icon} />
+                                                : x?.positionName === "Between Eye" ?
+                                                    <Image source={require("../assets/between-eye.png")} style={styles.icon} />
+                                                    : x?.positionName == "teeth" ?
+                                                        <Image source={require("../assets/teeth.png")} style={styles.icon} />
+                                                        : x?.positionName == "Left-cheek" ?
+                                                            <Image source={require("../assets/left-cheek.png")} style={styles.icon} />
+                                                            : x?.positionName === "Left front head" ?
+                                                                <Image source={require("../assets/left-front-head.png")} style={styles.icon} />
+                                                                : x?.positionName == "Left-temple" ?
+                                                                    <Image source={require("../assets/left-temple.png")} style={styles.icon} />
+                                                                    : x?.positionName == "Left eye" ?
+                                                                        <Image source={require("../assets/left-eye.png")} style={styles.icon} />
+                                                                        : x?.positionName == "Right temple" ?
+                                                                            <Image source={require("../assets/right-temple.png")} style={styles.icon} />
+                                                                            : x?.positionName == "Right Back Of Head (Lower)" ?
+                                                                                <Image source={require("../assets/right-back-head-lower.png")} style={styles.icon} />
+                                                                                : x?.positionName == "Right Back Of Head (Upper)" ?
+                                                                                    <Image source={require("../assets/right-back-head-upper.png")} style={styles.icon} />
+                                                                                    : x?.positionName == "Right Back Of Neck" ?
+                                                                                        <Image source={require("../assets/right-back-neck.png")} style={styles.icon} />
+                                                                                        : x?.positionName == "Right cheek" ?
+                                                                                            <Image source={require("../assets/right-cheek.png")} style={styles.icon} />
+                                                                                            : x?.positionName === "Right front head" ?
+                                                                                                <Image source={require("../assets/right-front-head.png")} style={styles.icon} />
+                                                                                                : x?.positionName == "Right eye" &&
+                                                                                                <Image source={require("../assets/right-eye.png")} style={styles.icon} />
                                 }
                                 <Text style={styles.cardText}>{x?.positionName}</Text>
                             </TouchableOpacity>
                         )
                     })}
                 </View>
+
+                <TouchableOpacity style={styles.secondoryButton} onPress={() => setModalVisible(true)} >
+                    <Text >Add new trigger</Text>
+                </TouchableOpacity>
+                <SweetAlert
+                    isVisible={isModalVisible}
+                    onCancel={handleCancel}
+                    onSave={handleSave}
+                />
             </ScrollView >
             <TouchableOpacity style={styles.arrowButton}
                 onPress={() => onGoForward()}
@@ -172,6 +225,35 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         marginBottom: 20
+    },
+    alertContainer: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+    },
+    label2: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginVertical: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        marginTop: 20,
+    },
+    input2: {
+        width: '100%',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 10,
+    },
+
+    wrapper: {
+        paddingHorizontal: 16,
     },
     label1: {
         fontSize: 18,
@@ -206,11 +288,12 @@ const styles = StyleSheet.create({
     },
     secondoryButton: {
         // width: '30%',
-        backgroundColor: '#fff',
+        color: '#000',
+        backgroundColor: '#20C3D3',
         padding: 15,
         borderRadius: 5,
         alignItems: 'center',
-        // marginBottom: 15,
+        marginBottom: 15,
     },
     input: {
         // width: '60%',

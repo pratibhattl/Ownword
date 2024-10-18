@@ -71,9 +71,7 @@ export default function MigraineReason() {
         formData.append('title', title)
         try {
             const response =await addNewReason(token, formData, setIsLoading);
-            setIsLoading(false);
-            console.log(response?.data,"response?.data");
-            
+            setIsLoading(false);            
             if(response?.data?.status == 201){
                 setModalVisible(false);
                 Alert.alert(response?.data?.message)
@@ -159,9 +157,9 @@ export default function MigraineReason() {
                     })}
                 </View>
 
-                <TouchableOpacity style={styles.secondoryButton} onPress={() => setModalVisible(true)} >
+                {/* <TouchableOpacity style={styles.secondoryButton} onPress={() => setModalVisible(true)} >
                     <Text style={styles.arrowStyle}>Add new trigger</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <SweetAlert
                     isVisible={isModalVisible}
                     onCancel={handleCancel}

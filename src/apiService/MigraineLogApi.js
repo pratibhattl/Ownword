@@ -33,7 +33,6 @@ export const getMigraineReasonApi = (token, setMigraineReason, setIsLoading) => 
         }
     })
         .then(function (response) {
-            // console.log('responsesdfsfsdfsdf', response?.data);
             setIsLoading(false)
             setMigraineReason(response?.data?.lists);
         })
@@ -151,14 +150,24 @@ export const addNewReason = (token, formData, setIsLoading) => {
         throw error
 
     }
-    // .then(function (response) {
-    //     setIsLoading(false)
-    //     Alert.alert("Added successfully")
-    // })
-    // .catch(function (error) {            
-    //     setIsLoading(false)
-    //     if (error.response) {
-    //         Alert.alert(error?.response?.data?.error?.message?.message)
-    //       }
-    // });
+}
+
+export const addNewPosition = (token, formData, setIsLoading) => {
+    setIsLoading(true)
+    try {
+        const response = axios.post(`${API_URL_DEV}migraine-position/create-new-position`, formData, {
+            headers: {
+                'x-access-token': token,
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        return response;
+    } catch (error) {
+        setIsLoading(false);
+        if (error.response) {
+            Alert.alert(error?.response?.data?.error?.message)
+        }
+        throw error
+
+    }
 }
