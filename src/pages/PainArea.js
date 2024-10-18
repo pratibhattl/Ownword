@@ -199,9 +199,9 @@ export default function PainArea() {
                     })}
                 </View>
 
-                <TouchableOpacity style={styles.secondoryButton} onPress={() => setModalVisible(true)} >
+                {/* <TouchableOpacity style={styles.secondoryButton} onPress={() => setModalVisible(true)} >
                     <Text >Add new trigger</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <SweetAlert
                     isVisible={isModalVisible}
                     onCancel={handleCancel}
