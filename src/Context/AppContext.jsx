@@ -7,11 +7,17 @@ export default function AppContext({ children }) {
     const [userDetails, setUserDetails] = useState({})
     useEffect(() => {
         getData('token').then((data) => {
-          setToken(data);
-          setIsLoggedin(true);
+        if(data){
+        setToken(data);
+        }
         });
         getData('userDetails').then((data) => {
-            setUserDetails(data);
+            if(data){
+                setUserDetails(data);
+                setIsLoggedin(true);
+                }else{
+                    setIsLoggedin(false);
+                }
         });
         
       }, [])
