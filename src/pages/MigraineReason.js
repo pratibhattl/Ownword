@@ -5,7 +5,6 @@ import { getData } from '../helper'
 import LoadingScreen from '../components/LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
 import { getMigraineReasonApi, addNewTrigger, addNewReason } from '../apiService/MigraineLogApi';
-import { Alert } from 'react-native'
 import Modal from 'react-native-modal';
 import DocumentPicker from 'react-native-document-picker';
 const SweetAlert = ({ isVisible, onCancel, onSave }) => {
@@ -74,7 +73,7 @@ export default function MigraineReason() {
             
             if(response?.data?.status == 201){
                 setModalVisible(false);
-                Alert.alert(response?.data?.message)
+                alert(response?.data?.message)
                 getMigraineReasonApi(token, setMigraineReason, setIsLoading)
             }
     
@@ -82,7 +81,7 @@ export default function MigraineReason() {
             setIsLoading(false);
 
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
@@ -130,7 +129,7 @@ export default function MigraineReason() {
 
     const onSubmit = () => {
         if (!details?.painReason?.length > 0) {
-            Alert.alert("Please select Pain reason !!")
+            alert("Please select Pain reason !!")
         } else {
             addNewTrigger(token, details, setIsLoading, navigation)
         }

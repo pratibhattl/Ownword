@@ -88,7 +88,7 @@ export default function DonationDetails({ route }) {
 
                     <View style={styles.donationContext}>
                         <View style={styles.progressbarwrapper}>
-                            <View style={[styles.progressbar,{width: `${getPercentage}%`}]}></View>
+                            <View style={[styles.progressbar,{width: getPercentage ? `${getPercentage}%`: '0%'}]}></View>
                         </View>
                        
                         <Text style={styles.donationpercent}>{getPercentage}%</Text>

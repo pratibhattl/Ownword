@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
@@ -58,14 +58,14 @@ export default function FoodIntake() {
     const onSubmit = () => {
         // setSubmitted(true);
         if (details == null) {
-            Alert.alert("Please select a food !!")
+            alert("Please select a food !!")
         }
         else {
             console.log(details, "detailssss");
             if (showText) {
                 if (!details?.caloryAmount && !details?.fatAmount &&
                     !details?.name && !details?.proteinAmount) {
-                    Alert.alert("Please enter all values !!")
+                    alert("Please enter all values !!")
                 }
                 else {
                     createFoodIntakeApi(token, details, setIsLoading, setDetails)
@@ -76,7 +76,7 @@ export default function FoodIntake() {
 
             else {
                 if(details == {}){
-                    Alert.alert("Please select a food !!")
+                    alert("Please select a food !!")
                 }else{
                 createUserFoodIntakeApi(token, details, setIsLoading, setDetails)
                 reset();

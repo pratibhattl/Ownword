@@ -67,7 +67,7 @@ export default function Donation() {
                                         <Text style={styles.founderText}>{data.foundationName}</Text>
 
                                         <View style={styles.progressbarwrapper}>
-                                            <View style={[styles.progressbar,{width: `${data?.targetAmount}`}]}></View>
+                                            <View style={[styles.progressbar,{width: data?.targetAmount? `${data?.targetAmount}` : '0%'}]}></View>
                                             
                                         </View>
                                         {/* <Slider

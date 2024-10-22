@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { API_URL_DEV } from '@env';
-import { Alert } from 'react-native';
 import { removeData } from '../helper';
 
 export const getMigraineLogApi = (token, setMedicationList, setIsLoading) => {
@@ -75,7 +74,7 @@ export const addNewTrigger = (token, details, setIsLoading, navigation) => {
         .then(function (response) {
             setIsLoading(false)
             removeData('migrainLog');
-            Alert.alert("Log added successfully")
+            alert("Log added successfully")
             navigation.navigate("MigraineLog")
         })
         .catch(function (error) {
@@ -83,7 +82,7 @@ export const addNewTrigger = (token, details, setIsLoading, navigation) => {
             console.log(error?.response?.data?.error?.message?.message,"error?.response?.data?.error?.message?.message");
             
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message?.message)
+                alert(error?.response?.data?.error?.message?.message)
             }
         });
 }
@@ -101,14 +100,14 @@ export const updateNewTrigger = (token, details, id, setIsLoading, navigation) =
         .then(function (response) {
             removeData('migrainLog');
             setIsLoading(false)
-            Alert.alert("Log updated successfully")
+            alert("Log updated successfully")
             navigation.navigate("Home")
         })
         .catch(function (error) {
             setIsLoading(false)
 
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
             }
         });
 }
@@ -145,7 +144,7 @@ export const addNewReason = (token, formData, setIsLoading) => {
     } catch (error) {
         setIsLoading(false);
         if (error.response) {
-            Alert.alert(error?.response?.data?.error?.message)
+            alert(error?.response?.data?.error?.message)
         }
         throw error
 
@@ -165,7 +164,7 @@ export const addNewPosition = (token, formData, setIsLoading) => {
     } catch (error) {
         setIsLoading(false);
         if (error.response) {
-            Alert.alert(error?.response?.data?.error?.message)
+            alert(error?.response?.data?.error?.message)
         }
         throw error
 

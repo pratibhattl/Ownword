@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Image, Alert } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, Image } from 'react-native'
 import Footer from './Footer'
 import { useNavigation } from '@react-navigation/native';
 import { removeData } from '../helper';
@@ -38,7 +38,7 @@ export default function Menu() {
         catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }

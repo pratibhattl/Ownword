@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_URL_DEV } from '@env';
-import { Alert } from 'react-native';
+
 export const getForamApi = (token,setForamList, setIsLoading) => {
     setIsLoading(true)
     axios.get(`${API_URL_DEV}forum-post/list?page=1&limit=1000`, {
@@ -57,7 +57,7 @@ export const addCommentApi = (token,id,data, setForamDetails,setcommentList, set
         .catch(function (error) {
             setIsLoading(false)
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
               }
         });
 }

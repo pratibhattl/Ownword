@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { userLoginApi } from '../apiService/AuthApi';
@@ -28,7 +28,7 @@ const Login = () => {
         }catch (error) {
             setIsLoading(false);
              if (error.response) {
-            Alert.alert(error?.response?.data?.message)
+            alert(error?.response?.data?.message)
           } 
             throw error;
           }
