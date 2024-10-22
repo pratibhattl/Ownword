@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Image, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
@@ -47,7 +47,7 @@ export default function MigraineLog() {
             updateNewTrigger(token, details, id, setIsLoading, navigation)
         } else {
             if (!details?.start_date || !details?.start_time) {
-                Alert.alert("Please enter date and time !!!")
+                alert("Please enter date and time !!!")
             } else {
                 navigation.navigate('PainArea');
                 mergeData('migrainLog', details);

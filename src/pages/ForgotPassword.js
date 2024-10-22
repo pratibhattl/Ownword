@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { sendOtpApi } from '../apiService/Users';
@@ -12,7 +12,7 @@ const ForgotPassword = () => {
     const onSubmit = (data) => {
         setSubmitted(true);
         sendOtpApi(data,navigation);
-        // Alert.alert('Login Successful', `Welcome ${data.email}!`);
+        // alert('Login Successful', `Welcome ${data.email}!`);
     };
 
     return (

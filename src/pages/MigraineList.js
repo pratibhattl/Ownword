@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, Pressable, Dimensions } from 'react-native'
+import { View, Text, ScrollView, Image, StyleSheet, Pressable } from 'react-native'
 import Footer from '../components/Footer'
 import { useNavigation } from '@react-navigation/native'
 import { getData } from '../helper';

@@ -39,14 +39,14 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   const {isLoggedin,setToken,setUserDetails} = useAuth();
-  useEffect(() => {
-    getData('token').then((token) => {
-        setToken(token);
-    });
-    getData('userDetails').then((data) => {
-        setUserDetails(data);
-    });
-}, []);
+//   useEffect(() => {
+//     getData('token').then((token) => {
+//         setToken(token);
+//     });
+//     getData('userDetails').then((data) => {
+//         setUserDetails(data);
+//     });
+// }, []);
   
 
 

@@ -8,10 +8,15 @@ export default function AppContext({ children }) {
     useEffect(() => {
         getData('token').then((data) => {
           setToken(data);
-          setIsLoggedin(true);
         });
         getData('userDetails').then((data) => {
+            if(data){
             setUserDetails(data);
+            setIsLoggedin(true);
+            }
+            else{
+                setIsLoggedin(false);
+            }
         });
         
       }, [])

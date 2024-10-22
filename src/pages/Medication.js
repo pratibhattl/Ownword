@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Alert, Pressable, Image } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, TextInput, Pressable, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
@@ -85,9 +85,9 @@ export default function Medication() {
     const onSubmit = () => {
         if (details == null || !details?.days || !details?.medicine_name || 
             !details?.medicine_time || !details?.start_time) {
-            Alert.alert("Please enter all values !!!")
+            alert("Please enter all values !!!")
         } else {            
-            addMedicineApi(token, details,setDetails, Alert, setMedicationList, setIsLoading)
+            addMedicineApi(token, details,setDetails, setMedicationList, setIsLoading)
         }
     };
     

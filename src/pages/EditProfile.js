@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker'; // For Gender Picker
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
@@ -48,7 +48,7 @@ export default function EditProfile() {
         catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
@@ -86,12 +86,12 @@ export default function EditProfile() {
                 mergeData('userDetails', response?.data?.user);
                 setUserDetails(response?.data?.user);
                 getUserDetailsFunc()
-                Alert.alert(' Profile Updated Successfully');
+                alert(' Profile Updated Successfully');
             }
         } catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }

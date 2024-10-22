@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useNavigationState } from '@react-navigation/native';
 import { getData, storeData } from '../helper';
@@ -26,7 +26,7 @@ const Header = ({ title }) => {
         catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
@@ -39,7 +39,7 @@ const Header = ({ title }) => {
         } catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
             }
             throw error;
         }

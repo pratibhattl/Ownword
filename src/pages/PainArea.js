@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button, Text, TextInput, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button, Text, TextInput } from 'react-native';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
@@ -85,10 +85,10 @@ export default function PainArea() {
             details
         }
         if (!details?.painPosition?.length > 0) {
-            Alert.alert("Please select Pain position !!")
+            alert("Please select Pain position !!")
         }
         else if (!details?.painScale) {
-            Alert.alert("Please select Pain scale lavel !!")
+            alert("Please select Pain scale lavel !!")
         }
         else {
             navigation.navigate('MigraineReason');
@@ -109,14 +109,14 @@ export default function PainArea() {
 
             if (response?.data?.result) {
                 setModalVisible(false);
-                Alert.alert(response?.data?.message)
+                alert(response?.data?.message)
                 getPositionApi(token, setPositionList, setIsLoading)
             }
 
         } catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }

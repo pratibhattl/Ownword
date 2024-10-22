@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { API_URL_DEV } from '@env';
-import { Alert } from 'react-native';
 
 export const getImageApi = (token, setImageList, setIsLoading) => {
     setIsLoading(true)
@@ -60,9 +59,9 @@ export const imageUploadApi = (formData, token,setImageList, setIsLoading) => {
         .catch(function (error) {
             console.log(error,"error?.response");
             if (error?.response?.data) {
-                Alert.alert(error?.response?.data?.error?.message?.message)
+                alert(error?.response?.data?.error?.message?.message)
               }else{
-                Alert.alert("Network error")
+                alert("Network error")
               }
         });
 }
@@ -80,7 +79,7 @@ export const prescriptionUploadApi = (formData, token,setImageList, setIsLoading
         .catch(function (error) {
             if (error.response) {
                
-                Alert.alert(error?.response?.data?.error?.message?.message)
+                alert(error?.response?.data?.error?.message?.message)
               }
         });
 }
