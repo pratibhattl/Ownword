@@ -92,12 +92,6 @@ export default function MigraineReason() {
         setModalVisible(false);
     };
 
-    useEffect(() => {
-        getData('migrainLog').then((data) => {
-            setDetails(data);
-        });
-
-    }, [])
 
     useEffect(() => {
         const fetchToken = async () => {
@@ -127,12 +121,27 @@ export default function MigraineReason() {
         })
     }
 
+    // const onSubmit = () => {
+    //     if (!details?.painReason?.length > 0) {
+    //         alert("Please select Pain reason !!")
+    //     } else {
+    //         addNewTrigger(token, details, setIsLoading, navigation)
+    //     }
+    // }
     const onSubmit = () => {
-        if (!details?.painReason?.length > 0) {
-            alert("Please select Pain reason !!")
-        } else {
-            addNewTrigger(token, details, setIsLoading, navigation)
-        }
+     
+        var obj={};
+
+        getData('migrainLog').then((data) => {
+            setDetails(data);
+            obj={...data,...details};
+            if (!details?.painReason?.length > 0) {
+                alert("Please select Pain reason !!")
+            } else {
+                addNewTrigger(token, obj, setIsLoading, navigation)
+            }
+        });
+     
     }
 
 

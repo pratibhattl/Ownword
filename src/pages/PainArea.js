@@ -51,9 +51,7 @@ export default function PainArea() {
         getData('token').then((token) => {
             setToken(token);
         });
-        getData('migrainLog').then((data) => {
-            setLogDetails(data);
-        });
+       
 
     }, [])
 
@@ -79,22 +77,39 @@ export default function PainArea() {
     }, [token])
 
 
+    // const onGoForward = () => {
+    //     let data = {
+    //         ...logDetails,
+    //         details
+    //     }
+    //     if (!details?.painPosition?.length > 0) {
+    //         alert("Please select Pain position !!")
+    //     }
+    //     else if (!details?.painScale) {
+    //         alert("Please select Pain scale lavel !!")
+    //     }
+    //     else {
+    //         navigation.navigate('MigraineReason');
+    //         mergeData('migrainLog', data);
+    //     }
+    // }
     const onGoForward = () => {
-        let data = {
-            ...logDetails,
-            details
-        }
-        if (!details?.painPosition?.length > 0) {
-            alert("Please select Pain position !!")
-        }
-        else if (!details?.painScale) {
-            alert("Please select Pain scale lavel !!")
-        }
-        else {
+        let obj = {};
+        getData('migrainLog').then(data => {
+          setLogDetails(data);
+          obj= {...data, ...details};
+          
+          if (!details?.painPosition?.length > 0) {
+            alert('Please select Pain position !!');
+          } else if (!details?.painScale) {
+            alert('Please select Pain scale lavel !!');
+          } else {
             navigation.navigate('MigraineReason');
-            mergeData('migrainLog', data);
-        }
-    }
+            mergeData('migrainLog', obj);
+          }
+        });
+      };
+    
     const [isModalVisible, setModalVisible] = useState(false);
 
     const handleSave = async (positionName) => {

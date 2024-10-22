@@ -18,6 +18,7 @@ export default function Menu() {
     const logout = () => {
         removeData('userDetails')
         removeData('token')
+        removeData('migrainLog')
         setToken('')
         setUserDetails({})
         setIsLoading(true);
