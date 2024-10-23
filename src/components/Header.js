@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useNavigationState } from '@react-navigation/native';
 import { getData, storeData } from '../helper';
 import { refreshTokenApi, userDetailsApi } from '../apiService/Users';
@@ -11,6 +11,7 @@ const Header = ({ title }) => {
     const { token, userDetails, setUserDetails } = useAuth();
     const navigation = useNavigation();
     const [details, setDetails] = useState({})
+    const isFocused = useIsFocused();
     const routeName = useNavigationState((state) => {
         const index = state.index;
         return state.routes[index].name;
@@ -21,6 +22,7 @@ const Header = ({ title }) => {
             setIsLoading(false);
             if (response?.data?.status == 200) {
                 setDetails(response?.data?.user)
+                setUserDetails(response?.data?.user)
             }
         }
         catch (error) {
@@ -31,6 +33,7 @@ const Header = ({ title }) => {
             throw error;
         }
     }
+
 
     const refreshTokenFun = async () => {
         try {
@@ -46,15 +49,17 @@ const Header = ({ title }) => {
     }
 
     useEffect(() => {
+        if (isFocused) {
         getUserDetailsFunc()
         refreshTokenFun()
-    }, [token]);
+        }
+    }, [isFocused]);
 
     
 
 
     return (
-        <View style={styles.headerContainer}>
+        <SafeAreaView style={styles.headerContainer}>
             {routeName !== 'Home' &&
                 <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
                     <Image source={require('../assets/arrow-left.png')} />
@@ -79,7 +84,7 @@ const Header = ({ title }) => {
                 </TouchableOpacity>
             </View>
 
-        </View>
+        </SafeAreaView>
     );
 };
 

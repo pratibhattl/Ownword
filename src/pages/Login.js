@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { userLoginApi } from '../apiService/AuthApi';
@@ -41,8 +41,8 @@ const Login = () => {
 
     return (
         <View style={styles.container}>
-            {/* <Text style={styles.logo}>LOGO</Text> */}
             <Text style={styles.topLabel}>Welcome back</Text>
+            <ScrollView> 
             <View style={styles.formWrap}>
 
                 <Controller
@@ -106,7 +106,7 @@ const Login = () => {
                 </TouchableOpacity>
 
             </View>
-
+            </ScrollView>
             <View style={styles.footer} >
                 <Text style={styles.footertext} onPress={() => navigation.navigate('Signup')}>Don’t have an Account? Sign Up</Text>
             </View>

@@ -12,6 +12,7 @@ export const getMedicationApi = (token, setMedicationList, setIsLoading) => {
     })
         .then(function (response) {
             setIsLoading(false)
+            //  console.log('response', response?.data);
             setMedicationList(response?.data?.result);
         })
         .catch(function (error) {

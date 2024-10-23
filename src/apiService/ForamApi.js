@@ -12,6 +12,7 @@ export const getForamApi = (token,setForamList, setIsLoading) => {
     })
         .then(function (response) {
             setIsLoading(false)
+            //  console.log('response', response?.data);
             setForamList(response?.data?.data);
         })
         .catch(function (error) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, Pressable } from 'react-native'
+import { View, Text, ScrollView, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, Pressable,SafeAreaView } from 'react-native'
 import Footer from '../components/Footer'
 import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
@@ -80,7 +80,7 @@ export default function Home() {
         return <LoadingScreen />;
     }
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollcontainer}>
                 {/* <View style={styles.container}> */}
                 <View style={styles.dailyTracker}>
@@ -203,7 +203,7 @@ export default function Home() {
                 </View>
             </ScrollView>
             <Footer />
-        </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
