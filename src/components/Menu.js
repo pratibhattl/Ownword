@@ -16,17 +16,18 @@ export default function Menu() {
     const isFocused = useIsFocused();
     const [details, setDetails] = useState({})
     const logout = () => {
-        removeData('userDetails')
-        removeData('token')
-        removeData('migrainLog')
-        setToken('')
-        setUserDetails({})
+        removeData('userDetails');
+        removeData('token');
+        removeData('migrainLog');
+        removeData('updateMigrainLog');
+        setToken('');
+        setUserDetails({});
         setIsLoading(true);
         setIsLoggedin(false);
         setTimeout(() => {
             setIsLoading(false);
             navigation.replace('Welcome')
-        }, 2000)
+        }, 2000);
     }
     const getUserDetailsFunc = async () => {
         try {

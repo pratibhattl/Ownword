@@ -35,6 +35,8 @@ import Foram from './src/pages/Foram';
 import Chat from './src/pages/Chat';
 import MigraineList from './src/pages/MigraineList';
 import { useAuth } from './src/Context/AppContext';
+import UpdateMigraineReason from './src/pages/UpdateMigraineReason';
+import UpdatePainArea from './src/pages/UpdatePainArea';
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -203,6 +205,16 @@ function App() {
             name='MigraineList'
             component={MigraineList}
             options={{ headerShown: true, title: 'Migraine Logs' }}
+            />
+             <Stack.Screen
+            name='UpdateMigraineReason'
+            component={UpdateMigraineReason}
+            options={{ headerShown: true, title: 'Edit Migraine Log' }}
+            />
+             <Stack.Screen
+            name='UpdatePainArea'
+            component={UpdatePainArea}
+            options={{ headerShown: true, title: 'Edit Migraine Log' }}
             />
           </>
         }

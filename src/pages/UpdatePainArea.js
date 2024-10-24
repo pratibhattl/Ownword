@@ -1,9 +1,9 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button, Text, TextInput, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button, Text, TextInput } from 'react-native';
 import Footer from '../components/Footer'
 import LoadingScreen from '../components/LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { getData } from '../helper';
+import { getData, storeData } from '../helper';
 import { getPositionApi, addNewPosition } from '../apiService/MigraineLogApi';
 import { mergeData } from '../helper';
 import Slider from '@react-native-community/slider';
@@ -34,7 +34,7 @@ const SweetAlert = ({ isVisible, onCancel, onSave }) => {
     );
 };
 
-export default function PainArea() {
+export default function UpdatePainArea() {
     const [painLevel, setPainLevel] = useState(0);
     const [token, setToken] = useState(null)
     const [isLoading, setIsLoading] = React.useState(false);
@@ -51,9 +51,17 @@ export default function PainArea() {
         getData('token').then((token) => {
             setToken(token);
         });
-       
+        getData('updateMigrainLog').then((data) => {
+            setLogDetails(data);
+           
+        });
 
-    }, [])
+    }, []);
+    useEffect(()=>{
+        setPainArea(logDetails?.painPosition)
+        setPainLevel(logDetails?.painScale)
+        setDetails(logDetails)
+    },[logDetails])
 
 
     const onSelectReason = (e) => {
@@ -77,37 +85,17 @@ export default function PainArea() {
     }, [token])
 
 
-    // const onGoForward = () => {
-    //     let data = {
-    //         ...logDetails,
-    //         details
-    //     }
-    //     if (!details?.painPosition?.length > 0) {
-    //         alert("Please select Pain position !!")
-    //     }
-    //     else if (!details?.painScale) {
-    //         alert("Please select Pain scale lavel !!")
-    //     }
-    //     else {
-    //         navigation.navigate('MigraineReason');
-    //         mergeData('migrainLog', data);
-    //     }
-    // }
     const onGoForward = () => {
-        let obj = {};
-        getData('migrainLog').then(data => {
-          setLogDetails(data);
-          obj= {...data, ...details};
-          
+     console.log(details,"painArea");
+     
           if (!details?.painPosition?.length > 0) {
             alert('Please select Pain position !!');
           } else if (!details?.painScale) {
             alert('Please select Pain scale lavel !!');
           } else {
-            navigation.navigate('MigraineReason');
-            mergeData('migrainLog', obj);
+            navigation.navigate('UpdateMigraineReason');
+            storeData('updateMigrainLog', details);
           }
-        });
       };
     
     const [isModalVisible, setModalVisible] = useState(false);

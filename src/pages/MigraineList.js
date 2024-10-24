@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, Pressable, Dimensions } from 'react-native'
+import { View, Text, ScrollView, Image, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
 import Footer from '../components/Footer'
-import { useNavigation } from '@react-navigation/native'
-import { getData } from '../helper';
+import { useNavigation ,useIsFocused} from '@react-navigation/native'
+import { getData, removeData, storeData } from '../helper';
 import LoadingScreen from '../components/LoadingScreen';
 import { getMigraineLogApi } from '../apiService/MigraineLogApi';
 
@@ -11,16 +11,47 @@ export default function MigraineList() {
     const [token, setToken] = useState(null)
     const [isLoading, setIsLoading] = React.useState(false);
     const [migraineList, setMigraineList] = useState([])
+    const [painArea, setPainArea] = useState([])
+    const [reason, setReason] = useState([])
+    const isFocused = useIsFocused();
     useEffect(() => {
-        getData('token').then((token) => {
+        getData('token').then((token) => {            
             setToken(token);
         });
+        removeData('updateMigrainLog');
 
     }, []);
 
     useEffect(() => {
+        if(isFocused){
         getMigraineLogApi(token, setMigraineList, setIsLoading)
-    }, [token])
+        }
+    }, [isFocused,token]);
+  
+    const  goToUpdate=(data)=>{
+        let painArr = [...painArea]
+        let reasonArr = [...reason]
+        data?.painPosition.map((x) => {
+            return (
+                painArr.push(x?._id)
+            )
+        });
+        data?.painReason.map((x)=>{
+            return(
+                reasonArr.push(x?._id)
+            )
+        });
+        setPainArea(painArr)
+        setReason(reasonArr)
+        let obj = {
+            painPosition: painArr,
+            painReason: reasonArr,
+            painScale: data?.painScale,
+            id: data?._id
+        }
+        storeData('updateMigrainLog', obj);
+        navigation.navigate('UpdatePainArea');
+    }
 
     if (isLoading) {
         return <LoadingScreen />;
@@ -34,6 +65,11 @@ export default function MigraineList() {
                         return (
                             <>
                                 <View style={styles.summarywrapper}>
+                                <View style={styles.editButton}> 
+                                <TouchableOpacity style={styles.arrowButton} onPress={()=> goToUpdate(x)}>
+                                   <Text> Edit</Text> 
+                                    </TouchableOpacity>
+                                    </View>
                                     <View style={styles.summary}>
                                         <View style={styles.summaryleft}>
                                             <View style={styles.summarytext}>
@@ -146,6 +182,22 @@ const styles = StyleSheet.create({
     imageStyle: { height: 50, width: 50, marginHorizontal: 'auto' },
     wrapper: {
         paddingHorizontal: 16,
+    },
+    // editButton:{
+    //       alignItems:'flex-end',
+    //     justifyContent: 'flex-end',
+    //     display: 'flex',
+    //     flexWrap: 'wrap',
+
+    // },
+    arrowButton: {
+        height: 40,
+        width: 50,
+        backgroundColor: '#20C3D3',
+        borderRadius: 6,
+        padding: 10,
+        margin: 10,
+     // marginLeft: 'auto',
     },
     summarywrapper: {
         display: 'flex',

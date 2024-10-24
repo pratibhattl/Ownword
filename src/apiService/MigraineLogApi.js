@@ -170,3 +170,37 @@ export const addNewPosition = (token, formData, setIsLoading) => {
 
     }
 }
+
+export const updateMigraineLogApi = (token, details, setIsLoading, navigation) => {
+    let id = details?.id;
+    let body ={
+        painPosition: details?.painPosition,
+            painReason: details?.painReason,
+            painScale: details?.painScale,
+    }
+    setIsLoading(true)
+
+    axios.put(`${API_URL_DEV}migraine-logs/edit-log/${id}`, body, {
+        headers: {
+            'x-access-token': token,
+            'Content-Type': 'application/json',
+            'Custom-Header': 'CustomHeaderValue'
+        }
+    })
+        .then(function (response) {
+            setIsLoading(false)
+            if(response){
+            removeData('updateMigrainLog');
+            alert("Log updated successfully");
+            navigation.navigate("MigraineList");
+            }
+        })
+        .catch(function (error) {
+            setIsLoading(false)
+            console.log(error?.response,"error?.response?.data?.error?.message?.message");
+            
+            if (error.response) {
+                alert(error?.response?.data?.error?.message?.message)
+            }
+        });
+}
