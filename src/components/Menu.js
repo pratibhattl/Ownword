@@ -79,10 +79,7 @@ export default function Menu() {
                     <Image source={require('../assets/fileIcon.png')} />
                     <Text style={styles.menuText} onPress={() => navigation.navigate('PrescriptionUpload')}> {"Prescription Upload"}</Text>
                 </View>
-                <View style={styles.menuStyle}>
-                    <Image source={require('../assets/money-send.png')} />
-                    <Text style={styles.menuText} onPress={() => navigation.navigate('Donation')}> {"Donations"}</Text>
-                </View>
+                
                 {/* <View style={styles.menuStyle} >
                     <Image source={require('../assets/notify.png')} />
                     <Text style={styles.menuText} onPress={() => navigation.navigate('MigraineList')}> {"Migraine Logs"}</Text>
@@ -102,6 +99,10 @@ export default function Menu() {
                 <View style={styles.menuStyle} >
                     <Image source={require('../assets/notify.png')} />
                     <Text style={styles.menuText} onPress={() => navigation.navigate('Foram')}> {"Chat"}</Text>
+                </View>
+                <View style={styles.menuStyle}>
+                    <Image source={require('../assets/money-send.png')} />
+                    <Text style={styles.menuText} onPress={() => navigation.navigate('Donation')}> {"Donations"}</Text>
                 </View>
                 <View style={styles.menuStyle}>
                     <Image source={require('../assets/logout.png')} />

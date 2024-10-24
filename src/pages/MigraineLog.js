@@ -235,7 +235,7 @@ export default function MigraineLog() {
 
 
             <Footer />
-        </View >
+        </View>
     )
 }
 

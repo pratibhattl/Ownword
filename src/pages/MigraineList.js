@@ -69,17 +69,38 @@ export default function MigraineList() {
                                                         <>
                                                             <View style={styles.databoxitem}>
                                                                 {
-                                                                    item?.positionName === "Left Back Of Head (Lower)" ?
-                                                                        <Image style={styles.imageStyle} source={require("../assets/left-back-head-lower.png")}  />
-                                                                        :
-                                                                        item?.positionName === "Left Back Of Head (Upper)" ?
-                                                                            <Image style={styles.imageStyle} source={require("../assets/left-back-head-upper.png")}  />
-                                                                            :
-                                                                            item?.positionName === "Left Back Of Neck" ?
-                                                                                <Image style={styles.imageStyle} source={require("../assets/left-back-neck.png")}  />
-                                                                                :
-                                                                                item?.positionName === "Between Eye" &&
-                                                                                <Image style={styles.imageStyle} source={require("../assets/between-eye.png")} />
+                                                                    item?.positionName == "Left Back Of Head (Lower)" ?
+                                                                        <Image source={require("../assets/left-back-head-lower.png")} style={styles.imageStyle} />
+                                                                        : item?.positionName == "Left Back Of Head (Upper)" ?
+                                                                            <Image source={require("../assets/left-back-head-upper.png")} style={styles.imageStyle} />
+                                                                            : item?.positionName == "Left Back Of Neck" ?
+                                                                                <Image source={require("../assets/left-back-neck.png")} style={styles.imageStyle} />
+                                                                                : item?.positionName === "Between Eye" ?
+                                                                                    <Image source={require("../assets/between-eye.png")} style={styles.imageStyle} />
+                                                                                    : item?.positionName == "teeth" ?
+                                                                                        <Image source={require("../assets/teeth.png")} style={styles.imageStyle} />
+                                                                                        : item?.positionName == "Left-cheek" ?
+                                                                                            <Image source={require("../assets/left-cheek.png")} style={styles.imageStyle} />
+                                                                                            : item?.positionName === "Left front head" ?
+                                                                                                <Image source={require("../assets/left-front-head.png")} style={styles.imageStyle} />
+                                                                                                : item?.positionName == "Left-temple" ?
+                                                                                                    <Image source={require("../assets/left-temple.png")} style={styles.imageStyle} />
+                                                                                                    : item?.positionName == "Left eye" ?
+                                                                                                        <Image source={require("../assets/left-eye.png")} style={styles.imageStyle} />
+                                                                                                        : item?.positionName == "Right temple" ?
+                                                                                                            <Image source={require("../assets/right-temple.png")} style={styles.imageStyle} />
+                                                                                                            : item?.positionName == "Right Back Of Head (Lower)" ?
+                                                                                                                <Image source={require("../assets/right-back-head-lower.png")} style={styles.imageStyle} />
+                                                                                                                : item?.positionName == "Right Back Of Head (Upper)" ?
+                                                                                                                    <Image source={require("../assets/right-back-head-upper.png")} style={styles.imageStyle} />
+                                                                                                                    : item?.positionName == "Right Back Of Neck" ?
+                                                                                                                        <Image source={require("../assets/right-back-neck.png")} style={styles.imageStyle} />
+                                                                                                                        : item?.positionName == "Right cheek" ?
+                                                                                                                            <Image source={require("../assets/right-cheek.png")} style={styles.imageStyle} />
+                                                                                                                            : item?.positionName === "Right front head" ?
+                                                                                                                                <Image source={require("../assets/right-front-head.png")} style={styles.imageStyle} />
+                                                                                                                                : item?.positionName == "Right eye" &&
+                                                                                                                                <Image source={require("../assets/right-eye.png")} style={styles.imageStyle} />
                                                                 }
                                                                 <Text style={styles.databoxitemtitle}>{item?.positionName}</Text>
                                                             </View>
@@ -122,7 +143,7 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#0A142A'
     },
-    imageStyle:{ height: 50, width: 50 ,marginHorizontal: 'auto'},
+    imageStyle: { height: 50, width: 50, marginHorizontal: 'auto' },
     wrapper: {
         paddingHorizontal: 16,
     },

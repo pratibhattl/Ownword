@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, Pressable,SafeAreaView } from 'react-native'
+import { View, Text, ScrollView, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, Pressable, SafeAreaView } from 'react-native'
 import Footer from '../components/Footer'
 import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
@@ -35,7 +35,7 @@ export default function Home() {
     const navigation = useNavigation();
     const [homePageData, setHomePageData] = useState([]);
     const [donationData, setdonationData] = useState({})
-    const {token} = useAuth();
+    const { token } = useAuth();
 
 
     useEffect(() => {
@@ -82,18 +82,18 @@ export default function Home() {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollcontainer}>
-                {/* <View style={styles.container}> */}
-                <View style={styles.dailyTracker}>
-                    <Pressable style={styles.dailyTrack} onPress={() => navigation.navigate('MigraineLog')}>
+                <Pressable style={styles.dailyTrack} onPress={() => navigation.navigate('MigraineLog')}>
+                    <View style={styles.dailyTracker}>
                         <View style={styles.titleStyle}>
                             <Text style={styles.title}>Track every day and see what could cause attacks</Text>
                             <Text style={styles.subtitle}>Daily Tracker <Image source={require('../assets/zapIcon.png')} /></Text>
                         </View>
-                    </Pressable>
-                    <View style={styles.imageStye}>
-                        <Image source={require('../assets/homeIcon.png')} style={styles.image} />
+
+                        <View style={styles.imageStye}>
+                            <Image source={require('../assets/homeIcon.png')} style={styles.image} />
+                        </View>
                     </View>
-                </View>
+                </Pressable>
 
                 <View style={styles.grid}>
                     <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('WaterIntake')}>
@@ -139,9 +139,9 @@ export default function Home() {
                             <View style={styles.donateContent}>
                                 <Text style={styles.cardText}>{donationData.title}</Text>
                                 <Text style={styles.founderText}>{donationData.foundationName}</Text>
-                               
+
                                 <View style={styles.progressbarwrapper}>
-                                    <View style={[styles.progressbar,{width: donationData.receivedAmount ? `${donationData.receivedAmount}%` : '0%'}]}></View>
+                                    <View style={[styles.progressbar, { width: donationData.receivedAmount ? `${donationData.receivedAmount}%` : '0%' }]}></View>
                                 </View>
                                 <View style={styles.donationmeta}>
                                     <Text style={styles.targetAmount}>Target - {donationData?.targetAmount} INR</Text>

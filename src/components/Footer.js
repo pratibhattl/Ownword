@@ -1,7 +1,7 @@
 // Footer.js
 
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image ,SafeAreaView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useNavigationState } from '@react-navigation/native';
 const Footer = () => {
@@ -16,7 +16,7 @@ const Footer = () => {
 
   // },[])
   return (
-    <View style={styles.footerContainer}>
+    <SafeAreaView style={styles.footerContainer}>
       <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Home')}>
         {routeName == 'Home' ?
           <Image source={require('../assets/home-1.png')} />
@@ -58,7 +58,7 @@ const Footer = () => {
         }
         <Text style={routeName == 'Menu' ? styles.selectedIconText : styles.iconText}>Menu</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -103,7 +103,7 @@ export default function Medication() {
             <ScrollView style={styles.wrapper}>
                 <View style={styles.formWrap}>
                     <View>
-                        <Text style={styles.inputlabel}>Start Time*</Text>
+                        <Text style={styles.inputlabel}>Time Taken*</Text>
                         <View style={styles.dateblock}>
                             <Text style={styles.datetime}>{details?.start_time}</Text>
                             {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
