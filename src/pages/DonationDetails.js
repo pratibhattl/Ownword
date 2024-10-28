@@ -123,7 +123,7 @@ export default function DonationDetails({ route }) {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
     wrapper: {
         paddingHorizontal: 16,
@@ -166,14 +166,14 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     donationBlock: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         paddingHorizontal: 16,
         paddingVertical: 24,
         borderRadius: 4,
         marginVertical: 24,
     },
     textStyle: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 20,
         lineHeight: 28,
         fontWeight: '300',
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     },
     daysStyle: {
         alignItems: 'flex-start',
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 15,
         lineHeight: 20,
         fontWeight: '300',
@@ -192,21 +192,19 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     primaryButton: {
-        backgroundColor: '#ffff',
-        borderRadius: 5,
         alignItems: 'center',
         margin: 16,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964b00',
         borderRadius: 6,
         height: 54,
     },
     buttonText: {
-        color: '#000',
+        color: '#ffffff',
         fontSize: 16,
         lineHeight: 54,
     },
     campaignText: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 16,
         fontWeight: '500',
         marginBottom: 24,
@@ -217,14 +215,14 @@ const styles = StyleSheet.create({
     },
     donationText: {
         fontSize: 14,
-        color: '#20C3D3',
+        color: '#964b00',
     },
     donationAmount: {
         fontSize: 14,
-        color: '#fff',
+        color: '#6C727F',
     },
     founderSection: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 4,
@@ -243,7 +241,7 @@ const styles = StyleSheet.create({
     },
     foundername: {
         fontSize: 16,
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
     },
     verifiedbox: {
@@ -252,7 +250,7 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     verifiedText: {
-        color: '#20C3D3',
+        color: '#964b00',
         fontSize: 13,
     },
 });

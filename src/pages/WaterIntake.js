@@ -63,6 +63,7 @@ export default function WaterIntake() {
                   defaultValue={String(x?.amount)}
                   editable={false}
                 />
+                <Text style={styles.inputunit}>/ml</Text>
                 <TouchableOpacity style={styles.primaryButton} onPress={()=> deleteLog(x?._id)}>
                   <Text style={styles.buttonText}>Delete</Text>
                 </TouchableOpacity>
@@ -88,6 +89,7 @@ export default function WaterIntake() {
             )}
             name="amount"
           />
+          <Text style={styles.inputunit}>/ml</Text>
           <TouchableOpacity style={styles.secondoryButton} onPress={handleSubmit(onSubmit)}>
             <Text style={styles.buttonText}>Add</Text>
           </TouchableOpacity>
@@ -101,10 +103,10 @@ export default function WaterIntake() {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    backgroundColor: '#0A142A',
+    backgroundColor: '#EDE8D0',
   },
   wrapper: {
-    paddingHorizontal: 16,
+    padding: 16,
   },
 
   formWrap: {
@@ -114,16 +116,25 @@ const styles = StyleSheet.create({
     // marginBottom: 100,
     width: '100%',
     justifyContent: 'space-between',
-    gap: 16,
   },
   input: {
     flex: 1,
     height: 44,
-    borderRadius: 4,
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 4,
     paddingHorizontal: 10,
-    color: '#fff',
-    placeholderTextColor: "#fff",
-    backgroundColor: '#232C3F',
+    color: '#6C727F',
+    placeholderTextColor: "#6C727F",
+    backgroundColor: '#D5D1BB',
+  },
+  inputunit: {
+    height: 44,
+    lineHeight: 44,
+    backgroundColor: '#D5D1BB',
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
+    paddingHorizontal: 10,
+    color: '#6C727F',
   },
   isInvalid: {
     borderColor: 'red',
@@ -139,13 +150,14 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     paddingHorizontal: 26,
-    backgroundColor: '#F14336',
+    backgroundColor: '#dc3545',
     borderRadius: 4,
     alignItems: 'center',
     height: 44,
     color: '#fff',
     width: 100,
     lineHeight: 44,
+    marginLeft: 16,
   },
 
   buttonText: {
@@ -171,16 +183,12 @@ const styles = StyleSheet.create({
   },
   secondoryButton: {
     paddingHorizontal: 26,
-    backgroundColor: '#20C3D3',
+    backgroundColor: '#964b00',
     borderRadius: 4,
     alignItems: 'center',
     height: 44,
     lineHeight: 44,
     width: 100,
-  },
-  buttonText: {
-    color: '#000',
-    fontSize: 16,
-    lineHeight: 44,
+    marginLeft: 16,
   },
 })

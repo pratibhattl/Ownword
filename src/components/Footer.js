@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 60,
-    backgroundColor: '#232C3F',
+    backgroundColor: '#EDE8D0',
     borderTopWidth: 1,
     borderColor: '#ddd',
   },
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
   iconText: {
     fontSize: 12,
     marginTop: 4,
-    color: '#20C3D3',
+    color: '#6C727F',
   },
   selectedIconText: {
     fontSize: 12,
     marginTop: 4,
-    color: '#EB7D26',
+    color: '#964b00',
   },
 });
 

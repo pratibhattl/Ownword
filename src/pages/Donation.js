@@ -132,7 +132,7 @@ export default function Donation() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
     slider: {
         width: '90%',
@@ -148,16 +148,17 @@ const styles = StyleSheet.create({
     cardMain: {
         with: '100%',
         alignItems: 'end',
+        marginBottom: 10,
     },
     progressbarwrapper: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         width: '100%',
         height: 6,
         borderRadius: 10,
         marginVertical: 10,
     },
     progressbar: {
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964b00',
         height: 6,
         borderRadius: 10,
     },
@@ -176,12 +177,12 @@ const styles = StyleSheet.create({
     },
     cardText: {
         fontSize: 14,
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
     },
     founderText: {
         fontSize: 12,
-        color: '#20C3D3',
+        color: '#964b00',
         margin: 0,
     },
     donationmeta: {
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     targetAmount: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 11,
     },
     duration: {

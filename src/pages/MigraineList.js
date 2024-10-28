@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import { useNavigation ,useIsFocused} from '@react-navigation/native'
 import { getData, removeData, storeData } from '../helper';
 import LoadingScreen from '../components/LoadingScreen';
+import Moment from 'moment'
 import { getMigraineLogApi } from '../apiService/MigraineLogApi';
 
 export default function MigraineList() {
@@ -18,40 +19,50 @@ export default function MigraineList() {
         getData('token').then((token) => {            
             setToken(token);
         });
+       
         removeData('updateMigrainLog');
 
     }, []);
 
     useEffect(() => {
+        getData('updateMigrainLog').then((data) => {
+            console.log(data,"data");
+           
+        });
         if(isFocused){
         getMigraineLogApi(token, setMigraineList, setIsLoading)
         }
     }, [isFocused,token]);
   
-    const  goToUpdate=(data)=>{
-        let painArr = [...painArea]
-        let reasonArr = [...reason]
-        data?.painPosition.map((x) => {
-            return (
-                painArr.push(x?._id)
-            )
+    const goToUpdate = (data) => {
+        // Use Sets to ensure unique values
+        const painArr = new Set([...painArea]);
+        const reasonArr = new Set([...reason]);
+    
+        data?.painPosition.forEach((x) => {
+            if (x?._id) painArr.add(x._id);
         });
-        data?.painReason.map((x)=>{
-            return(
-                reasonArr.push(x?._id)
-            )
+    
+        data?.painReason.forEach((x) => {
+            if (x?._id) reasonArr.add(x._id);
         });
-        setPainArea(painArr)
-        setReason(reasonArr)
-        let obj = {
-            painPosition: painArr,
-            painReason: reasonArr,
+    
+        const updatedPainArea = Array.from(painArr);
+        const updatedReason = Array.from(reasonArr);
+    
+        setPainArea(updatedPainArea);
+        setReason(updatedReason);
+    
+        const obj = {
+            painPosition: updatedPainArea,
+            painReason: updatedReason,
             painScale: data?.painScale,
-            id: data?._id
-        }
+            id: data?._id,
+        };
+    
         storeData('updateMigrainLog', obj);
         navigation.navigate('UpdatePainArea');
-    }
+    };
 
     if (isLoading) {
         return <LoadingScreen />;
@@ -65,40 +76,28 @@ export default function MigraineList() {
                         return (
                             <>
                                 <View style={styles.summarywrapper}>
-                                <View style={styles.editButton}> 
-                                <TouchableOpacity style={styles.arrowButton} onPress={()=> goToUpdate(x)}>
-                                   <Text> Edit</Text> 
-                                    </TouchableOpacity>
-                                    </View>
+                                
                                     <View style={styles.summary}>
                                         <View style={styles.summaryleft}>
                                             <View style={styles.summarytext}>
-                                                <Text style={styles.summarylable}>Start Date:</Text>
-                                                <Text style={styles.summarydata}>{x?.startDate}</Text>
-                                            </View>
-                                            <View style={styles.summarytext}>
                                                 <Text style={styles.summarylable}>Start Time:</Text>
-                                                <Text style={styles.summarydata}>{x?.startTime}</Text>
+                                                <Text style={styles.summarydata}>{x?.startDate}, {x?.startTime}</Text>
                                             </View>
                                         </View>
                                         <View style={styles.summaryright}>
                                             <View style={styles.summarytext}>
-                                                <Text style={styles.summarylable}>End Date:</Text>
-                                                <Text style={styles.summarydata}>{x?.endDate}</Text>
-                                            </View>
-                                            <View style={styles.summarytext}>
                                                 <Text style={styles.summarylable}>End Time:</Text>
-                                                <Text style={styles.summarydata}>{x?.endTime}</Text>
-                                            </View>
-                                            <View style={styles.summarytext}>
-                                                <Text style={styles.summarylable}>Pain Scale:</Text>
-                                                <Text style={styles.summarydata}>{x?.painScale}</Text>
+                                                <Text style={styles.summarydata}>{x?.endDate}, {x?.endTime}</Text>
                                             </View>
                                         </View>
                                     </View>
+                                    <View style={styles.painsummarytext}>
+                                        <Text style={styles.summarylable}>Pain Intensity:</Text>
+                                        <Text style={styles.summarydata}>{x?.painScale}</Text>
+                                    </View>
                                     {x?.painPosition?.length > 0 &&
                                         <View style={styles.painpoints}>
-                                            <Text style={styles.pheading}>Pain Points</Text>
+                                            <Text style={styles.summarylable}>Pain Points</Text>
                                             <View style={styles.databox}>
                                                 {x?.painPosition?.map((item) => {
                                                     return (
@@ -150,7 +149,7 @@ export default function MigraineList() {
                                     }
                                     {x?.painReason?.length > 0 &&
                                         <View style={styles.painpoints}>
-                                            <Text style={styles.pheading}>Pain Reasons</Text>
+                                            <Text style={styles.summarylable}>Pain Reasons</Text>
                                             <View style={styles.databox}>
                                                 {x?.painReason?.map((item) => {
                                                     return (
@@ -165,7 +164,13 @@ export default function MigraineList() {
                                             </View>
                                         </View>
                                     }
-                                </View>
+
+
+                                <TouchableOpacity style={styles.arrowButton} onPress={()=> goToUpdate(x)}>
+                                <Image source={require("../assets/edit-b.png")} style={styles.editstyle} />
+                                    </TouchableOpacity>
+                                    </View>
+                                
                             </>)
                     })}
             </ScrollView>
@@ -177,9 +182,10 @@ export default function MigraineList() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
-    imageStyle: { height: 50, width: 50, marginHorizontal: 'auto' },
+    imageStyle: { height: 30, width: 30, marginHorizontal: 'auto', marginBottom: 5, },
+
     wrapper: {
         paddingHorizontal: 16,
     },
@@ -191,28 +197,30 @@ const styles = StyleSheet.create({
 
     // },
     arrowButton: {
-        height: 40,
-        width: 50,
-        backgroundColor: '#20C3D3',
-        borderRadius: 6,
-        padding: 10,
-        margin: 10,
-     // marginLeft: 'auto',
+        position: 'absolute',
+        zIndex: 9999,
+        top: 16,
+        left: 'auto',
+        right: 16,
+        margin: 0,
+        padding: 0,
+        width: 16,
+        height: 16,
     },
     summarywrapper: {
         display: 'flex',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         paddingTop: 16,
         borderRadius: 4,
         flexDirection: 'column',
         paddingBottom: 0,
         marginBottom: 24,
         flexWrap: 'wrap',
+        position: 'relative',
     },
     summary: {
         width: '100%',
         flexDirection: 'row',
-        marginBottom: 24,
     },
     summaryleft: {
         flex: 1,
@@ -228,11 +236,13 @@ const styles = StyleSheet.create({
     },
     summarylable: {
         color: '#6C727F',
+        fontSize: 12,
+        marginBottom: 10,
     },
     summarydata: {
-        color: '#fff',
-        fontSize: 24,
-        fontWeight: '200',
+        color: '#6C727F',
+        fontSize: 14,
+        fontWeight: '600',
     },
     painpoints: {
         flexDirection: 'column',
@@ -240,25 +250,32 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     pheading: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 20,
         fontWeight: '200',
         marginBottom: 16,
     },
     databox: {
         flexDirection: 'row',
-        gap: 16,
+        flexWrap: 'wrap',
+        gap: 5,
     },
     databoxitem: {
-        backgroundColor: '#0A142A',
-        padding: 10,
-        borderRadius: 4,
-        width: '33%',
-        textAlign: 'center'
+        width: '15%',
+        textAlign: 'center',
     },
     databoxitemtitle: {
-        fontSize: 12,
+        fontSize: 8,
         textAlign: 'center',
-        color: '#fff',
+        color: '#6C727F',
+    },
+    painsummarytext: {
+        paddingHorizontal: 16,
+        marginBottom: 16,
+    },
+    editstyle: {
+        width: 16,
+        height: 16,
+        objectFit: 'scale-down',
     },
 });

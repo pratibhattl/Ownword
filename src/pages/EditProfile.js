@@ -386,7 +386,7 @@ export default function EditProfile() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
     textStyle: {
         fontSize: 25,
@@ -394,7 +394,8 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         height: 100,
-        width: 100
+        width: 100,
+        display:'block',
     },
     container1: {
         flex: 1,
@@ -402,7 +403,7 @@ const styles = StyleSheet.create({
         paddingLeft: 24,
         paddingRight: 24,
         paddingTop: 35,
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     dottedBox: {
         width: '20%',
@@ -422,7 +423,7 @@ const styles = StyleSheet.create({
     },
     picker: {
         color: '#fff',
-        backgroundColor: '#232C3F'
+        backgroundColor: '#D5D1BB',
         // marginBottom: 15,
     },
     text: {
@@ -430,12 +431,12 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     topLabel: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 25
     },
     label: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 15
     },
@@ -453,13 +454,13 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         paddingHorizontal: 10,
         marginBottom: 24,
-        color: '#fff',
-        placeholderTextColor: "#fff",
-        backgroundColor: '#232C3F',
+        color: '#6C727F',
+        placeholderTextColor: "#6C727F",
+        backgroundColor: '#D5D1BB',
         height: 54,
     },
     datepicker: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         height: 54,
         flexDirection: 'row',
         paddingHorizontal: 10,
@@ -467,6 +468,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 24,
+        color: '#6C727F',
     },
     isInvalid: {
         borderColor: 'red',
@@ -482,7 +484,7 @@ const styles = StyleSheet.create({
     },
     primaryButton: {
         width: '100%',
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
         alignItems: 'center',
         marginBottom: 40,
@@ -498,7 +500,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     buttonText: {
-        color: '#000',
+        color: '#fff',
         fontSize: 16,
         lineHeight: 54,
     },
@@ -519,7 +521,7 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     datevalue: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 16,
     },
 

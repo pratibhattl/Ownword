@@ -69,10 +69,10 @@ export default function Insights() {
         <View style={styles.container}>
             <View style={styles.buttonStyle} >
                 <TouchableOpacity style={selectedTab === 'Insight' ? styles.selected : styles.primaryButton} onPress={() => setSelectedTab('Insight')}>
-                    <Text style={styles.buttonText}>Insights</Text>
+                    <Text style={selectedTab === 'Insight' ? styles.selectedbuttonText : styles.buttonText}>Insights</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={selectedTab === 'Blog' ? styles.selected : styles.primaryButton} onPress={() => setSelectedTab('Blog')}>
-                    <Text style={styles.buttonText}>Blogs</Text>
+                    <Text style={selectedTab === 'Blog' ? styles.selectedbuttonText : styles.buttonText}>Blogs</Text>
                 </TouchableOpacity>
             </View>
             <ScrollView style={styles.scrollcontainer}>
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     },
     secondaryButton: {
         flex: 1,
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
         padding: 5,
         borderRadius: 5,
         justifyContent: 'center',
@@ -203,11 +203,11 @@ const styles = StyleSheet.create({
     },
     optionButton: {
         fontSize: 13,
-        color: '#fff',
+        color: '#6C727F',
     },
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     buttonStyle: {
         display: 'flex',
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
         height: 32,
     },
     selected: {
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 30,
         alignItems: 'center',
         width: '48%',
@@ -231,6 +231,11 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#000',
+        fontSize: 14,
+        lineHeight: 32,
+    },
+    selectedbuttonText: {
+        color: '#fff',
         fontSize: 14,
         lineHeight: 32,
     },
@@ -248,7 +253,7 @@ const styles = StyleSheet.create({
         with: '100%',
         flexDirection: 'column',  // Horizontal layout
         alignItems: 'end',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         borderRadius: 8,
         marginTop: 20,
         shadowColor: '#000',
@@ -278,20 +283,20 @@ const styles = StyleSheet.create({
     },
     dateStyle: {
         fontSize: 16,
-        color: '#868686'
+        color: '#868686',
     },
     cardName: {
         fontSize: 17,
         lineHeight: 24,
-        color: '#20C3D3',
+        color: '#964B00',
         marginBottom: 12,
     },
     desTitle: {
         fontSize: 13,
         lineHeight: 15,
-        color: '#fff'
+        color: '#6C727F',
     },
     desText: {
-        color: '#6C727F'
+        color: '#6C727F',
     }
 });

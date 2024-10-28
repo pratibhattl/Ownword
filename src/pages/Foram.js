@@ -52,10 +52,10 @@ if (isLoading) {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     textStyle: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 20,
         fontWeight: '300',
         lineHeight: 28,
@@ -67,19 +67,19 @@ const styles = StyleSheet.create({
         with: '100%',
         flexDirection: 'column',
         borderBottomWidth: 1,
-        borderBottomColor: '#232C3F',
+        borderBottomColor: '#e0c9b3',
         paddingBottom: 24,
         marginBottom: 24,
     },
     cardContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: '80%'
+        width: '80%',
     },
     cardText: {
         fontSize: 14,
         lineHeight: 24,
-        color: '#8DCAFC',
+        color: '#ab6f33',
         fontWeight: '300',
     },
    

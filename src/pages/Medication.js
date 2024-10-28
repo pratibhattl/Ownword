@@ -159,9 +159,9 @@ export default function Medication() {
                             style={styles.picker}
                         >
                             <Picker.Item label="Select day" value={details?.days} />
-                            {daysList?.map((x) => {
+                            {daysList?.map((x,index) => {
                                 return (
-                                    <Picker.Item label={x?.label} value={x.value} />
+                                    <Picker.Item key={index} label={x?.label} value={x.value} />
                                 )
                             })}
                         </Picker>
@@ -217,7 +217,7 @@ export default function Medication() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     wrapper: {
         paddingHorizontal: 16,
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         borderRadius: 4,
         padding: 16,
     },
@@ -258,9 +258,9 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         paddingHorizontal: 10,
         marginBottom: 16,
-        color: '#fff',
-        placeholderTextColor: "#fff",
-        backgroundColor: '#232C3F',
+        color: '#6C727F',
+        placeholderTextColor: "#6c727f",
+        backgroundColor: '#D5D1BB',
     },
     isInvalid: {
         borderColor: 'red',
@@ -286,15 +286,14 @@ const styles = StyleSheet.create({
     },
     primaryButton: {
         width: '100%',
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964b00',
         borderRadius: 6,
-        paddingVertical: 10,
         alignItems: 'center',
         marginBottom: 40,
         height: 44,
     },
     buttonText: {
-        color: '#000',
+        color: '#fff',
         fontSize: 16,
         lineHeight: 44,
     },
@@ -313,19 +312,15 @@ const styles = StyleSheet.create({
         height: 44,
     },
     picker: {
-        color: '#fff',
-        backgroundColor: '#232C3F',
+        color: '#6C727F',
+        backgroundColor: '#D5D1BB',
         marginBottom: 16,
         borderRadius: 4,
-        height: 44,
-    },
-    buttonText: {
-        color: '#000',
-        fontSize: 16,
+        // height: 44,
     },
     dateblock: {
         flexDirection: 'row',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         borderRadius: 4,
         height: 100,
         alignItems: 'center',
@@ -336,17 +331,17 @@ const styles = StyleSheet.create({
     datetime: {
         fontSize: 40,
         fontWeight: '200',
-        color: '#fff',
+        color: '#6C727F',
     },
     inputlabel: {
         fontSize: 24,
         fontWeight: '200',
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 24,
     },
     medicine_name: {
         fontSize: 16,
-        color: '#fff',
+        color: '#6C727F',
     },
     medicine_time: {
         fontSize: 14,

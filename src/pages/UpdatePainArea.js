@@ -45,6 +45,7 @@ export default function UpdatePainArea() {
     const [details, setDetails] = useState(null)
     const [logDetails, setLogDetails] = useState(null)
 
+    const [isModalVisible, setModalVisible] = useState(false);
 
 
     useEffect(() => {
@@ -52,53 +53,61 @@ export default function UpdatePainArea() {
             setToken(token);
         });
         getData('updateMigrainLog').then((data) => {
+            console.log(data,"data");
             setLogDetails(data);
            
         });
 
     }, []);
+    
+        useEffect(() => {
+            getPositionApi(token, setPositionList, setIsLoading)
+        }, [token])
+    
+    
+       
     useEffect(()=>{
         setPainArea(logDetails?.painPosition)
         setPainLevel(logDetails?.painScale)
         setDetails(logDetails)
     },[logDetails])
 
-
     const onSelectReason = (e) => {
-        let arr = [...painArea]
-        var index = arr.indexOf(e)
-        if (index !== -1) {
-            arr.splice(index, 1);
-        } else {
-            arr.push(e);
-        }
-        setPainArea(arr)
-        setDetails({
-            ...details,
-            painPosition: arr
-        })
-    }
-
-
-    useEffect(() => {
-        getPositionApi(token, setPositionList, setIsLoading)
-    }, [token])
-
-
-    const onGoForward = () => {
-     console.log(details,"painArea");
-     
-          if (!details?.painPosition?.length > 0) {
-            alert('Please select Pain position !!');
-          } else if (!details?.painScale) {
-            alert('Please select Pain scale lavel !!');
-          } else {
-            navigation.navigate('UpdateMigraineReason');
-            storeData('updateMigrainLog', details);
-          }
-      };
+        setPainArea((prevPainArea) => {
+            const arr = new Set(prevPainArea);
     
-    const [isModalVisible, setModalVisible] = useState(false);
+            if (arr.has(e)) {
+                arr.delete(e);  // Remove if it exists
+            } else {
+                arr.add(e);     // Add if it doesn't exist
+            }
+    
+            const updatedPainArea = Array.from(arr);
+    
+            // Update details based on the latest painArea state
+            setDetails((prevDetails) => ({
+                ...prevDetails,
+                painPosition: updatedPainArea
+            }));
+    
+            return updatedPainArea;
+        });
+    };
+    console.log(details,"painArea");
+    const onGoForward = () => {
+       
+        
+             if (!details?.painPosition?.length > 0) {
+               alert('Please select Pain position !!');
+             } else if (!details?.painScale) {
+               alert('Please select Pain scale lavel !!');
+             } else {
+               navigation.navigate('UpdateMigraineReason');
+               storeData('updateMigrainLog', details);
+             }
+         };
+       
+
 
     const handleSave = async (positionName) => {
         // Handle save action
@@ -224,10 +233,10 @@ export default function UpdatePainArea() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     buttonStyle: {
-        marginBottom: 20
+        marginBottom: 20,
     },
     alertContainer: {
         backgroundColor: 'white',
@@ -269,19 +278,19 @@ const styles = StyleSheet.create({
         height: 40,
     },
     label: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 20
     },
     arrowStyle: {
         height: 24,
         width: 24,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
     },
     arrowButton: {
         height: 54,
         width: 54,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
         padding: 15,
         margin: 16,
@@ -327,7 +336,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     card: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         width: '30%',
         marginVertical: 10,
         padding: 10,
@@ -335,7 +344,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     card1: {
-        backgroundColor: '#2F1908',
+        backgroundColor: '#d5b799',
         width: '30%',
         marginVertical: 10,
         padding: 10,
@@ -348,13 +357,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     cardText: {
-        color: 'white',
+        color: '#6C727F',
         fontSize: 12,
         textAlign: 'center',
     },
-    wrapper: {
-        paddingHorizontal: 16,
-    }
 })
 
 // {selectedData == 'FrontPain' ?

@@ -80,20 +80,22 @@ export default function Notification() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
     wrapper: {
         paddingHorizontal: 16,
     },
     textStyle: {
         justifyContent: 'end',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        marginTop: 5,
     },
     cardMain: {
         width: '100%',
         flexDirection: 'row',
         padding: 10,
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
+        marginBottom: 1,
     },
     cardContainer: {
         flexDirection: 'column',
@@ -101,19 +103,20 @@ const styles = StyleSheet.create({
         paddingTop: 8,
     },
     cardImage: {
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         borderRadius: 25,
         marginRight: 10,
     },
     cardText: {
         fontSize: 14,
         lineHeight: 17,
-        color: '#fff',
+        color: '#6C727F',
+        marginBottom: 10,
     },
     dateStyle: {
         fontSize: 11,
-        color: '#868686'
+        color: '#868686',
     },
     cardName: {
         fontSize: 17,

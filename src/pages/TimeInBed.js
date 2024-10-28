@@ -213,12 +213,12 @@ export default function TimeInBed() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     arrowStyle: {
         height: 24,
         width: 24,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964b00',
         borderRadius: 6,
     },
     wrapper: {
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     arrowButton: {
         height: 54,
         width: 54,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964b00',
         borderRadius: 6,
         padding: 15,
         margin: 16,
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         color: '#fff',
         placeholderTextColor: "#fff",
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
     },
     isInvalid: {
         borderColor: 'red',
@@ -254,17 +254,17 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     linkText: {
-        color: '#fff',
+        color: '#6C727F',
         textAlign: 'left',
         marginBottom: 15,
     },
     topLabel: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 25
     },
     label: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 20
     },
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     },
     dateblock: {
         flexDirection: 'row',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         borderRadius: 4,
         height: 100,
         alignItems: 'center',
@@ -294,12 +294,12 @@ const styles = StyleSheet.create({
     datetime: {
         fontSize: 40,
         fontWeight: '200',
-        color: '#fff',
+        color: '#6C727F',
     },
     inputlabel: {
         fontSize: 24,
         fontWeight: '200',
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 24,
     },
 })

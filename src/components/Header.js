@@ -49,7 +49,7 @@ const Header = ({ title }) => {
     }
 
     useEffect(() => {
-        if (isFocused) {
+        if (isFocused && routeName !== 'ForgotPassword') {
         getUserDetailsFunc()
         refreshTokenFun()
         }
@@ -65,7 +65,7 @@ const Header = ({ title }) => {
                     <Image source={require('../assets/arrow-left.png')} />
                 </TouchableOpacity>
             }
-            {routeName !== 'Menu' &&
+            {routeName == 'Home' &&
                 <TouchableOpacity style={styles.button} >
                     {details?.profile_img ?
                         <Image style={styles.profileImage} source={{ uri: String(details?.profile_img) }} />
@@ -74,15 +74,17 @@ const Header = ({ title }) => {
                     }
                 </TouchableOpacity>
             }
+            
             <View style={styles.titleContainer}>
                 <Text style={styles.subtitle}>{title ? title : details?.name}</Text>
             </View>
+            {routeName !== 'ForgotPassword' &&
             <View style={styles.buttonsContainer}>
-
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Notification')}>
                     <Image source={require('../assets/Bell.png')} />
                 </TouchableOpacity>
             </View>
+}
 
         </SafeAreaView>
     );
@@ -93,27 +95,28 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#0A142A',
-        padding: 10,
-        elevation: 4, // Adds shadow on Android
+        backgroundColor: '#EDE8D0',
+        paddingHorizontal: 32,
+        paddingVertical: 16,
+        //elevation: 4, // Adds shadow on Android
     },
     titleContainer: {
         flex: 1,
         alignItems: 'center',
-        color: '#fff'
+        color: '#964B00',
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#fff'
+        color: '#964B00',
     },
     subtitle: {
         fontSize: 20,
-        color: '#fff',
+        color: '#964B00',
     },
     profileImage: {
-        width: 40,
-        height: 40,
+        width: 32,
+        height: 32,
         borderRadius: 20,
     },
     buttonsContainer: {

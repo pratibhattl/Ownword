@@ -67,20 +67,19 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         paddingHorizontal: 24,
         width: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
         paddingTop: 80,
     },
 
     topLabel: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 32,
         fontSize: 24,
     },
     label: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 14,
-        opacity: 0.3,
     },
 
     formWrap: {
@@ -88,15 +87,14 @@ const styles = StyleSheet.create({
         // paddingBottom: 100
     },
     input: {
-        height: 50,
         borderColor: '#fff',
         borderWidth: 0,
         borderRadius: 6,
         paddingHorizontal: 10,
         marginBottom: 24,
-        color: '#fff',
+        color: '#6C727F',
         placeholderTextColor: "#fff",
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         height: 54,
     },
     isInvalid: {
@@ -113,7 +111,7 @@ const styles = StyleSheet.create({
     },
     primaryButton: {
         width: '100%',
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
         alignItems: 'center',
         marginBottom: 40,
@@ -129,8 +127,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     buttonText: {
-        color: '#000',
-        fontSize: 20,
+        color: '#fff',
+        fontSize: 16,
         lineHeight: 54,
     },
     skipText: {
@@ -138,16 +136,18 @@ const styles = StyleSheet.create({
     },
     footer: {
         position: 'absolute',
-        bottom: 10,
-        left: 0,
-        right: 0,
-        paddingLeft: 35,
-        paddingRight: 35,
-
+        bottom: 0,
+        left: 24,
+        right: 24,
+        width: '100%',
+        paddingBottom: 40,
+        marginTop: 'auto',
     },
     footertext: {
         textAlign: 'center',
-        color: '#fff',
+        color: '#6C727F',
+        fontSize: 16,
+        margin: 0,
     },
 });
 

@@ -225,7 +225,7 @@ export default function MigraineLog() {
             <View style={styles.bottom_button}>
                 {migraineLogs?.length > 0 && !migraineLogs[0]?.endDate &&
                     <TouchableOpacity style={styles.skipButton} onPress={() => navigation.navigate("Home")}  >
-                        <Text style={{ color: "#000" }}>Skip</Text>
+                        <Text style={{ color: "#6C727F" }}>Skip</Text>
                     </TouchableOpacity>
                 }
                 <TouchableOpacity style={styles.arrowButton} onPress={() => onGoForward()}>
@@ -242,14 +242,12 @@ export default function MigraineLog() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     skipButton: {
-        height: 54,
+        height: 'auto',
         width: 60,
-        backgroundColor: '#20C3D3',
         borderRadius: 6,
-        padding: 16,
         margin: 16,
         color: '#000',
         marginRight: 'auto',
@@ -257,7 +255,7 @@ const styles = StyleSheet.create({
     arrowStyle: {
         height: 24,
         width: 24,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
     },
     wrapper: {
@@ -266,7 +264,7 @@ const styles = StyleSheet.create({
     arrowButton: {
         height: 54,
         width: 54,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
         padding: 15,
         margin: 16,
@@ -286,7 +284,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         color: '#fff',
         placeholderTextColor: "#fff",
-        backgroundColor: '#232C3F',
+        backgroundColor: '#EDE8D0',
     },
     isInvalid: {
         borderColor: 'red',
@@ -327,12 +325,12 @@ const styles = StyleSheet.create({
     inputlabel: {
         fontSize: 24,
         fontWeight: '200',
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 24,
     },
     dateblock: {
         flexDirection: 'row',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         borderRadius: 4,
         height: 100,
         alignItems: 'center',
@@ -343,11 +341,12 @@ const styles = StyleSheet.create({
     datetime: {
         fontSize: 40,
         fontWeight: '200',
-        color: '#fff',
+        color: '#6C727F',
     },
     bottom_button: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'flex-end',
     },
 
 })

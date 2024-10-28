@@ -73,7 +73,7 @@ function App() {
             <Stack.Screen
               name="ForgotPassword"
               component={ForgotPassword}
-              options={{ headerShown: false }}
+              options={{ headerShown: true }}
             />
             <Stack.Screen
               name="ResetPassword"

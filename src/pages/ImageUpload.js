@@ -92,10 +92,7 @@ export default function ImageUpload() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
-    },
-    container1: {
-        padding: 16,
+        backgroundColor: '#EDE8D0',
     },
     container1: {
         flex: 1,
@@ -107,16 +104,16 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 90,
         borderWidth: 2,
-        borderColor: '#AEAEAE',
+        borderColor: '#6C727F',
         borderStyle: 'dashed',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         gap: 17,
     },
     text: {
         fontSize: 15,
-        color: '#AEAEAE',
+        color: '#6C727F',
         lineHeight: 22,
     },
     fileInfo: {

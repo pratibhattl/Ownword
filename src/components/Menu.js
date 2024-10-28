@@ -117,7 +117,7 @@ export default function Menu() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
 
     },
     container1: {
@@ -127,12 +127,12 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontSize: 16,
-        color: '#20C3D3',
+        color: '#964B00',
         lineHeight: 26,
     },
     text: {
         fontSize: 15,
-        color: '#fff',
+        color: '#6C727F',
         lineHeight: 26,
         marginBottom: 18,
     },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     },
     menuText: {
         fontSize: 17,
-        color: '#fff',
+        color: '#6C727F',
         marginLeft: 30,
     }
 });
