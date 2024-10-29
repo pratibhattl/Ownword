@@ -26,7 +26,8 @@ export default function MigraineList() {
 
     useEffect(() => {
         getData('updateMigrainLog').then((data) => {
-            console.log(data,"data");
+            setPainArea([]);
+            setReason([])
            
         });
         if(isFocused){

@@ -138,7 +138,6 @@ export default function UpdateMigraineReason() {
    
 
     const onSubmit = () => {
-console.log(details,"details");
 
         if (!details?.painReason?.length > 0) {
             alert("Please select Pain reason !!")
