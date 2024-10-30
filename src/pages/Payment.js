@@ -1,13 +1,21 @@
-import React from 'react'
-import { View, Text, ScrollView, StyleSheet ,TouchableOpacity, Image, TextInput} from 'react-native'
+import React,{useState} from 'react'
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native'
 import Footer from '../components/Footer';
-
+import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Payment() {
     const navigation = useNavigation();
     const [number, onChangeNumber] = React.useState('');
+    const [isModalVisible, setModalVisible] = useState(false);
 
+    const handleOpenModal = () => {
+        setModalVisible(true);
+    };
+    const confirmFunction = () => {
+        setModalVisible(false);
+        navigation.navigate('Payment')
+    }
 
     return (
         <View style={styles.container}>
@@ -22,13 +30,13 @@ export default function Payment() {
                 <View style={styles.amountarea}>
                     <Text style={styles.amountHeading}>Donation amount</Text>
                     <TextInput
-        style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="50000"
-        placeholderTextColor='#fff'
-        keyboardType="numeric"
-      />
+                        style={styles.input}
+                        onChangeText={onChangeNumber}
+                        value={number}
+                        placeholder="50000"
+                        placeholderTextColor='#fff'
+                        keyboardType="numeric"
+                    />
                 </View>
                 <View style={styles.refarea}>
                     <Text style={styles.refHeading}>Reference number</Text>
@@ -39,9 +47,33 @@ export default function Payment() {
                     <Text style={styles.refHeading}>Payment method</Text>
                 </View>
             </ScrollView>
-            <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate('Payment')} >
+            <TouchableOpacity style={styles.primaryButton} onPress={() => handleOpenModal()} >
                 <Text style={styles.buttonText}>Confirm</Text>
             </TouchableOpacity>
+
+            <Modal
+                isVisible={isModalVisible}
+                onBackdropPress={() => setModalVisible(false)}
+                onBackButtonPress={() => setModalVisible(false)}
+                style={styles.modal}
+            >
+                <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>Your request has been submitted successfully.</Text>
+                    <Text style={styles.modalMessage}>
+                        Our team will get back to you within a few hours. For any additional inquiries, please email us at 
+                        donate@onwardtech.co.in
+                    </Text>
+                    <View style={styles.buttonContainer}>
+                       
+                        <TouchableOpacity
+                            style={[styles.button, styles.confirmButton]}
+                            onPress={confirmFunction}
+                        >
+                            <Text style={styles.buttonText}>Okay</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <Footer />
         </View>
     )
@@ -67,7 +99,53 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontSize: 16,
         lineHeight: 54,
+        fontWeight: 'bold'
     },
+
+    modal: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        width: '90%',
+        backgroundColor: 'white',
+        borderRadius: 8,
+        padding: 20,
+        alignItems: 'center',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    modalMessage: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    button: {
+        flex: 1,
+        paddingVertical: 10,
+        marginHorizontal: 5,
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    cancelButton: {
+        backgroundColor: '#ccc',
+    },
+    confirmButton: {
+        backgroundColor: '#964B00',
+    },
+    // buttonText: {
+    //     color: 'white',
+    //     fontWeight: 'bold',
+    // },
+
     campaignText: {
         color: '#6C727F',
         fontSize: 16,
