@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useNavigationState } from '@react-navigation/native';
 import { getData, storeData } from '../helper';
 import { refreshTokenApi, userDetailsApi } from '../apiService/Users';
@@ -11,6 +11,7 @@ const Header = ({ title }) => {
     const { token, userDetails, setUserDetails } = useAuth();
     const navigation = useNavigation();
     const [details, setDetails] = useState({})
+    const isFocused = useIsFocused();
     const routeName = useNavigationState((state) => {
         const index = state.index;
         return state.routes[index].name;
@@ -21,16 +22,18 @@ const Header = ({ title }) => {
             setIsLoading(false);
             if (response?.data?.status == 200) {
                 setDetails(response?.data?.user)
+                setUserDetails(response?.data?.user)
             }
         }
         catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
     }
+
 
     const refreshTokenFun = async () => {
         try {
@@ -39,28 +42,30 @@ const Header = ({ title }) => {
         } catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
             }
             throw error;
         }
     }
 
     useEffect(() => {
+        if (isFocused && routeName !== 'ForgotPassword') {
         getUserDetailsFunc()
         refreshTokenFun()
-    }, [token]);
+        }
+    }, [isFocused]);
 
     
 
 
     return (
-        <View style={styles.headerContainer}>
+        <SafeAreaView style={styles.headerContainer}>
             {routeName !== 'Home' &&
                 <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
                     <Image source={require('../assets/arrow-left.png')} />
                 </TouchableOpacity>
             }
-            {routeName !== 'Menu' &&
+            {routeName == 'Home' &&
                 <TouchableOpacity style={styles.button} >
                     {details?.profile_img ?
                         <Image style={styles.profileImage} source={{ uri: String(details?.profile_img) }} />
@@ -69,17 +74,19 @@ const Header = ({ title }) => {
                     }
                 </TouchableOpacity>
             }
+            
             <View style={styles.titleContainer}>
                 <Text style={styles.subtitle}>{title ? title : details?.name}</Text>
             </View>
+            {routeName !== 'ForgotPassword' &&
             <View style={styles.buttonsContainer}>
-
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Notification')}>
                     <Image source={require('../assets/Bell.png')} />
                 </TouchableOpacity>
             </View>
+}
 
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -88,27 +95,28 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#0A142A',
-        padding: 10,
-        elevation: 4, // Adds shadow on Android
+        backgroundColor: '#EDE8D0',
+        paddingHorizontal: 32,
+        paddingVertical: 16,
+        //elevation: 4, // Adds shadow on Android
     },
     titleContainer: {
         flex: 1,
         alignItems: 'center',
-        color: '#fff'
+        color: '#964B00',
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#fff'
+        color: '#964B00',
     },
     subtitle: {
         fontSize: 20,
-        color: '#fff',
+        color: '#964B00',
     },
     profileImage: {
-        width: 40,
-        height: 40,
+        width: 32,
+        height: 32,
         borderRadius: 20,
     },
     buttonsContainer: {

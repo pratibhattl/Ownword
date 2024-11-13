@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { API_URL_DEV } from '@env';
-import { Alert } from 'react-native';
 
 
 export const getInsightsApi = (token, setInsightsList, setIsLoading,flag) => {
@@ -68,10 +67,10 @@ export const addLikeBlogsApi = (token, data, like, setInsightsList, setIsLoading
             setIsLoading(false)
             getBlogsApi(token, setInsightsList, setIsLoading,"Like")
             if (like == true) {
-                Alert.alert("Post disliked !!")
+                alert("Post disliked !!")
 
             } else {
-                Alert.alert("Post liked !!")
+                alert("Post liked !!")
 
             }
             // setInsightsList(response?.data?.data);
@@ -79,7 +78,7 @@ export const addLikeBlogsApi = (token, data, like, setInsightsList, setIsLoading
         .catch(function (error) {
             setIsLoading(false)
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
               }
         });
 }
@@ -96,10 +95,10 @@ export const addLikeInsightApi = (token, data, like, setInsightsList, setIsLoadi
         .then(function (response) {
             setIsLoading(false)
             if (like == true) {
-                Alert.alert("Post disliked !!")
+                alert("Post disliked !!")
 
             } else {
-                Alert.alert("Post liked !!")
+                alert("Post liked !!")
 
             }
             getInsightsApi(token, setInsightsList, setIsLoading,"Like")
@@ -107,7 +106,7 @@ export const addLikeInsightApi = (token, data, like, setInsightsList, setIsLoadi
         .catch(function (error) {
             setIsLoading(false)
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
               }
         });
 }
@@ -133,12 +132,12 @@ export const addCommentBlogsApi = (token, data, setInsightsList, setIsLoading, t
             } else {
                 getInsightsApi(token, setInsightsList, setIsLoading,"Like")
             }
-            Alert.alert("Commented successfully !!")
+            alert("Commented successfully !!")
         })
         .catch(function (error) {
             setIsLoading(false)
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
               }
         });
 }

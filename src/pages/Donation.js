@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, Pressable, Dimensions } from 'react-native'
+import React, { useState, useEffect ,useCallback} from 'react'
+import { View, Text, ScrollView, Image, StyleSheet, Pressable, Dimensions ,ActivityIndicator} from 'react-native'
 import Footer from '../components/Footer'
 import { useNavigation } from '@react-navigation/native'
 import { getData } from '../helper';
 import { getDonationApi } from '../apiService/DonationApi';
 import LoadingScreen from '../components/LoadingScreen';
-import Slider from '@react-native-community/slider';
 
 export default function Donation() {
     const navigation = useNavigation();
     const [token, setToken] = useState(null)
     const [donationList, setDonationList] = useState([])
     const [isLoading, setIsLoading] = React.useState(false);
-   
+    const [hasMore, setHasMore] = useState(false);
+    const [page, setPage] = useState(1);
     useEffect(() => {
         getData('token').then((token) => {
             setToken(token);
@@ -20,14 +20,12 @@ export default function Donation() {
 
     }, []);
 
-    useEffect(() => {
-        getDonationApi(token, setDonationList, setIsLoading)
-    }, [token])
+   
     const calculateDonationDetails = (donationDetails) => {
         const today = new Date();
         const totalMilliseconds = new Date(donationDetails?.endDate) - new Date(donationDetails?.startDate);
         const totalDays = Math.ceil(totalMilliseconds / (1000 * 60 * 60 * 24));
-        
+
         // Days left (today to endDate)
         const leftMilliseconds = new Date(donationDetails?.endDate) - today;
         const leftDays = Math.ceil(leftMilliseconds / (1000 * 60 * 60 * 24));
@@ -46,7 +44,17 @@ export default function Donation() {
             percentage,
         };
     };
-
+    const fetchNextPage = useCallback(() => {
+        if (!isLoading && !hasMore) return null;
+    
+        if (!isLoading && hasMore) {
+          setPage(prevPage => prevPage + 1);
+        }
+      }, [isLoading, hasMore]);
+    
+      useEffect(() => {
+        getDonationApi(token,page,setHasMore, setDonationList, setIsLoading)
+    }, [token])
 
     if (isLoading) {
         return <LoadingScreen />;
@@ -56,7 +64,7 @@ export default function Donation() {
         <View style={styles.container}>
             <ScrollView style={styles.wrapper}>
                 {donationList?.length > 0 && donationList?.map((data) => {
-                       const { totalDays, validLeftDays, percentage } = calculateDonationDetails(data);
+                    const { totalDays, validLeftDays, percentage } = calculateDonationDetails(data);
                     return (
                         <View style={styles.cardMain}>
                             <Pressable onPress={() => navigation.navigate("DonationDetails", { id: data?._id })} >
@@ -67,8 +75,8 @@ export default function Donation() {
                                         <Text style={styles.founderText}>{data.foundationName}</Text>
 
                                         <View style={styles.progressbarwrapper}>
-                                            <View style={[styles.progressbar,{width: `${data?.targetAmount}`}]}></View>
-                                            
+                                            <View style={[styles.progressbar, { width: data?.targetAmount ? `${data?.targetAmount}` : '0%' }]}></View>
+
                                         </View>
                                         {/* <Slider
                                             style={styles.slider}
@@ -81,11 +89,11 @@ export default function Donation() {
                                             thumbTintColor="#20C3D3"
                                         /> */}
                                         <View style={styles.donationmeta}>
-                                        <Text style={styles.targetAmount}>Target - {data?.targetAmount} INR</Text>
-                                        <Text style={styles.duration}>
-                                            {validLeftDays}/{totalDays} Days Left
-                                        </Text>
-                                    </View>
+                                            <Text style={styles.targetAmount}>Target - {data?.targetAmount} INR</Text>
+                                            <Text style={styles.duration}>
+                                                {validLeftDays}/{totalDays} Days Left
+                                            </Text>
+                                        </View>
                                     </View>
 
                                 </View>
@@ -93,7 +101,28 @@ export default function Donation() {
                         </View>
                     )
                 })}
+                {isLoading && hasMore && (
+                    <View style={{ paddingVertical: 20 }}>
+                        <ActivityIndicator size="large" />
+                    </View>
+                )}
 
+                {!isLoading && hasMore ? (
+                    <Text
+                        onPress={fetchNextPage}
+                        style={{
+                            color: '#fff',
+                            marginVertical: 5,
+                            marginHorizontal: 10,
+                            textAlign: 'right',
+                            fontSize: 15,
+                            fontFamily: Theme.FontFamily.normal,
+                        }}>
+                        Load More
+                    </Text>
+                ) : (
+                    ''
+                )}
             </ScrollView>
 
             <Footer />
@@ -103,7 +132,7 @@ export default function Donation() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
     slider: {
         width: '90%',
@@ -119,16 +148,17 @@ const styles = StyleSheet.create({
     cardMain: {
         with: '100%',
         alignItems: 'end',
+        marginBottom: 10,
     },
     progressbarwrapper: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         width: '100%',
         height: 6,
         borderRadius: 10,
         marginVertical: 10,
     },
     progressbar: {
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964b00',
         height: 6,
         borderRadius: 10,
     },
@@ -147,12 +177,12 @@ const styles = StyleSheet.create({
     },
     cardText: {
         fontSize: 14,
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
     },
     founderText: {
         fontSize: 12,
-        color: '#20C3D3',
+        color: '#964b00',
         margin: 0,
     },
     donationmeta: {
@@ -161,7 +191,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     targetAmount: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 11,
     },
     duration: {

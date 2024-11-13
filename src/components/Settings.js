@@ -13,7 +13,7 @@ export default function Settings() {
     return (
         <View style={styles.container}>
             <ScrollView >
-                <Text style={styles.textStyle}>{"Settings"}</Text>
+                
 
                 <View style={styles.container1}>
                     {/* Dark Mode Toggle */}
@@ -22,8 +22,8 @@ export default function Settings() {
                         <Switch
                             value={isDarkModeEnabled}
                             onValueChange={toggleDarkMode}
-                            trackColor={{ false: '#767577', true: '#20C3D3' }}
-                            thumbColor={isDarkModeEnabled ? '#20C3D3' : '#f4f3f4'}
+                            trackColor={{ false: '#767577', true: '#964B00' }}
+                            thumbColor={isDarkModeEnabled ? '#ffffff' : '#f4f3f4'}
                         />
                     </View>
 
@@ -33,8 +33,8 @@ export default function Settings() {
                         <Switch
                             value={isAnimationsEnabled}
                             onValueChange={toggleAnimations}
-                            trackColor={{ false: '#767577', true: '#20C3D3' }}
-                            thumbColor={isAnimationsEnabled ? '#20C3D3' : '#f4f3f4'}
+                            trackColor={{ false: '#767577', true: '#964B00' }}
+                            thumbColor={isAnimationsEnabled ? '#ffffff' : '#f4f3f4'}
                         />
                     </View>
                 </View>
@@ -46,7 +46,7 @@ export default function Settings() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     textStyle: {
         fontSize: 24,
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
       },
       settingLabel: {
         fontSize: 16,
-        color: '#6C727F'
+        color: '#6C727F',
       },
 });

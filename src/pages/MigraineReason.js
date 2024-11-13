@@ -5,7 +5,6 @@ import { getData } from '../helper'
 import LoadingScreen from '../components/LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
 import { getMigraineReasonApi, addNewTrigger, addNewReason } from '../apiService/MigraineLogApi';
-import { Alert } from 'react-native'
 import Modal from 'react-native-modal';
 import DocumentPicker from 'react-native-document-picker';
 const SweetAlert = ({ isVisible, onCancel, onSave }) => {
@@ -74,7 +73,7 @@ export default function MigraineReason() {
             
             if(response?.data?.status == 201){
                 setModalVisible(false);
-                Alert.alert(response?.data?.message)
+                alert(response?.data?.message)
                 getMigraineReasonApi(token, setMigraineReason, setIsLoading)
             }
     
@@ -82,7 +81,7 @@ export default function MigraineReason() {
             setIsLoading(false);
 
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
@@ -93,12 +92,6 @@ export default function MigraineReason() {
         setModalVisible(false);
     };
 
-    useEffect(() => {
-        getData('migrainLog').then((data) => {
-            setDetails(data);
-        });
-
-    }, [])
 
     useEffect(() => {
         const fetchToken = async () => {
@@ -128,12 +121,27 @@ export default function MigraineReason() {
         })
     }
 
+    // const onSubmit = () => {
+    //     if (!details?.painReason?.length > 0) {
+    //         alert("Please select Pain reason !!")
+    //     } else {
+    //         addNewTrigger(token, details, setIsLoading, navigation)
+    //     }
+    // }
     const onSubmit = () => {
-        if (!details?.painReason?.length > 0) {
-            Alert.alert("Please select Pain reason !!")
-        } else {
-            addNewTrigger(token, details, setIsLoading, navigation)
-        }
+     
+        var obj={};
+
+        getData('migrainLog').then((data) => {
+            setDetails(data);
+            obj={...data,...details};
+            if (!details?.painReason?.length > 0) {
+                alert("Please select Pain reason !!")
+            } else {
+                addNewTrigger(token, obj, setIsLoading, navigation)
+            }
+        });
+     
     }
 
 
@@ -175,13 +183,16 @@ export default function MigraineReason() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
     alertContainer: {
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 20,
         alignItems: 'center',
+    },
+    arrowStyle: {
+        color: 'white',
     },
     label: {
         fontSize: 16,
@@ -195,11 +206,6 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         marginBottom: 10,
-    },
-    image: {
-        width: 100,
-        height: 100,
-        marginVertical: 10,
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
     arrowButton: {
         height: 54,
         width: 54,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
         padding: 15,
         margin: 16,
@@ -226,8 +232,8 @@ const styles = StyleSheet.create({
     },
     secondoryButton: {
         // width: '30%',
-        color: '#000',
-        backgroundColor: '#20C3D3',
+        color: '#fff',
+        backgroundColor: '#964B00',
         padding: 15,
         borderRadius: 5,
         alignItems: 'center',
@@ -266,8 +272,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     image: {
-        width: 80,
-        height: 80,
+        width: 50,
+        height: 50,
         marginTop: 10,
     },
     grid: {
@@ -276,7 +282,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     card: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         width: '30%',
         marginVertical: 10,
         padding: 10,
@@ -284,7 +290,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     card1: {
-        backgroundColor: '#2F1908',
+        backgroundColor: '#d5b799',
         width: '30%',
         marginVertical: 10,
         padding: 10,
@@ -297,8 +303,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     cardText: {
-        color: 'white',
+        color: '#6C727F',
         fontSize: 12,
+        textAlign: 'center',
     },
 
 });

@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { API_URL_DEV } from '@env';
 
-export const getDonationApi = (token,setDonationList, setIsLoading) => {
+export const getDonationApi = (token,page,setHasMore,setDonationList, setIsLoading) => {
     setIsLoading(true)
-    axios.get(`${API_URL_DEV}donation-post/list?page=1&limit=1000`, {
+    axios.get(`${API_URL_DEV}donation-post/list?page=${page}&limit=10000`, {
         headers: {
             'x-access-token': token,
             'Content-Type': 'application/json',
@@ -14,6 +14,7 @@ export const getDonationApi = (token,setDonationList, setIsLoading) => {
             // console.log('response', response?.data);
             setIsLoading(false)
             setDonationList(response?.data?.lists);
+            // setHasMore()
         })
         .catch(function (error) {
             setIsLoading(false)

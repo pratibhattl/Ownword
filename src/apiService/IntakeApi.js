@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { API_URL_DEV } from '@env';
-import { Alert } from 'react-native';
 export const getWaterIntakeApi = (token, setIntakeList, setIsLoading) => {
     setIsLoading(true)
     axios.get(`${API_URL_DEV}intake/user-water-consumption-data`, {
@@ -32,13 +31,13 @@ export const createWaterIntakeApi = (token, data,setIntakeList, setIsLoading) =>
     })
         .then(function (response) {
             setIsLoading(false)
-            Alert.alert('water intake log added')
+            alert('water intake log added')
             getWaterIntakeApi(token, setIntakeList, setIsLoading)
         })
         .catch(function (error) {
             setIsLoading(false)
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
               }
         });
 }
@@ -59,12 +58,12 @@ export const updateWaterIntakeApi = (token,id, setIntakeList, setIsLoading,navig
       
       axios.request(config)
       .then((response) => {
-        Alert.alert('Log removed !!')
+        alert('Log removed !!')
         getWaterIntakeApi(token, setIntakeList, setIsLoading)
       })
       .catch((error) => {
         if (error.response) {
-            Alert.alert(error?.response?.data?.message)
+            alert(error?.response?.data?.message)
           }
       });
     
@@ -103,13 +102,13 @@ export const createFoodIntakeApi = (token,data, setIsLoading,setDetails) => {
     })
         .then(function (response) {                        
             setIsLoading(false)
-            Alert.alert('Food intake log added')
+            alert('Food intake log added')
             setDetails(null);
         })
         .catch(function (error) {
             setIsLoading(false)
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
               }
         });
 }
@@ -131,13 +130,13 @@ export const createUserFoodIntakeApi = (token,data,setIsLoading,setDetails) => {
     })
         .then(function (response) {                        
             setIsLoading(false)
-            Alert.alert('Food intake log added')
+            alert('Food intake log added')
             setDetails(null)
         })
         .catch(function (error) {
             setIsLoading(false)
             if (error.response) {
-                Alert.alert(error?.response?.data?.message)
+                alert(error?.response?.data?.message)
               }
         });
 }

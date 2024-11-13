@@ -17,4 +17,5 @@ npm install moment --save
 npm i react-native-modal
 npm install @react-native-community/slider
 npm install react-native-modal
+npm i react-native-render-html
 

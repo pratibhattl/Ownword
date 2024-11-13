@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         paddingHorizontal: 24,
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
         width: '100%',
     },
     body: {
@@ -40,25 +40,25 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     topText: {
-        color: '#FFFFFF',
+        color: '#6C727F',
         fontSize: 30,
         textAlign: 'center'
     },
     textStyle: {
-        color: '#FFFFFF',
+        color: '#6C727F',
         fontSize: 17,
         textAlign: 'center'
     },
     primaryButton: {
         width: '100%',
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
         alignItems: 'center',
         marginBottom: 40,
         height: 54,
     },
     buttonText: {
-        color: '#000',
+        color: '#fff',
         fontSize: 20,
         lineHeight: 54,
     },
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
     footertext: {
         textAlign: 'center',
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 16,
         margin: 0,
     },

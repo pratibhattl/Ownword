@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker'; // For Gender Picker
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
@@ -48,7 +48,7 @@ export default function EditProfile() {
         catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
@@ -86,12 +86,12 @@ export default function EditProfile() {
                 mergeData('userDetails', response?.data?.user);
                 setUserDetails(response?.data?.user);
                 getUserDetailsFunc()
-                Alert.alert(' Profile Updated Successfully');
+                alert(' Profile Updated Successfully');
             }
         } catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
@@ -248,7 +248,7 @@ export default function EditProfile() {
                                     )} */}
 
 
-                        <Text style={styles.label}>Address*</Text>
+                        {/* <Text style={styles.label}>Address*</Text>
                         <TextInput
                             style={styles.input}
                             // style={[styles.input, submitted && errors.address ? styles.isInvalid : null]}
@@ -256,13 +256,13 @@ export default function EditProfile() {
                             onChangeText={(e) => setAddress(e)}
                             defaultValue={address}
 
-                        />
+                        /> */}
                         {/* {submitted && errors.address && (
                                         <Text style={styles.errorText}>{errors.address.message}</Text>
                                     )} */}
 
 
-                        <Text style={styles.label}>Location*</Text>
+                        {/* <Text style={styles.label}>Location*</Text>
                         <TextInput
                             // style={[styles.input, submitted && errors.location ? styles.isInvalid : null]}
                             // placeholder="Password*"
@@ -273,12 +273,12 @@ export default function EditProfile() {
                             })}
                             defaultValue={details?.address?.location}
 
-                        />
+                        /> */}
                         {/* {submitted && errors.location && (
                                         <Text style={styles.errorText}>{errors.location.message}</Text>
                                     )} */}
 
-                        <Controller
+                        {/* <Controller
                             control={control}
                             defaultValue={details?.address?.country}
                             rules={{ required: 'Select your country' }}
@@ -310,12 +310,12 @@ export default function EditProfile() {
                                         </Picker>
 
                                     </View>
-                                    {/* {errors.country && <Text style={styles.errorText}>{errors.country.message}</Text>} */}
+                                    {errors.country && <Text style={styles.errorText}>{errors.country.message}</Text>}
                                 </>
                             )}
                             name="country"
-                        />
-                        <Controller
+                        /> */}
+                        {/* <Controller
                             control={control}
                             defaultValue={details?.address?.state}
                             rules={{ required: 'Select your state' }}
@@ -346,14 +346,14 @@ export default function EditProfile() {
                                             })}
                                         </Picker>
                                     </View>
-                                    {/* {errors.state && <Text style={styles.errorText}>{errors.state.message}</Text>} */}
+                                    {errors.state && <Text style={styles.errorText}>{errors.state.message}</Text>}
                                 </>
                             )}
                             name="state"
-                        />
+                        /> */}
 
 
-                        <Text style={styles.label}>Pin number*</Text>
+                        {/* <Text style={styles.label}>Pin number*</Text>
                         <TextInput
                             // style={[styles.input, submitted && errors.pincode ? styles.isInvalid : null]}
                             // placeholder="Password*"
@@ -364,7 +364,7 @@ export default function EditProfile() {
                             })}
                             defaultValue={details?.address?.pincode}
 
-                        />
+                        /> */}
                         {/* {submitted && errors.pincode && (
                                         <Text style={styles.errorText}>{errors.pincode.message}</Text>
                                     )} */}
@@ -386,7 +386,7 @@ export default function EditProfile() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
     textStyle: {
         fontSize: 25,
@@ -394,7 +394,8 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         height: 100,
-        width: 100
+        width: 100,
+        display:'block',
     },
     container1: {
         flex: 1,
@@ -402,7 +403,7 @@ const styles = StyleSheet.create({
         paddingLeft: 24,
         paddingRight: 24,
         paddingTop: 35,
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     dottedBox: {
         width: '20%',
@@ -422,7 +423,7 @@ const styles = StyleSheet.create({
     },
     picker: {
         color: '#fff',
-        backgroundColor: '#232C3F'
+        backgroundColor: '#D5D1BB',
         // marginBottom: 15,
     },
     text: {
@@ -430,12 +431,12 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     topLabel: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 25
     },
     label: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 15
     },
@@ -453,13 +454,13 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         paddingHorizontal: 10,
         marginBottom: 24,
-        color: '#fff',
-        placeholderTextColor: "#fff",
-        backgroundColor: '#232C3F',
+        color: '#6C727F',
+        placeholderTextColor: "#6C727F",
+        backgroundColor: '#D5D1BB',
         height: 54,
     },
     datepicker: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         height: 54,
         flexDirection: 'row',
         paddingHorizontal: 10,
@@ -467,6 +468,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 24,
+        color: '#6C727F',
     },
     isInvalid: {
         borderColor: 'red',
@@ -482,7 +484,7 @@ const styles = StyleSheet.create({
     },
     primaryButton: {
         width: '100%',
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
         alignItems: 'center',
         marginBottom: 40,
@@ -498,7 +500,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     buttonText: {
-        color: '#000',
+        color: '#fff',
         fontSize: 16,
         lineHeight: 54,
     },
@@ -519,7 +521,7 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     datevalue: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 16,
     },
 

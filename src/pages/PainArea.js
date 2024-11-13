@@ -51,9 +51,7 @@ export default function PainArea() {
         getData('token').then((token) => {
             setToken(token);
         });
-        getData('migrainLog').then((data) => {
-            setLogDetails(data);
-        });
+       
 
     }, [])
 
@@ -79,22 +77,39 @@ export default function PainArea() {
     }, [token])
 
 
+    // const onGoForward = () => {
+    //     let data = {
+    //         ...logDetails,
+    //         details
+    //     }
+    //     if (!details?.painPosition?.length > 0) {
+    //         alert("Please select Pain position !!")
+    //     }
+    //     else if (!details?.painScale) {
+    //         alert("Please select Pain scale lavel !!")
+    //     }
+    //     else {
+    //         navigation.navigate('MigraineReason');
+    //         mergeData('migrainLog', data);
+    //     }
+    // }
     const onGoForward = () => {
-        let data = {
-            ...logDetails,
-            details
-        }
-        if (!details?.painPosition?.length > 0) {
-            Alert.alert("Please select Pain position !!")
-        }
-        else if (!details?.painScale) {
-            Alert.alert("Please select Pain scale lavel !!")
-        }
-        else {
+        let obj = {};
+        getData('migrainLog').then(data => {
+          setLogDetails(data);
+          obj= {...data, ...details};
+          
+          if (!details?.painPosition?.length > 0) {
+            alert('Please select Pain position !!');
+          } else if (!details?.painScale) {
+            alert('Please select Pain scale lavel !!');
+          } else {
             navigation.navigate('MigraineReason');
-            mergeData('migrainLog', data);
-        }
-    }
+            mergeData('migrainLog', obj);
+          }
+        });
+      };
+    
     const [isModalVisible, setModalVisible] = useState(false);
 
     const handleSave = async (positionName) => {
@@ -109,14 +124,14 @@ export default function PainArea() {
 
             if (response?.data?.result) {
                 setModalVisible(false);
-                Alert.alert(response?.data?.message)
+                alert(response?.data?.message)
                 getPositionApi(token, setPositionList, setIsLoading)
             }
 
         } catch (error) {
             setIsLoading(false);
             if (error.response) {
-                Alert.alert(error?.response?.data?.error?.message)
+                alert(error?.response?.data?.error?.message)
             }
             throw error;
         }
@@ -207,24 +222,24 @@ export default function PainArea() {
                     onCancel={handleCancel}
                     onSave={handleSave}
                 />
-            </ScrollView >
+            </ScrollView>
             <TouchableOpacity style={styles.arrowButton}
                 onPress={() => onGoForward()}
             >
                 <Image style={styles.arrowStyle} source={require('../assets/arrow-right.png')} />
             </TouchableOpacity>
             <Footer />
-        </View >
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
     buttonStyle: {
-        marginBottom: 20
+        marginBottom: 20,
     },
     alertContainer: {
         backgroundColor: 'white',
@@ -266,19 +281,19 @@ const styles = StyleSheet.create({
         height: 40,
     },
     label: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 20
     },
     arrowStyle: {
         height: 24,
         width: 24,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
     },
     arrowButton: {
         height: 54,
         width: 54,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         borderRadius: 6,
         padding: 15,
         margin: 16,
@@ -324,7 +339,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     card: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         width: '30%',
         marginVertical: 10,
         padding: 10,
@@ -332,7 +347,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     card1: {
-        backgroundColor: '#2F1908',
+        backgroundColor: '#d5b799',
         width: '30%',
         marginVertical: 10,
         padding: 10,
@@ -345,13 +360,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     cardText: {
-        color: 'white',
+        color: '#6C727F',
         fontSize: 12,
         textAlign: 'center',
     },
-    wrapper: {
-        paddingHorizontal: 16,
-    }
 })
 
 // {selectedData == 'FrontPain' ?

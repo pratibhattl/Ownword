@@ -1260,6 +1260,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-render-html (6.3.4):
+    - React-Core
   - react-native-safe-area-context (4.11.0):
     - React-Core
   - react-native-slider (4.5.3):
@@ -1637,6 +1639,7 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
@@ -1753,6 +1756,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-render-html:
+    :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
@@ -1862,6 +1867,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: f25dba9c8c3f8be0b3368d52b99abd6e381dee1d
   react-native-date-picker: 06a4d96ab525a163c7a90bccd68833d136b0bb13
   react-native-document-picker: 7343222102ece8aec51390717f47ad7119c7921f
+  react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 851c62c48dce80ccaa5637b6aa5991a1bc36eca9
   react-native-slider: e610b253698a56fb51c9303035d74c71651eb26b
   React-nativeconfig: 7af2ccce165f86b233a9f9d63295f6207e62640e
@@ -1899,6 +1905,6 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 06fc4b2c3664ae0e278964b8fbcb0ee9d21f0a5a
 
-PODFILE CHECKSUM: a078e644caaefa3955bc0991517fe0a82dd9b1da
+PODFILE CHECKSUM: 6a3153f110c68a422d64683a14f773e695431efc
 
 COCOAPODS: 1.15.2

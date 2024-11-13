@@ -147,7 +147,7 @@ export default function Menstrual() {
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
 
     wrapper: {
@@ -173,36 +173,37 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     linkText: {
-        color: '#fff',
+        color: '#6C727F',
         textAlign: 'left',
         marginBottom: 15,
     },
     topLabel: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 25
     },
     label: {
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 10,
         fontSize: 20
     },
     secondoryButton: {
         // width: '30%',
-        backgroundColor: '#fff',
+        backgroundColor: '#964b00',
         padding: 15,
         borderRadius: 5,
         alignItems: 'center',
+        color: '#ffffff',
         // marginBottom: 15,
     },
 
     buttonText: {
-        color: '#000',
+        color: '#ffffff',
         fontSize: 16,
     },
     dateblock: {
         flexDirection: 'row',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         borderRadius: 4,
         height: 100,
         alignItems: 'center',
@@ -213,12 +214,12 @@ const styles = StyleSheet.create({
     datetime: {
         fontSize: 40,
         fontWeight: '200',
-        color: '#fff',
+        color: '#6C727F',
     },
     inputlabel: {
         fontSize: 24,
         fontWeight: '200',
-        color: '#fff',
+        color: '#6C727F',
         marginBottom: 24,
     },
 })

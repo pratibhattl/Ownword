@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, Pressable } from 'react-native'
+import { View, Text, ScrollView, FlatList, StyleSheet, Dimensions, TouchableOpacity, Image, Pressable, SafeAreaView } from 'react-native'
 import Footer from '../components/Footer'
 import { getData } from '../helper'
 import LoadingScreen from './LoadingScreen'
@@ -35,7 +35,7 @@ export default function Home() {
     const navigation = useNavigation();
     const [homePageData, setHomePageData] = useState([]);
     const [donationData, setdonationData] = useState({})
-    const {token} = useAuth();
+    const { token } = useAuth();
 
 
     useEffect(() => {
@@ -80,20 +80,20 @@ export default function Home() {
         return <LoadingScreen />;
     }
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollcontainer}>
-                {/* <View style={styles.container}> */}
-                <View style={styles.dailyTracker}>
-                    <Pressable style={styles.dailyTrack} onPress={() => navigation.navigate('MigraineLog')}>
+                <Pressable style={styles.dailyTrack} onPress={() => navigation.navigate('MigraineLog')}>
+                    <View style={styles.dailyTracker}>
                         <View style={styles.titleStyle}>
                             <Text style={styles.title}>Track every day and see what could cause attacks</Text>
                             <Text style={styles.subtitle}>Daily Tracker <Image source={require('../assets/zapIcon.png')} /></Text>
                         </View>
-                    </Pressable>
-                    <View style={styles.imageStye}>
-                        <Image source={require('../assets/homeIcon.png')} style={styles.image} />
+
+                        <View style={styles.imageStye}>
+                            <Image source={require('../assets/homeIcon.png')} style={styles.image} />
+                        </View>
                     </View>
-                </View>
+                </Pressable>
 
                 <View style={styles.grid}>
                     <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('WaterIntake')}>
@@ -106,7 +106,9 @@ export default function Home() {
                         <Text style={styles.cardText}>Menstrual Cycles</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('FoodIntake')}>
+                    <TouchableOpacity style={styles.card} 
+                    // onPress={() => navigation.navigate('FoodIntake')}
+                    >
                         <Image source={require('../assets/Frame2.png')} style={styles.icon} />
                         <Text style={styles.cardText}>Food Intake</Text>
                     </TouchableOpacity>
@@ -126,7 +128,7 @@ export default function Home() {
                         <Text style={styles.cardText}>Weather</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.cardMain}>
+                {/* <View style={styles.cardMain}>
                     <Pressable onPress={() => navigation.navigate("DonationDetails", { id: donationData?._id })} >
                         <View style={styles.cardContainer}>
                             {donationData?.image == null ?
@@ -135,24 +137,23 @@ export default function Home() {
                                 <Image source={{ uri: String(donationData?.image) }} style={styles.cardImage} />
 
                             }
-                            {/* <Text style={styles.cardText}>{donationData?.foundationName}</Text> */}
+                            
                             <View style={styles.donateContent}>
-                                <Text style={styles.cardText}>{donationData.title}</Text>
+                                <Text style={styles.dcardText}>{donationData.title}</Text>
                                 <Text style={styles.founderText}>{donationData.foundationName}</Text>
-                               
+
                                 <View style={styles.progressbarwrapper}>
-                                    <View style={[styles.progressbar,{width: `${donationData.receivedAmount}%`}]}></View>
+                                    <View style={[styles.progressbar, { width: donationData.receivedAmount ? `${donationData.receivedAmount}%` : '0%' }]}></View>
                                 </View>
                                 <View style={styles.donationmeta}>
                                     <Text style={styles.targetAmount}>Target - {donationData?.targetAmount} INR</Text>
                                     <Text style={styles.duration}> {leftDays}/{totalDays} Days Left</Text>
                                 </View>
                             </View>
-                            {/* <Text>{" "} </Text>
-                            <Text style={styles.cardText}>{homePageData?.donationPost[0]?.description}</Text> */}
+                            
                         </View>
                     </Pressable>
-                </View>
+                </View> */}
                 <View style={styles.listStyle}>
                     {homePageData?.length > 0 ?
                         <FlatList
@@ -203,7 +204,7 @@ export default function Home() {
                 </View>
             </ScrollView>
             <Footer />
-        </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
     },
     container: {
         height: '100%',
-        backgroundColor: '#0A142A',
+        backgroundColor: '#EDE8D0',
     },
 
     textStyle: {
@@ -220,12 +221,11 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     dailyTracker: {
-        width: '100%',
-        alignItems: 'flex-end',
-        backgroundColor: '#232C3F',
-        flex: 1,
+        backgroundColor: '#D5D1BB',
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
         borderRadius: 4,
         paddingRight: 7,
         marginBottom: 16,
@@ -234,14 +234,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        color: 'white',
-        fontSize: 12,
+        color: '#6C727F',
+        fontSize: 14,
         marginBottom: 23,
-        maxWidth: 160,
+        maxWidth: 200,
     },
     imageStye: {
-        marginRight: 70,
+        width: 80,
         textAlign: 'right',
+        marginLeft: 'auto',
+        justifyContent: 'flex-end',
     },
     titleStyle: {
         flex: 1,
@@ -250,7 +252,7 @@ const styles = StyleSheet.create({
         paddingBottom: 16,
     },
     subtitle: {
-        color: '#00e6e6',
+        color: '#964B00',
         fontSize: 14,
     },
     image: {
@@ -268,20 +270,21 @@ const styles = StyleSheet.create({
     card: {
         width: '100%',
         maxWidth: '30%',
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         padding: 10,
         alignItems: 'center',
         borderRadius: 4,
     },
     icon: {
-        width: 50,
-        height: 50,
+        width: 36,
+        height: 36,
         marginBottom: 10,
     },
     cardText: {
-        color: 'white',
-        fontSize: 14,
+        color: '#6C727F',
+        fontSize: 12,
         textAlign: 'center',
+        marginBottom: 0,
     },
     cardMain: {
         with: '100%',
@@ -310,7 +313,7 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     card1: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         borderRadius: 4,
         marginRight: 16,
         width: screenWidth * 0.6, // Adjust card width relative to screen size
@@ -332,7 +335,7 @@ const styles = StyleSheet.create({
         marginLeft: 6,
     },
     title1: {
-        color: '#20C3D3',
+        color: '#964B00',
         fontSize: 10,
         marginBottom: 6,
     },
@@ -347,9 +350,10 @@ const styles = StyleSheet.create({
     },
     listStyle: {
         marginBottom: 16,
+        marginTop: 16,
     },
     progressbarwrapper: {
-        backgroundColor: '#232C3F',
+        backgroundColor: '#D5D1BB',
         width: '100%',
         height: 6,
         borderRadius: 10,
@@ -369,14 +373,15 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         marginRight: 12,
     },
-    cardText: {
+    dcardText: {
         fontSize: 14,
-        color: '#fff',
-        marginBottom: 10,
+        color: '#6C727F',
+        marginBottom: 5,
+        textAlign: 'left',
     },
     founderText: {
         fontSize: 12,
-        color: '#20C3D3',
+        color: '#964B00',
         margin: 0,
     },
     donationmeta: {
@@ -385,7 +390,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     targetAmount: {
-        color: '#fff',
+        color: '#6C727F',
         fontSize: 11,
     },
     duration: {

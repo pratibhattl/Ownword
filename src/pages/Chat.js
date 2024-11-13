@@ -60,9 +60,9 @@ const onSubmit=(data)=>{
                                 {/* <Image source={{ uri: data.profile_img }} style={styles.cardImage} /> */}
                                 
                                 {/* <Text>{" "}</Text> */}
-                                <View style={styles.textStyle}>
+                                <View style={styles.textStyle1}>
                                     <Text style={styles.username} >Holly Harding</Text>
-                                    <Text style={styles.dateStyle} >{moment(data.createdAt).format("DD/MM/YYYY hh:mm A")}</Text>
+                                    <Text style={styles.dateStyle1} >{moment(data.createdAt).format("DD/MM/YYYY hh:mm A")}</Text>
                                 </View>
 
                                 <Text style={styles.chatName}>{data.comment}</Text>
@@ -110,13 +110,17 @@ const onSubmit=(data)=>{
 const styles = StyleSheet.create({
     container: {
         height: '100%',
-        backgroundColor: '#0A142A'
+        backgroundColor: '#EDE8D0',
     },
     wrapper: {
         paddingHorizontal: 16,
     },
     textStyle: {
-        color: '#fff',
+        color: '#6C727F',
+        fontSize: 20,
+    },
+    textStyle1: {
+        color: '#6C727F',
         fontSize: 20,
         marginBottom: 24,
     },
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
         with: '100%',
         flexDirection: 'column',
         borderBottomWidth: 1,
-        borderBottomColor: '#232C3F',
+        borderBottomColor: '#e0c9b3',
         paddingBottom: 24,
         marginBottom: 24,
     },
@@ -148,16 +152,16 @@ const styles = StyleSheet.create({
     cardText: {
         fontSize: 14,
         lineHeight: 24,
-        color: '#8DCAFC',
+        color: '#964B00',
         fontWeight: '300',
     },
     input: {
         height: 54,
         paddingHorizontal: 10,
         borderRadius: 54,
-        color: '#fff',
+        color: '#6C727F',
         placeholderTextColor: "#fff",
-        backgroundColor: 'rgba(255,255,255,0.1)',
+        backgroundColor: 'rgba(0,0,0,0.05)',
     },
     isInvalid: {
         borderColor: 'red',
@@ -167,7 +171,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     linkText: {
-        color: '#fff',
+        color: '#6C727F',
         textAlign: 'left',
         marginBottom: 15,
     },
@@ -175,7 +179,7 @@ const styles = StyleSheet.create({
         width: 44,
         height: 44,
         borderRadius: 44,
-        backgroundColor: '#20C3D3',
+        backgroundColor: '#964B00',
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
@@ -208,16 +212,16 @@ const styles = StyleSheet.create({
     },
     username: {
         fontSize: 16,
-        color: '#20C3D3',
-        marginBottom: 10,
+        color: '#964B00',
+        marginBottom: 5,
     },
-    dateStyle: {
-        fontSize: 14,
-        color: '#fff',
+    dateStyle1: {
+        fontSize: 12,
+        color: '#6C727F',
     },
     chatName:  {
         fontSize: 14,
-        color: '#fff',
+        color: '#6C727F',
         fontWeight: '300',
     },
     chatBottom: {
