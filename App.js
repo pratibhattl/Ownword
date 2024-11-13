@@ -35,18 +35,13 @@ import Foram from './src/pages/Foram';
 import Chat from './src/pages/Chat';
 import MigraineList from './src/pages/MigraineList';
 import { useAuth } from './src/Context/AppContext';
+import UpdateMigraineReason from './src/pages/UpdateMigraineReason';
+import UpdatePainArea from './src/pages/UpdatePainArea';
 const Stack = createNativeStackNavigator();
 
 function App() {
   const {isLoggedin,setToken,setUserDetails} = useAuth();
-  useEffect(() => {
-    getData('token').then((token) => {
-        setToken(token);
-    });
-    getData('userDetails').then((data) => {
-        setUserDetails(data);
-    });
-}, []);
+ 
   
 
 
@@ -78,7 +73,7 @@ function App() {
             <Stack.Screen
               name="ForgotPassword"
               component={ForgotPassword}
-              options={{ headerShown: false }}
+              options={{ headerShown: true }}
             />
             <Stack.Screen
               name="ResetPassword"
@@ -101,115 +96,125 @@ function App() {
             <Stack.Screen
               name="Settings"
               component={Settings}
-              options={{ headerShown: true, title: 'Onward - Settings' }}
+              options={{ headerShown: true, title: 'Settings' }}
             />
             <Stack.Screen
               name="Insights"
               component={Insights}
-              options={{ headerShown: true, title: 'Onward - Insights' }}
+              options={{ headerShown: true, title: 'Insights' }}
             />
             <Stack.Screen
               name="Tracking"
               component={Tracking}
-              options={{ headerShown: true, title: 'Onward - Tracking' }}
+              options={{ headerShown: true, title: 'Tracking' }}
             />
             <Stack.Screen
               name="Menu"
               component={Menu}
-              options={{ headerShown: true, title: 'Onward - Menu' }}
+              options={{ headerShown: true, title: 'Menu' }}
             />
             <Stack.Screen
               name="Notification"
               component={Notification}
-              options={{ headerShown: true, title: 'Onward - Notification' }}
+              options={{ headerShown: true, title: 'Notification' }}
             />
             <Stack.Screen
               name="EditProfile"
               component={EditProfile}
-              options={{ headerShown: true, title: 'Onward - Edit Profile' }}
+              options={{ headerShown: true, title: 'Edit Profile' }}
             />
             <Stack.Screen
               name="Donation"
               component={Donation}
-              options={{ headerShown: true, title: 'Onward - Donations' }}
+              options={{ headerShown: true, title: 'Donations' }}
             />
             <Stack.Screen
               name="DonationDetails"
               component={DonationDetails}
-              options={{ headerShown: true, title: 'Onward - Donations' }}
+              options={{ headerShown: true, title: 'Donations' }}
             />
             <Stack.Screen
               name="Payment"
               component={Payment}
-              options={{ headerShown: true, title: 'Onward - Payment' }}
+              options={{ headerShown: true, title: 'Payment' }}
             />
             <Stack.Screen
               name="ImageUpload"
               component={ImageUpload}
-              options={{ headerShown: true, title: 'Onward - Image Upload' }}
+              options={{ headerShown: true, title: 'Image Upload' }}
             />
             <Stack.Screen
               name="PrescriptionUpload"
               component={PrescriptionUpload}
-              options={{ headerShown: true, title: 'Onward - Prescription Upload' }}
+              options={{ headerShown: true, title: 'Prescription Upload' }}
             />
             <Stack.Screen
               name="WaterIntake"
               component={WaterIntake}
-              options={{ headerShown: true, title: 'Onward - Water Intake' }}
+              options={{ headerShown: true, title: 'Water Intake' }}
             />
             <Stack.Screen
               name="TimeInBed"
               component={TimeInBed}
-              options={{ headerShown: true, title: 'Onward - Time in Bed' }}
+              options={{ headerShown: true, title: 'Time in Bed' }}
             />
             <Stack.Screen name="TimeAsleep"
               component={TimeAsleep}
-              options={{ headerShown: true, title: 'Onward - Time Asleep' }} />
+              options={{ headerShown: true, title: 'Time Asleep' }} />
             <Stack.Screen
               name="Menstrual"
               component={Menstrual}
-              options={{ headerShown: true, title: 'Onward - Menstrual Cycle' }}
+              options={{ headerShown: true, title: 'Menstrual Cycle' }}
             />
             <Stack.Screen
               name="FoodIntake"
               component={FoodIntake}
-              options={{ headerShown: true, title: 'Onward - Food Intake' }}
+              options={{ headerShown: true, title: 'Food Intake' }}
             />
              <Stack.Screen
               name="Medication"
               component={Medication}
-              options={{ headerShown: true, title: 'Onward - Medications' }}
+              options={{ headerShown: true, title: 'Medications' }}
             />
              <Stack.Screen
               name="MigraineLog"
               component={MigraineLog}
-              options={{ headerShown: true, title: 'Onward - Migraine Log' }}
+              options={{ headerShown: true, title: 'Migraine Log' }}
             />
              <Stack.Screen
               name="PainArea"
               component={PainArea}
-              options={{ headerShown: true, title: 'Onward - Migraine Log' }}
+              options={{ headerShown: true, title: 'Migraine Log' }}
             />
               <Stack.Screen
               name="MigraineReason"
               component={MigraineReason}
-              options={{ headerShown: true, title: 'Onward - Migraine Log' }}
+              options={{ headerShown: true, title: 'Migraine Log' }}
             />
              <Stack.Screen
               name="Foram"
               component={Foram}
-              options={{ headerShown: true, title: 'Onward - Chat' }}
+              options={{ headerShown: true, title: 'Chat' }}
             />
              <Stack.Screen
               name="Chat"
               component={Chat}
-              options={{ headerShown: true, title: 'Onward - Chat' }}
+              options={{ headerShown: true, title: 'Chat' }}
             />
             <Stack.Screen
             name='MigraineList'
             component={MigraineList}
-            options={{ headerShown: true, title: 'Onward - Migraine Logs' }}
+            options={{ headerShown: true, title: 'Migraine Logs' }}
+            />
+             <Stack.Screen
+            name='UpdateMigraineReason'
+            component={UpdateMigraineReason}
+            options={{ headerShown: true, title: 'Edit Migraine Log' }}
+            />
+             <Stack.Screen
+            name='UpdatePainArea'
+            component={UpdatePainArea}
+            options={{ headerShown: true, title: 'Edit Migraine Log' }}
             />
           </>
         }

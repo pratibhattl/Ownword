@@ -1,4 +1,4 @@
-package com.migraine
+package com.app.migraine
 
 import android.app.Application
 import com.facebook.react.PackageList
