@@ -130,11 +130,6 @@ export default function Menu() {
                 </View> */}
               
                 <View style={styles.menuStyle}>
-                    <Image source={require('../assets/money-send.png')} />
-                    <Text style={styles.menuText} onPress={() => navigation.navigate('Donation')}> {"Donations"}</Text>
-                </View>
-              
-                <View style={styles.menuStyle}>
                     <Image source={require('../assets/logout.png')} />
                     <Text style={styles.menuText} onPress={() => logout()}> {"Logout"}</Text>
                 </View>
