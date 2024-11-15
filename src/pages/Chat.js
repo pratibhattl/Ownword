@@ -61,7 +61,7 @@ const onSubmit=(data)=>{
                                 
                                 {/* <Text>{" "}</Text> */}
                                 <View style={styles.textStyle1}>
-                                    <Text style={styles.username} >Holly Harding</Text>
+                                    <Text style={styles.username} >{data?.user?.name}</Text>
                                     <Text style={styles.dateStyle1} >{moment(data.createdAt).format("DD/MM/YYYY hh:mm A")}</Text>
                                 </View>
 
